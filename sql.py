@@ -113,6 +113,12 @@ def eliminar_prestamo(idPrestamo):
 
 # Funciones para los REPORTES
 
+def sumatoria_precio_reposicion_librExtraviados():
+    db_manager = ManagerDataBase()
+    query = "SELECT SUM(precioReposicion) AS sumatoria FROM libros WHERE estado = 'Extraviado'"
+    resultados = db_manager.consultar(query)
+    return resultados
+
 def listar_cantidad_libros_estado():
     # Conectar a la base de datos
     db_manager = ManagerDataBase()
@@ -122,11 +128,6 @@ def listar_cantidad_libros_estado():
     resultados = db_manager.consultar(query)
     return resultados
 
-def sumatoria_precio_reposicion_librExtraviados():
-    db_manager = ManagerDataBase()
-    query = "SELECT SUM(precioReposicion) AS sumatoria FROM libros WHERE estado = 'Extraviado'"
-    resultados = db_manager.consultar(query)
-    return resultados
 
 def solicitantes_por_titulo_libro(titulo):
     db_manager = ManagerDataBase()
@@ -134,16 +135,6 @@ def solicitantes_por_titulo_libro(titulo):
             f"INNER JOIN prestamos p ON s.numeroSocio = p.socio_numeroSocio " \
             f"INNER JOIN libros l ON p.libro_codigo = l.codigo " \
             f"WHERE l.titulo = '{titulo}'"
-    resultados = db_manager.consultar(query)
-    return resultados
-
-def listar_prestamos_por_socio(numeroSocio):
-    db_manager = ManagerDataBase()
-    query = f"SELECT p.idPrestamo, p.fechaPrestamo, p.diasDevolucion, p.devuelto, " \
-            f"l.codigo AS codigo_libro, l.titulo AS titulo_libro " \
-            f"FROM prestamos p " \
-            f"INNER JOIN libros l ON p.libro_codigo = l.codigo " \
-            f"WHERE p.socio_numeroSocio = {numeroSocio}"
     resultados = db_manager.consultar(query)
     return resultados
 
@@ -155,5 +146,15 @@ def listar_prestamos_demorados():
             "INNER JOIN libros l ON p.libro_codigo = l.codigo " \
             "INNER JOIN socios s ON p.socio_numeroSocio = s.numeroSocio " \
             "WHERE p.devuelto = 0 AND DATE('now') > DATE(p.fechaPrestamo, '+' || p.diasDevolucion || ' days')"
+    resultados = db_manager.consultar(query)
+    return resultados
+
+def listar_prestamos_por_socio(numeroSocio):
+    db_manager = ManagerDataBase()
+    query = f"SELECT p.idPrestamo, p.fechaPrestamo, p.diasDevolucion, p.devuelto, " \
+            f"l.codigo AS codigo_libro, l.titulo AS titulo_libro " \
+            f"FROM prestamos p " \
+            f"INNER JOIN libros l ON p.libro_codigo = l.codigo " \
+            f"WHERE p.socio_numeroSocio = {numeroSocio}"
     resultados = db_manager.consultar(query)
     return resultados
