@@ -9,7 +9,7 @@ def Prestamo(Socio, Libro):
         self._diasDevolucion = diasDevolucion
         self._diasRetraso = diasRetraso
         self._devuelto = devuelto
-        
+    
     @property
     def fechaPrestamo(self):
         return self._fechaPrestamo
