@@ -4,7 +4,7 @@ INTEGRANTES:
 Bautista Mendibe - 89249
 Débora Sandobal - 
 Ramiro Hosman - 
-Valentino Di Fulvio - 
+Valentino Di Fulvio - 87424
 
 ENUNCIADO:
 Una biblioteca necesita un software que le permita registrar los datos de los libros que posee y de sus préstamos. De cada libro conoce como mínimo su código, título, precio de reposición (para el caso de extravíos o daños) y estado (disponible, prestado o extraviado).
