@@ -22,3 +22,6 @@ class Socio:
     def registrarDevolucion(self, prestamo: Prestamo):
         pass
         #Aca deberia sacar el prestamo del socio, eliminarlo
+        
+    def mostrarPrestamoDemorado(self):
+        pass
