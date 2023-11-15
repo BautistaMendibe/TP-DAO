@@ -15,6 +15,10 @@ class Prestamo:
     Dias Devolucion {self._diasDevolucion} Dias de Retraso {self._diasRetraso} /nLibro {self._libro}"
     
     @property
+    def idPrestamo(self):
+        return self._idPrestamo
+    
+    @property
     def fechaPrestamo(self):
         return self._fechaPrestamo
     
@@ -41,6 +45,13 @@ class Prestamo:
             return True
         else:
             return False
+    
+    def registrarDevoluvion(self):
+        if self._devuelto == False:
+            if self._libro.estado == "Prestado":
+                self._libro.estadoDisponible
+                self._devuelto = True
+            
     
     
         
