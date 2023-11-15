@@ -10,7 +10,8 @@ class Biblioteca:
         #No se si que los prestamos tengan socios o que los socios tengan prestamos
         #self._prestamos = ()
         
-    def aggLibro(self, libro: Libro):
+    def aggLibro(self, codigo, titulo, precioReposicion):
+        libro: Libro = Libro(codigo=codigo, titulo=titulo, precioReposicion=precioReposicion)
         self._libros.append(libro)
 
     def buscarLibro(self, titulo):
@@ -45,10 +46,10 @@ class Biblioteca:
     
     def precioLibrosExtraviados(self):
         precio = 0
-        for i in self._libros:
-            if i.estado() == "Extraviado":
-                p += i.precioReposicion()
-        return f"Precio total para reposicion de libros extraviados: {p}"
+        for libro in self._libros:
+            if libro.estado() == "Extraviado":
+                precio += libro.precioReposicion()
+        return f"Precio total para reposición de libros extraviados: ${precio}"
                 
     
     def solicitantesDeLibro(self, titulo):
