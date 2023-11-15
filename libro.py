@@ -1,6 +1,6 @@
 class Libro:
-    def __init__(self, codigo, titulo, precioReposicion):
-        self._codigo = codigo
+    def __init__(self, titulo, precioReposicion):
+        self._codigo = None
         self._titulo = titulo
         self._precioReposicion = precioReposicion
         self._estado = "Disponible"
