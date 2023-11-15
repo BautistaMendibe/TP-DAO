@@ -3,8 +3,8 @@ from socio import Socio
 
 class Biblioteca:
     def __init__(self):
-        self._libros = ()
-        self._socios = ()
+        self._libros: [Libro] = []
+        self._socios: [Socio] = []
         #No se si que los prestamos tengan socios o que los socios tengan prestamos
         #self._prestamos = ()
         
@@ -26,7 +26,7 @@ class Biblioteca:
     def precioLibrosExtraviados(self):
         pass
     
-    def solicitantesDeLibro(self):
+    def solicitantesDeLibro(self, titulo):
         pass
         #Supongo que se refieren a los socios que se llevaron un mismo libro
         
