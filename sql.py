@@ -48,11 +48,10 @@ def insertar_socio(socio):
     db_manager = ManagerDataBase()
     
     # Obtener datos del socio
-    numero_socio = int(socio.numeroSocio)
     nombre = str(socio.nombre)
     
     # Crear y ejecutar la consulta SQL para insertar el socio
-    query = f"INSERT INTO socios (numeroSocio, nombre, borrado) VALUES ({numero_socio}, '{nombre}', 0)"
+    query = f"INSERT INTO socios (nombre, borrado) VALUES ('{nombre}', 0)"
     db_manager.actualizar(query)
 
 def actualizar_socio(socio):

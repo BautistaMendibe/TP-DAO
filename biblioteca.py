@@ -1,7 +1,9 @@
 from libro import Libro
 from socio import Socio
+from sql import insertar_socio
 
 class Biblioteca:
+
     def __init__(self):
         self._libros: [Libro] = []
         self._socios: [Socio] = []
@@ -17,8 +19,10 @@ class Biblioteca:
     def buscarSocio(self, numSocio):
         pass
         
-    def aggSocio(self, socio: Socio):
+    def aggSocio(self, nombre: str):
+        socio: Socio = Socio(nombre=nombre)
         self._socios.append(socio)
+        insertar_socio(socio)
     
     def librosCadEstado(self):
         pass

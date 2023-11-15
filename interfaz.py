@@ -2,6 +2,8 @@ import tkinter
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
+from socio import Socio
+from biblioteca import Biblioteca
 
 def mostrar_mensaje(accion):
     print(f"Realizando acción: {accion}")
@@ -36,10 +38,15 @@ def registrar_socio():
     estilo_boton = ttk.Style()
     estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
 
-    boton_registrar = ttk.Button(ventana_registro_socio, text="Registrar", command=lambda: mostrar_mensaje("Registrar socio"), style="Estilo.TButton")
+    boton_registrar = ttk.Button(ventana_registro_socio, text="Registrar", command=lambda: btn_registrar_socio(entry_nombre), style="Estilo.TButton")
     boton_registrar.grid(column=0, row=3, columnspan=2, pady=10)
 
     ventana_registro_socio.mainloop()
+
+def btn_registrar_socio(entry_nombre: Entry):
+    nombre = entry_nombre.get()
+    biblioteca: Biblioteca = Biblioteca()
+    biblioteca.aggSocio(nombre)
 
 def inicio():
     ventana = Tk()

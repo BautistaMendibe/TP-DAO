@@ -1,14 +1,9 @@
 from prestamo import Prestamo
 
 class Socio:
-    def __init__(self, nombre, numeroSocio):
+    def __init__(self, nombre):
         self._nombre = nombre
-        self._numeroSocio = numeroSocio
         self._prestamosDeLibro: [Prestamo] = []
-        
-    @property
-    def numeroSocio(self):
-        return self._numeroSocio
     
     @property
     def nombre(self):
