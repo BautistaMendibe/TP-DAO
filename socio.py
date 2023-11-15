@@ -4,7 +4,7 @@ class Socio:
     def __init__(self, nombre, numeroSocio):
         self._nombre = nombre
         self._numeroSocio = numeroSocio
-        self._prestamosDeLibro = ()
+        self._prestamosDeLibro: [Prestamo] = []
         
     @property
     def numeroSocio(self):
@@ -21,7 +21,8 @@ class Socio:
         
     def registrarDevolucion(self, prestamo: Prestamo):
         pass
-        #Aca deberia sacar el prestamo del socio, eliminarlo
+        #Aca deberia sacar el prestamo del socio
         
     def mostrarPrestamoDemorado(self):
         pass
+        #Recorre todos los prestamos y devuelve los Pretamos con el atributo diasRetraso positivo
