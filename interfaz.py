@@ -194,7 +194,7 @@ def btn_registrar_libro(entry_nombre: Entry, entry_precio_reposicion: Entry):
         return
 
     biblioteca: Biblioteca = Biblioteca()
-    biblioteca.aggLibro(nombre=nombre, precioReposicion=precio_reposicion)
+    biblioteca.aggLibro(titulo=nombre, precioReposicion=precio_reposicion)
     
 
 def eliminar_libro():
