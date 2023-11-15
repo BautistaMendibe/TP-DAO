@@ -2,8 +2,10 @@ import tkinter
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from socio import Socio
 from biblioteca import Biblioteca
+from libro import Libro
 
 def mostrar_mensaje(accion):
     print(f"Realizando acción: {accion}")
@@ -138,7 +140,65 @@ def btn_consultar_socio(ventana_consultar_socio, entry_numeroSocio: Entry):
 
     ventana_consultar_socio.mainloop()
 
+
+def registrar_libro():
+    ventana_registro_libro = tk.Toplevel()
+    ventana_registro_libro.title("Registrar libro")
+    ventana_registro_libro.geometry("400x250")
+
+    # Estilo para la etiqueta del título
+    estilo_titulo = ttk.Style()
+    estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
+
+    label_titulo = ttk.Label(ventana_registro_libro, text="Registrar libro", style="Titulo.TLabel")
+    label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
+
+    # Estilo para las etiquetas y la entrada
+    estilo_widget = ttk.Style()
+    estilo_widget.configure("Estilo.TLabel", padding=5)
+    estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
+
+    label_nombre = ttk.Label(ventana_registro_libro, text="Nombre:", style="Estilo.TLabel")
+    label_nombre.grid(column=0, row=2)
+
+    entry_nombre = ttk.Entry(ventana_registro_libro, style="Estilo.TEntry")
+    entry_nombre.grid(column=1, row=2, sticky="ew")  
+
+    label_precio_reposicion = ttk.Label(ventana_registro_libro, text="Precio de Reposición:", style="Estilo.TLabel")
+    label_precio_reposicion.grid(column=0, row=3)
+
+    entry_precio_reposicion = ttk.Entry(ventana_registro_libro, style="Estilo.TEntry")
+    entry_precio_reposicion.grid(column=1, row=3, sticky="ew")
+
+    # Configuración de la columna para expandirse
+    ventana_registro_libro.columnconfigure(1, weight=1)
+
+    # Estilo para el botón
+    estilo_boton = ttk.Style()
+    estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
+
+    boton_registrar = ttk.Button(ventana_registro_libro, text="Registrar", command=lambda: btn_registrar_libro(entry_nombre, entry_precio_reposicion), style="Estilo.TButton")
+    boton_registrar.grid(column=0, row=4, columnspan=2, pady=10)
+
+    ventana_registro_libro.mainloop()
+
+def btn_registrar_libro(entry_nombre: Entry, entry_precio_reposicion: Entry):
+    nombre = entry_nombre.get()
+    precio_reposicion = entry_precio_reposicion.get()
+
+    try:
+        precio_reposicion = float(precio_reposicion)
+    except ValueError:
+        # Manejar el caso en el que la entrada no sea un número válido
+        messagebox.showerror("Error", "Por favor, ingrese un precio de reposición válido.")
+        return
+
+    biblioteca: Biblioteca = Biblioteca()
+    biblioteca.aggLibro(titulo=nombre, precioReposicion=precio_reposicion)
     
+
+
+
 def inicio():
     ventana = Tk()
     ventana.title("Biblioteca UTN-FRC")
@@ -158,7 +218,7 @@ def inicio():
     menu_socios.add_command(label="Eliminar socio", command=eliminar_socio)
     menu_socios.add_command(label="Consultar socio", command=consultar_socio)
     # Opciones del menú de libros
-    menu_libros.add_command(label="Registrar libro", command=lambda: mostrar_mensaje("Registrar libro"))
+    menu_libros.add_command(label="Registrar libro", command=registrar_libro)
     menu_libros.add_command(label="Eliminar libro", command=lambda: mostrar_mensaje("Eliminar libro"))
     menu_libros.add_command(label="Consultar libro", command=lambda: mostrar_mensaje("Consultar libro"))
 

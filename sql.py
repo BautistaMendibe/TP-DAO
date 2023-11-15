@@ -9,14 +9,13 @@ def insertar_libro(libro):
     db_manager = ManagerDataBase()
     
     # Obtener datos del libro
-    codigo = int(libro.codigo)
     titulo = str(libro.titulo)
     precio_reposicion = float(libro.precioReposicion)
     estado = str(libro.estado)
     
     # Crear y ejecutar la consulta SQL para insertar el libro
-    query = f"INSERT INTO libros (codigo, titulo, precioReposicion, estado, borrado) " \
-            f"VALUES ({codigo}, '{titulo}', {precio_reposicion}, '{estado}', 0)"
+    query = f"INSERT INTO libros (titulo, precioReposicion, estado, borrado) " \
+            f"VALUES ('{titulo}', {precio_reposicion}, '{estado}', 0)"
     db_manager.actualizar(query)
 
 def actualizar_libro(libro):

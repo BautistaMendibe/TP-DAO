@@ -1,8 +1,6 @@
 from libro import Libro
 from socio import Socio
-from sql import insertar_socio
-from sql import eliminar_socio
-from sql import consultar_socio
+from sql import *
 
 class Biblioteca:
 
@@ -13,6 +11,7 @@ class Biblioteca:
     def aggLibro(self, titulo, precioReposicion):
         libro: Libro = Libro(titulo=titulo, precioReposicion=precioReposicion)
         self._libros.append(libro)
+        insertar_libro(libro)
 
     def buscarLibro(self, titulo):
         for i in self._libros:
