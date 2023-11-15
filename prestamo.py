@@ -12,6 +12,15 @@ class Prestamo:
         self._libro = libro
         self._socio = socio
     
+    def __init__(self, idPrestamo, diasDevolucion, libro: Libro, socio: Socio):
+        self._idPrestamo = idPrestamo
+        self._fechaPrestamo = datetime.now().date
+        self._diasDevolucion = diasDevolucion
+        self._diasRetraso = 0
+        self._devuelto = False
+        self._libro = libro
+        self._socio = socio
+    
     def __str__(self) -> str:
         return f"Id de prestamo: {self._idPrestamo} Fecha de prestamo: {self._fechaPrestamo} Dias Devolucion {self._diasDevolucion} Dias de Retraso {self._diasRetraso} /nLibro {self._libro}"
     
