@@ -1,9 +1,7 @@
 from libro import Libro
 from socio import Socio
 from prestamo import Prestamo
-from sql import insertar_socio
-from sql import eliminar_socio
-from sql import consultar_socio
+from sql import *
 
 class Biblioteca:
 
@@ -23,10 +21,6 @@ class Biblioteca:
         return 0
     
     def consultarSocio(self, numSocio: int):
-        # for socio in self._socios:
-        #     if socio.numeroSocio() == numSocio:
-        #         return socio
-        # return 0
         socio = consultar_socio(numSocio)
         return socio
         
