@@ -5,10 +5,6 @@ class Libro:
         self._precioReposicion = precioReposicion
         self._estado = estado
        
-    def __str__(self) -> str:
-        return f"Codigo: {self._codigo} Titulo: {self._titulo} Precio de Reposicion: {self._precioReposicion} 
-    Estado: {self._estado}"
-     
     @property
     def titulo(self):
         return self._titulo
