@@ -1,17 +1,15 @@
 
 
 class Socio:
-    def __init__(self, nombre):
-        self._numeroSocio = None
-        self._nombre = nombre
-        
-    def __init__(self, numeroSocio, nombre):
-        self._numeroSocio = numeroSocio
-        self._nombre = nombre
-    
-    # def __init__(self, numeroSocio: int, nombre: str):
-    #     self._numeroSocio = numeroSocio
-    #     self._nombre = nombre
+    def __init__(self, nombre, numeroSocio=None):
+        if numeroSocio is None:
+            # Inicialización cuando no se proporciona el número de socio
+            self._numeroSocio = None
+            self._nombre = nombre
+        else:
+            # Inicialización cuando se proporciona el número de socio
+            self._numeroSocio = numeroSocio
+            self._nombre = nombre
     
     @property
     def nombre(self):

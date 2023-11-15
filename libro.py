@@ -1,15 +1,17 @@
 class Libro:
-    def __init__(self, titulo, precioReposicion):
-        self._codigo = None
+    def __init__(self, titulo, precioReposicion, codigo=None, estado=None):
+        if codigo is None:
+            # Inicialización cuando no se proporciona el código
+            self._codigo = None
+            self._estado = "Disponible"
+        else:
+            # Inicialización cuando se proporciona el código
+            self._codigo = codigo
+            self._estado = estado
+        # Resto de la inicialización común
         self._titulo = titulo
         self._precioReposicion = precioReposicion
-        self._estado = "Disponible"
         
-    def __init__(self, codigo, titulo, precioReposicion):
-        self._codigo = codigo
-        self._titulo = titulo
-        self._precioReposicion = precioReposicion
-        self._estado = "Disponible"
     @property
     def titulo(self):
         return self._titulo

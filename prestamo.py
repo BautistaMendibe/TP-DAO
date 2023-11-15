@@ -3,18 +3,17 @@ from socio import Socio
 from datetime import datetime, timedelta
 
 class Prestamo:
-    def __init__(self, diasDevolucion, libro: Libro, socio: Socio):
-        self._idPrestamo = None
-        self._fechaPrestamo = datetime.now().date
-        self._diasDevolucion = diasDevolucion
-        self._diasRetraso = 0
-        self._devuelto = False
-        self._libro = libro
-        self._socio = socio
-    
-    def __init__(self, idPrestamo, diasDevolucion, libro: Libro, socio: Socio):
-        self._idPrestamo = idPrestamo
-        self._fechaPrestamo = datetime.now().date
+    def __init__(self, diasDevolucion, libro: Libro, socio: Socio, idPrestamo=None, fechaPrestamo=None):
+        if idPrestamo is None:
+            # Inicialización cuando no se proporciona el ID del préstamo
+            self._idPrestamo = None
+            self._fechaPrestamo = datetime.now().date()
+        else:
+            # Inicialización cuando se proporciona el ID del préstamo
+            self._idPrestamo = idPrestamo
+            self._fechaPrestamo = fechaPrestamo
+
+        # Resto de la inicialización común
         self._diasDevolucion = diasDevolucion
         self._diasRetraso = 0
         self._devuelto = False
