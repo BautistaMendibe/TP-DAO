@@ -51,13 +51,3 @@ class Prestamo:
             if self._libro.estado == "Prestado":
                 self._libro.estadoDisponible
                 self._devuelto = True
-            
-    
-    
-        
-        
-    
-
-        
-        
-        
