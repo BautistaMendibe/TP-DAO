@@ -10,6 +10,10 @@ class Prestamo:
         self._devuelto = devuelto
         self._libro = libro
     
+    def __str__(self) -> str:
+        return f"Id de prestamo: {self._idPrestamo} Fecha de prestamo: {self._fechaPrestamo}  
+    Dias Devolucion {self._diasDevolucion} Dias de Retraso {self._diasRetraso} /nLibro {self._libro}"
+    
     @property
     def fechaPrestamo(self):
         return self._fechaPrestamo
@@ -31,6 +35,12 @@ class Prestamo:
     @property
     def devuelto(self):
         return self._devuelto
+    
+    def nombreCoincideLibro(self, titulo):
+        if self._libro.titulo() == titulo:
+            return True
+        else:
+            return False
     
     
         
