@@ -13,12 +13,16 @@ class Biblioteca:
     def aggLibro(self, titulo, precioReposicion):
         libro: Libro = Libro(titulo=titulo, precioReposicion=precioReposicion)
         self._libros.append(libro)
+        insertar_libro(libro)
 
     def buscarLibro(self, titulo):
         for i in self._libros:
             if i.titulo() == titulo:
                 return i
         return 0
+    
+    def eliminarLibro(self, codigo: int):
+        eliminar_libro(codigo)
     
     def consultarSocio(self, numSocio: int):
         socio = consultar_socio(numSocio)
