@@ -194,7 +194,7 @@ def btn_registrar_libro(entry_nombre: Entry, entry_precio_reposicion: Entry):
         return
 
     biblioteca: Biblioteca = Biblioteca()
-    biblioteca.aggLibro(titulo=nombre, precioReposicion=precio_reposicion)
+    biblioteca.aggLibro(nombre=nombre, precioReposicion=precio_reposicion)
     
 
 
@@ -211,7 +211,7 @@ def inicio():
     menu_libros = Menu(barra_menu)
     barra_menu.add_cascade(label="Administración de libros", menu=menu_libros)
     menu_prestamos_devolucion = Menu(barra_menu)
-    barra_menu.add_cascade(label="Registración de préstamos y devoluciones", menu=menu_prestamos_devolucion)
+    barra_menu.add_cascade(label="Registro de préstamos y devoluciones", menu=menu_prestamos_devolucion)
 
     # Opciones del menú de socios
     menu_socios.add_command(label="Registrar socio", command=registrar_socio)
