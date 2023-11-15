@@ -11,8 +11,7 @@ class Prestamo:
         self._libro = libro
     
     def __str__(self) -> str:
-        return f"Id de prestamo: {self._idPrestamo} Fecha de prestamo: {self._fechaPrestamo}  
-    Dias Devolucion {self._diasDevolucion} Dias de Retraso {self._diasRetraso} /nLibro {self._libro}"
+        return f"Id de prestamo: {self._idPrestamo} Fecha de prestamo: {self._fechaPrestamo} Dias Devolucion {self._diasDevolucion} Dias de Retraso {self._diasRetraso} /nLibro {self._libro}"
     
     @property
     def idPrestamo(self):

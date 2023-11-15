@@ -41,7 +41,7 @@ def buscar_libros_por_titulo(titulo):
     libros = [Libro(codigo=row[0], titulo=row[1], precioReposicion=row[2], estado=row[3]) for row in resultados]
     return libros
 
-# Funciones para la administración de socios
+# Funciones para la administración de SOCIOS
 
 def insertar_socio(socio):
     # Conectar a la base de datos
@@ -61,11 +61,17 @@ def actualizar_socio(socio):
     query = f"UPDATE socios SET nombre = '{nombre}' WHERE numeroSocio = {numero_socio}"
     db_manager.actualizar(query)
 
-def eliminar_socio(socio):
+def eliminar_socio(numeroSocio):
     db_manager = ManagerDataBase()
-    numero_socio = int(socio.numeroSocio)
-    query = f"UPDATE socios SET borrado = 1 WHERE numeroSocio = {numero_socio}"
+    query = f"UPDATE socios SET borrado = 1 WHERE numeroSocio = {numeroSocio}"
     db_manager.actualizar(query)
+
+def consultar_socio(numeroSocio):
+    query = f"SELECT * FROM socios WHERE numeroSocio = {numeroSocio}"
+    db_manager = ManagerDataBase()
+    resultados = db_manager.consultar(query)
+    socio_encontrado = resultados[0]
+    return socio_encontrado
 
 def listar_socios():
     query = "SELECT * FROM socios"

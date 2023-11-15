@@ -1,6 +1,8 @@
 from libro import Libro
 from socio import Socio
 from sql import insertar_socio
+from sql import eliminar_socio
+from sql import consultar_socio
 
 class Biblioteca:
 
@@ -18,16 +20,20 @@ class Biblioteca:
                 return i
         return 0
     
-    def buscarSocio(self, numSocio):
-        for i in self._socios:
-            if i.numeroSocio() == numSocio:
-                return i
-        return 0
+    def consultarSocio(self, numSocio):
+        # for socio in self._socios:
+        #     if socio.numeroSocio() == numSocio:
+        #         return socio
+        # return 0
+        consultar_socio(numSocio)
         
     def aggSocio(self, nombre: str):
         socio: Socio = Socio(nombre=nombre)
         self._socios.append(socio)
         insertar_socio(socio)
+    
+    def eliminarSocio(self, numeroSocio: int):
+        eliminar_socio(numeroSocio)
     
     def librosCadEstado(self):
         d = 0

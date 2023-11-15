@@ -3,7 +3,7 @@ from libro import Libro
 
 class Socio:
     def __init__(self, nombre):
-        self._numSocio = None
+        self._numeroSocio = None
         self._nombre = nombre
         self._prestamosDeLibro: [Prestamo] = []
     
@@ -13,7 +13,7 @@ class Socio:
     
     @property
     def numeroSocio(self):
-        return self._numSocio
+        return self._numeroSocio
     
     def agregarPrestamo(self, diasDevolucion, libro: Libro):
         if self._prestamosDeLibro.length() > 3:

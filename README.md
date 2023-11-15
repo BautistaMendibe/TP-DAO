@@ -2,8 +2,8 @@
 
 INTEGRANTES:
 Bautista Mendibe - 89249
-Débora Sandobal - 
-Ramiro Hosman - 
+Débora Sandobal - 85543
+Ramiro Hosman - 87013
 Valentino Di Fulvio - 87424
 
 ENUNCIADO:
