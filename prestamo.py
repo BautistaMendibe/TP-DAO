@@ -2,12 +2,12 @@ from libro import Libro
 from datetime import datetime, timedelta
 
 class Prestamo:
-    def __init__(self, idPrestamo, fechaPrestamo, diasDevolucion, diasRetraso, devuelto, libro: Libro):
-        self._idPrestamo = idPrestamo
-        self._fechaPrestamo = fechaPrestamo
+    def __init__(self, diasDevolucion, libro: Libro):
+        self._idPrestamo = None
+        self._fechaPrestamo = datetime.now().date
         self._diasDevolucion = diasDevolucion
-        self._diasRetraso = diasRetraso
-        self._devuelto = devuelto
+        self._diasRetraso = 0
+        self._devuelto = False
         self._libro = libro
     
     def __str__(self) -> str:
