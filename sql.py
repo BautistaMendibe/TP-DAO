@@ -69,8 +69,8 @@ def consultar_socio(numeroSocio):
     db_manager = ManagerDataBase()
     resultados = db_manager.consultar(query)
     socio_encontrado = resultados[0]
-    socio: Socio = Socio(socio_encontrado)
-    return socio_encontrado
+    socio: Socio = Socio(numeroSocio=socio_encontrado[0], nombre=socio_encontrado[1])
+    return socio
 
 def listar_socios():
     query = "SELECT * FROM socios"

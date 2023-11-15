@@ -1,5 +1,6 @@
 from libro import Libro
 from socio import Socio
+from prestamo import Prestamo
 from sql import *
 
 class Biblioteca:
@@ -7,6 +8,7 @@ class Biblioteca:
     def __init__(self):
         self._libros: [Libro] = []
         self._socios: [Socio] = []
+        self._prestamos: [Prestamo] = []
         
     def aggLibro(self, titulo, precioReposicion):
         libro: Libro = Libro(titulo=titulo, precioReposicion=precioReposicion)
@@ -23,10 +25,6 @@ class Biblioteca:
         eliminar_libro(codigo)
     
     def consultarSocio(self, numSocio: int):
-        # for socio in self._socios:
-        #     if socio.numeroSocio() == numSocio:
-        #         return socio
-        # return 0
         socio = consultar_socio(numSocio)
         return socio
         
@@ -61,20 +59,28 @@ class Biblioteca:
     
     def solicitantesDeLibro(self, titulo):
         l = []
-        for i in self._socios:
-            if i.pidioLibro(titulo) != None:
-                l.append(i.pidioLibro(titulo))
+        for i in self._prestamos:
+            if i.solicitantesLibro() != None:
+                l.append(i.solicitantesLibro())
         return l
         #Supongo que se refieren a los socios que se llevaron un mismo libro
         
     def listarPrestamosDemorados(self):
-        for i in self._socios:
-            i.mostrarPrestamoDemorado()
+        l = []
+        for i in self._prestamos:
+            if i.diasRetraso() > 0:
+                return l.append(i)
             
     def prestamosDeSocio(self, numSocio):
-        socio = self.buscarSocio(numSocio=numSocio)
-        print(socio)
-        socio.listarPrestamos()
+        listaPrestamos = []
+        for i in self._prestamos:
+            if i.esSocio(numSocio):
+                listaPrestamos.append(i)
+        if listaPrestamos.length > 0:
+            return listaPrestamos
+        else:
+            print("No tiene prestamos")
         
     def registrarPrestamo(self, diasDevolucion, libro: Libro, socio: Socio):
-        socio.agregarPrestamo()
+        prestamo: Prestamo = Prestamo(diasDevolucion=diasDevolucion, libro=libro, socio=socio)
+        self._prestamos.append(prestamo)
