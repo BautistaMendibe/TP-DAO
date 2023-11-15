@@ -10,13 +10,16 @@ class Socio:
         return self._nombre
     
     def agregarPrestamo(self, prestamo: Prestamo):
-        pass
+        self._prestamosDeLibro.append(prestamo)
         #Aca debería entrar a la bd y consultar por todos los prestamos asociados a este número de socio, ver si son 3 o si alguno esta con demora y no darselo
         #En realidad deberia registrar los prestamos en una lista y eso deberia estar guardado en la base de datos
         
     def registrarDevolucion(self, prestamo: Prestamo):
-        pass
-        #Aca deberia sacar el prestamo del socio
+        for i in self._prestamosDeLibro:
+            if i.idPrestamo() == prestamo.idPrestamo():
+                i.registrarDevolucion()
+                
+        #Aca deberia cambiar el estado del libro del prestamo del socio y cambiar el estado del prestamo
         
     def mostrarPrestamoDemorado(self):
         for i in self._prestamosDeLibro:
