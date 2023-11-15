@@ -197,6 +197,47 @@ def btn_registrar_libro(entry_nombre: Entry, entry_precio_reposicion: Entry):
     biblioteca.aggLibro(nombre=nombre, precioReposicion=precio_reposicion)
     
 
+def eliminar_libro():
+    ventana_eliminar_libro = tk.Toplevel()
+    ventana_eliminar_libro.title("Eliminar libro")
+    ventana_eliminar_libro.geometry("400x250")
+
+    # Estilo para la etiqueta del título
+    estilo_titulo = ttk.Style()
+    estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
+
+    label_titulo = ttk.Label(ventana_eliminar_libro, text="Eliminar libro", style="Titulo.TLabel")
+    label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
+
+    # Estilo para las etiquetas y la entrada
+    estilo_widget = ttk.Style()
+    estilo_widget.configure("Estilo.TLabel", padding=5)
+    estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
+
+    label_codigo = ttk.Label(ventana_eliminar_libro, text="Código:", style="Estilo.TLabel")
+    label_codigo.grid(column=0, row=2)
+
+    entry_codigo = ttk.Entry(ventana_eliminar_libro, style="Estilo.TEntry")
+    entry_codigo.grid(column=1, row=2, sticky="ew")  # 'ew' significa que se expandirá horizontalmente
+
+    # Configuración de la columna para expandirse
+    ventana_eliminar_libro.columnconfigure(1, weight=1)
+
+    # Estilo para el botón
+    estilo_boton = ttk.Style()
+    estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
+
+    boton_eliminar = ttk.Button(ventana_eliminar_libro, text="Eliminar", command=lambda: btn_eliminar_libro(entry_codigo), style="Estilo.TButton")
+    boton_eliminar.grid(column=0, row=3, columnspan=2, pady=10)
+
+    ventana_eliminar_libro.mainloop()
+
+# Función que se ejecuta al hacer clic en el botón "Eliminar"
+def btn_eliminar_libro(entry_codigo: Entry):
+    codigo_libro = entry_codigo.get()
+    biblioteca: Biblioteca = Biblioteca()
+    biblioteca.eliminarLibro(codigo_libro)
+    messagebox.showinfo("Exito", "Libro eliminado con éxito")
 
 
 def inicio():
@@ -219,7 +260,7 @@ def inicio():
     menu_socios.add_command(label="Consultar socio", command=consultar_socio)
     # Opciones del menú de libros
     menu_libros.add_command(label="Registrar libro", command=registrar_libro)
-    menu_libros.add_command(label="Eliminar libro", command=lambda: mostrar_mensaje("Eliminar libro"))
+    menu_libros.add_command(label="Eliminar libro", command=eliminar_libro)
     menu_libros.add_command(label="Consultar libro", command=lambda: mostrar_mensaje("Consultar libro"))
 
     ventana.config(menu=barra_menu)

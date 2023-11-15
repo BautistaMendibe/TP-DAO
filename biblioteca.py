@@ -19,6 +19,9 @@ class Biblioteca:
                 return i
         return 0
     
+    def eliminarLibro(self, codigo: int):
+        eliminar_libro(codigo)
+    
     def consultarSocio(self, numSocio: int):
         # for socio in self._socios:
         #     if socio.numeroSocio() == numSocio:

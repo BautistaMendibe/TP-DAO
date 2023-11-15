@@ -27,9 +27,8 @@ def actualizar_libro(libro):
     query = f"UPDATE libros SET titulo = '{titulo}', precioReposicion = {precio_reposicion}, estado = '{estado}' WHERE codigo = {codigo}"
     db_manager.actualizar(query)
 
-def eliminar_libro(libro):
+def eliminar_libro(codigo):
     db_manager = ManagerDataBase()
-    codigo = int(libro.codigo)
     query = f"UPDATE libros SET borrado = 1 WHERE codigo = {codigo}"
     db_manager.actualizar(query)
 
