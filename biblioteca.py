@@ -20,12 +20,13 @@ class Biblioteca:
                 return i
         return 0
     
-    def consultarSocio(self, numSocio):
+    def consultarSocio(self, numSocio: int):
         # for socio in self._socios:
         #     if socio.numeroSocio() == numSocio:
         #         return socio
         # return 0
-        consultar_socio(numSocio)
+        socio = consultar_socio(numSocio)
+        return socio
         
     def aggSocio(self, nombre: str):
         socio: Socio = Socio(nombre=nombre)

@@ -7,6 +7,10 @@ class Socio:
         self._nombre = nombre
         self._prestamosDeLibro: [Prestamo] = []
     
+    # def __init__(self, numeroSocio: int, nombre: str):
+    #     self._numeroSocio = numeroSocio
+    #     self._nombre = nombre
+    
     @property
     def nombre(self):
         return self._nombre

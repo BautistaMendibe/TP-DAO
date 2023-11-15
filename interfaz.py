@@ -127,10 +127,10 @@ def consultar_socio():
 def btn_consultar_socio(ventana_consultar_socio, entry_numeroSocio: Entry):
     numeroSocio = entry_numeroSocio.get()
     biblioteca: Biblioteca = Biblioteca()
-    socio = biblioteca.consultarSocio(numeroSocio)
+    socio = bibli oteca.consultarSocio(numeroSocio)
     
     # Crear etiquetas para mostrar la información del socio
-    label_info_nombre = ttk.Label(ventana_consultar_socio, text=f"Nombre: {socio.nombre}", style="Estilo.TLabel")
+    label_info_nombre = ttk.Label(ventana_consultar_socio, text=f"Nombre: {socio[1]}", style="Estilo.TLabel")
     label_info_nombre.grid(column=0, row=4, columnspan=2, pady=5)
     
     boton_consultar = ttk.Button(ventana_consultar_socio, text="Consultar", command=btn_consultar_socio, style="Estilo.TButton")
