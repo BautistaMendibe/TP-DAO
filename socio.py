@@ -24,5 +24,12 @@ class Socio:
         #Aca deberia sacar el prestamo del socio
         
     def mostrarPrestamoDemorado(self):
-        pass
+        for i in self._prestamosDeLibro:
+            if i.diasRetraso() > 0:
+                print(i)
         #Recorre todos los prestamos y devuelve los Pretamos con el atributo diasRetraso positivo
+        
+    def pidioLibro(self, titulo):
+        for i in self._prestamosDeLibro:
+            if i.nombreCoincideLibro(titulo):
+                return self._nombre
