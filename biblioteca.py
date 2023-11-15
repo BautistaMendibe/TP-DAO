@@ -7,11 +7,9 @@ class Biblioteca:
     def __init__(self):
         self._libros: [Libro] = []
         self._socios: [Socio] = []
-        #No se si que los prestamos tengan socios o que los socios tengan prestamos
-        #self._prestamos = ()
         
-    def aggLibro(self, codigo, titulo, precioReposicion):
-        libro: Libro = Libro(codigo=codigo, titulo=titulo, precioReposicion=precioReposicion)
+    def aggLibro(self, titulo, precioReposicion):
+        libro: Libro = Libro(titulo=titulo, precioReposicion=precioReposicion)
         self._libros.append(libro)
 
     def buscarLibro(self, titulo):
@@ -60,6 +58,14 @@ class Biblioteca:
         return l
         #Supongo que se refieren a los socios que se llevaron un mismo libro
         
-    def listPrestamosDemorados(self):
+    def listarPrestamosDemorados(self):
         for i in self._socios:
             i.mostrarPrestamoDemorado()
+            
+    def prestamosDeSocio(self, numSocio):
+        socio = self.buscarSocio(numSocio=numSocio)
+        print(socio)
+        socio.listarPrestamos()
+        
+    def registrarPrestamo(self, diasDevolucion, libro: Libro, socio: Socio):
+        socio.agregarPrestamo()
