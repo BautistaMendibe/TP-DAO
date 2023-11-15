@@ -12,23 +12,49 @@ class Biblioteca:
         self._libros.append(libro)
 
     def buscarLibro(self, titulo):
-        pass
+        for i in self._libros:
+            if i.titulo() == titulo:
+                return i
+        return 0
     
     def buscarSocio(self, numSocio):
-        pass
+        for i in self._socios:
+            if i.numeroSocio() == numSocio:
+                return i
+        return 0
         
     def aggSocio(self, socio: Socio):
         self._socios.append(socio)
     
     def librosCadEstado(self):
-        pass
+        d = 0
+        p = 0
+        e = 0
+        for i in self._libros:
+            if i.estado() == "Disponible":
+                d += 1
+            elif i.estado() == "Prestado":
+                p += 1
+            elif i.estado() == "Extraviado":
+                e += 1
+        return f"Disponible:{d} \nPrestado:{p} \nExtraviado:{e}"
     
     def precioLibrosExtraviados(self):
-        pass
+        precio = 0
+        for i in self._libros:
+            if i.estado() == "Extraviado":
+                p += i.precioReposicion()
+        return f"Precio total para reposicion de libros extraviados: {p}"
+                
     
     def solicitantesDeLibro(self, titulo):
-        pass
+        l = []
+        for i in self._socios:
+            if i.pidioLibro(titulo) != None:
+                l.append(i.pidioLibro(titulo))
+        return l
         #Supongo que se refieren a los socios que se llevaron un mismo libro
         
     def listPrestamosDemorados(self):
-        pass
+        for i in self._socios:
+            i.mostrarPrestamoDemorado()
