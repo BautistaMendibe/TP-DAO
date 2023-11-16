@@ -57,9 +57,10 @@ class Biblioteca:
         libro: Libro = buscar_libros_por_titulo(libro)
 
         # Si el libro y el socio existen se registra el prestamo, si no no
-        if (libro.titulo != "" and socio.nombre != ""):
+        if (libro.titulo != None and socio.nombre != None):
             fecha_actual = datetime.now()
 
             prestamo: Prestamo = Prestamo(diasDevolucion=diasDevolucion, libro=libro, socio=socio)
             registrar_prestamo(numSocio, libro.codigo, fecha_actual, diasDevolucion)
+            actualizar_estado_libro(libro, "Prestado")
         

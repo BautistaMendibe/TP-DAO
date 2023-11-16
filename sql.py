@@ -85,10 +85,9 @@ def listar_socios():
 def registrar_prestamo(socio_id, libro_id, fecha_prestamo, dias_devolucion):
     # Conectar a la base de datos
     db_manager = ManagerDataBase()
-    
     # Crear y ejecutar la consulta SQL para registrar un préstamo
-    query = f"INSERT INTO prestamos (socio_numeroSocio, libro_codigo, fechaPrestamo, diasDevolucion, devuelto) " \
-            f"VALUES ({socio_id}, {libro_id}, '{fecha_prestamo}', {dias_devolucion}, 0)"
+    query = f"INSERT INTO prestamos (socio_numeroSocio, libro_codigo, fechaPrestamo, diasDevolucion, devuelto, borrado, diasRetraso) " \
+            f"VALUES ({socio_id}, {libro_id}, '{fecha_prestamo}', {dias_devolucion}, 0, 0, 0)"
     db_manager.actualizar(query)
 
 def registrar_devolucion(prestamo_id, fecha_devolucion, dias_retraso):
@@ -162,3 +161,9 @@ def listar_prestamos_por_socio(numeroSocio):
             f"WHERE p.socio_numeroSocio = {numeroSocio}"
     resultados = db_manager.consultar(query)
     return resultados
+
+
+def actualizar_estado_libro(libro: Libro, estado: str):
+    db_manager = ManagerDataBase()
+    query = f"UPDATE libros SET estado = '{estado}' WHERE codigo = {libro.codigo}"
+    db_manager.actualizar(query)
