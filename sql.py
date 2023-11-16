@@ -37,7 +37,7 @@ def buscar_libros_por_titulo(titulo):
     db_manager = ManagerDataBase()
     resultados = db_manager.consultar(query)
     libros = [Libro(codigo=row[0], titulo=row[1], precioReposicion=row[2], estado=row[3]) for row in resultados]
-    return libros
+    return libros[0]
 
 # Funciones para la administración de SOCIOS
 

@@ -30,16 +30,16 @@ def registrar_prestamo():
     estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
 
     label_numero_socio = ttk.Label(ventana_registro_prestamo, text="Número de Socio:", style="Estilo.TLabel")
-    label_numero_socio.grid(column=0, row=2)
+    label_numero_socio.grid(column=0, row=1)
 
     entry_numero_socio = ttk.Entry(ventana_registro_prestamo, style="Estilo.TEntry")
-    entry_numero_socio.grid(column=1, row=2, sticky="ew")  
+    entry_numero_socio.grid(column=1, row=1, sticky="ew")
 
     label_titulo_libro = ttk.Label(ventana_registro_prestamo, text="Título del Libro:", style="Estilo.TLabel")
-    label_titulo_libro.grid(column=0, row=3)
+    label_titulo_libro.grid(column=0, row=2)
 
     entry_titulo_libro = ttk.Entry(ventana_registro_prestamo, style="Estilo.TEntry")
-    entry_titulo_libro.grid(column=1, row=3, sticky="ew")
+    entry_titulo_libro.grid(column=1, row=2, sticky="ew")
 
     label_dias = ttk.Label(ventana_registro_prestamo, text="Días para devolución:", style="Estilo.TLabel")
     label_dias.grid(column=0, row=3)
@@ -65,7 +65,8 @@ def btn_registrar_prestamo(entry_numero_socio: Entry, entry_titulo_libro: Entry,
     dias_devolucion = entry_dias.get()
 
     biblioteca: Biblioteca = Biblioteca()
-    biblioteca.registrarPrestamo(diasDevolucion=dias_devolucion, )
+    biblioteca.registrarPrestamo(diasDevolucion=dias_devolucion, numSocio=numero_socio, libro=titulo_libro)
+
 
 def registrar_socio():
     ventana_registro_socio = tk.Toplevel()
@@ -309,6 +310,8 @@ def inicio():
     barra_menu.add_cascade(label="Administración de socios", menu=menu_socios)
     menu_libros = Menu(barra_menu)
     barra_menu.add_cascade(label="Administración de libros", menu=menu_libros)
+    menu_prestamos_devolucion = Menu(barra_menu)
+    barra_menu.add_cascade(label="Registro de préstamos y devoluciones", menu=menu_prestamos_devolucion)
 
     # Opciones del menú de socios
     menu_socios.add_command(label="Registrar socio", command=registrar_socio)
@@ -319,8 +322,10 @@ def inicio():
     menu_libros.add_command(label="Registrar libro", command=registrar_libro)
     menu_libros.add_command(label="Eliminar libro", command=eliminar_libro)
     menu_libros.add_command(label="Consultar libro", command=lambda: mostrar_mensaje("Consultar libro"))
+
+
     # Opciones del menú de libros
-    menu_prestamos_devolucion.add_command(label="Registrar prestamo de libro", command=registrar_libro)
+    menu_prestamos_devolucion.add_command(label="Registrar prestamo de libro", command=registrar_prestamo)
     menu_prestamos_devolucion.add_command(label="Registrar devolución de libro", command=eliminar_libro)
 
     ventana.config(menu=barra_menu)

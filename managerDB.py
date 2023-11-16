@@ -52,8 +52,7 @@ class ManagerDataBase:
         cursor = self.conn.cursor()
         cursor.execute(consultaSQL)
         tabla = cursor.fetchall()
-        cursor.close()
-        self.conn.close()
+        cursor.close()  
         return tabla
 
     def actualizar(self, consultaSQL):

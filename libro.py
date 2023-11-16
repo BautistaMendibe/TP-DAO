@@ -13,6 +13,10 @@ class Libro:
         self._precioReposicion = precioReposicion
         
     @property
+    def codigo(self):
+        return self._codigo
+    
+    @property
     def titulo(self):
         return self._titulo
     
