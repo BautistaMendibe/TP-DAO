@@ -69,6 +69,8 @@ def consultar_socio(numeroSocio):
     query = f"SELECT * FROM socios WHERE numeroSocio = {numeroSocio}"
     db_manager = ManagerDataBase()
     resultados = db_manager.consultar(query)
+    if not resultados or (len(resultados) > 0 and resultados[0][2] == 1):
+        return None  
     socio_encontrado = resultados[0]
     socio: Socio = Socio(numeroSocio=socio_encontrado[0], nombre=socio_encontrado[1])
     return socio

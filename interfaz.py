@@ -8,6 +8,34 @@ from biblioteca import Biblioteca
 from libro import Libro
 from tkinter import Tk, Menu, Button, Frame
 
+
+def validar_nombre(nombre):
+    # Verificar si el nombre no está vacío
+    if not nombre:
+        messagebox.showerror("Error", "Por favor, ingrese un nombre.")
+        return False
+
+    # Verificar si el nombre contiene solo letras (no es un valor numérico)
+    if not nombre.isalpha():
+        messagebox.showerror("Error", "El nombre no puede contener números ni caracteres especiales.")
+        return False
+
+    return True
+
+def validar_numero_socio(numero_socio):
+    # Verificar si el número de socio no está vacío
+    if not numero_socio:
+        messagebox.showerror("Error", "Por favor, ingrese un número de socio.")
+        return False
+
+    # Verificar si el número de socio contiene solo dígitos
+    if not numero_socio.isdigit():
+        messagebox.showerror("Error", "El número de socio debe ser un valor numérico.")
+        return False
+
+    return True
+
+
 def mostrar_mensaje(accion):
     print(f"Realizando acción: {accion}")
 
@@ -19,6 +47,7 @@ def registrar_prestamo():
     ventana_registro_prestamo = tk.Toplevel()
     ventana_registro_prestamo.title("Registrar préstamo")
     ventana_registro_prestamo.geometry("400x250")
+    ventana_registro_prestamo.grab_set()  # Hace que la ventana principal sea no interactiva
 
     # Estilo para la etiqueta del título
     estilo_titulo = ttk.Style()
@@ -70,14 +99,11 @@ def btn_registrar_prestamo(entry_numero_socio: Entry, entry_titulo_libro: Entry,
     biblioteca: Biblioteca = Biblioteca()
     biblioteca.registrarPrestamo(diasDevolucion=dias_devolucion, numSocio=numero_socio, libro=titulo_libro)
 
-def cargar_imagen(ruta):
-    imagen = PhotoImage(file=ruta)
-    return imagen
-
 def registrar_socio():
     ventana_registro_socio = tk.Toplevel()
     ventana_registro_socio.title("Registrar socio")
     ventana_registro_socio.geometry("400x250")
+    ventana_registro_socio.grab_set()  # Hace que la ventana principal sea no interactiva
 
     # Estilo para la etiqueta del título
     estilo_titulo = ttk.Style()
@@ -104,26 +130,38 @@ def registrar_socio():
     estilo_boton = ttk.Style()
     estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
 
-    boton_registrar = ttk.Button(ventana_registro_socio, text="Registrar", command=lambda: btn_registrar_socio(entry_nombre), style="Estilo.TButton")
+    boton_registrar = ttk.Button(ventana_registro_socio, text="Registrar", command=lambda: btn_registrar_socio(ventana_registro_socio, entry_nombre), style="Estilo.TButton")
     boton_registrar.grid(column=0, row=3, columnspan=2, pady=10)
 
     ventana_registro_socio.mainloop()
 
-def btn_registrar_socio(entry_nombre: Entry):
+def btn_registrar_socio(ventana_registro_socio, entry_nombre: Entry):
     nombre = entry_nombre.get()
     biblioteca: Biblioteca = Biblioteca()
     biblioteca.aggSocio(nombre)
     
+    # Validar el nombre antes de registrar al socio
+    if validar_nombre(nombre):
+        biblioteca: Biblioteca = Biblioteca()
+        biblioteca.aggSocio(nombre)
+        # Mostrar pop-up de éxito
+        messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
+        
+        ventana_registro_socio.destroy()
+
+
+    
 def eliminar_socio():
-    ventana_registro_socio = tk.Toplevel()
-    ventana_registro_socio.title("Eliminar socio")
-    ventana_registro_socio.geometry("400x250")
+    ventana_eliminar_socio = tk.Toplevel()
+    ventana_eliminar_socio.title("Eliminar socio")
+    ventana_eliminar_socio.geometry("400x250")
+    ventana_eliminar_socio.grab_set()  # Hace que la ventana principal sea no interactiva
 
     # Estilo para la etiqueta del título
     estilo_titulo = ttk.Style()
     estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
 
-    label_titulo = ttk.Label(ventana_registro_socio, text="Eliminar socio", style="Titulo.TLabel")
+    label_titulo = ttk.Label(ventana_eliminar_socio, text="Eliminar socio", style="Titulo.TLabel")
     label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
 
     # Estilo para las etiquetas y la entrada
@@ -131,33 +169,40 @@ def eliminar_socio():
     estilo_widget.configure("Estilo.TLabel", padding=5)
     estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
 
-    label_numeroSocio = ttk.Label(ventana_registro_socio, text="Número de Socio:", style="Estilo.TLabel")
+    label_numeroSocio = ttk.Label(ventana_eliminar_socio, text="Número de Socio:", style="Estilo.TLabel")
     label_numeroSocio.grid(column=0, row=2)
 
-    entry_numeroSocio = ttk.Entry(ventana_registro_socio, style="Estilo.TEntry")
+    entry_numeroSocio = ttk.Entry(ventana_eliminar_socio, style="Estilo.TEntry")
     entry_numeroSocio.grid(column=1, row=2, sticky="ew")  # 'ew' significa que se expandirá horizontalmente
 
     # Configuración de la columna para expandirse
-    ventana_registro_socio.columnconfigure(1, weight=1)
+    ventana_eliminar_socio.columnconfigure(1, weight=1)
 
     # Estilo para el botón
     estilo_boton = ttk.Style()
     estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
 
-    boton_registrar = ttk.Button(ventana_registro_socio, text="Eliminar", command=lambda: btn_eliminar_socio(entry_numeroSocio), style="Estilo.TButton")
+    boton_registrar = ttk.Button(ventana_eliminar_socio, text="Eliminar", command=lambda: btn_eliminar_socio(ventana_eliminar_socio, entry_numeroSocio), style="Estilo.TButton")
     boton_registrar.grid(column=0, row=3, columnspan=2, pady=10)
 
-    ventana_registro_socio.mainloop()
+    ventana_eliminar_socio.mainloop()
 
-def btn_eliminar_socio(entry_numeroSocio: Entry):
+def btn_eliminar_socio(ventana_eliminar_socio, entry_numeroSocio: Entry):
     numeroSocio = entry_numeroSocio.get()
-    biblioteca: Biblioteca = Biblioteca()
-    biblioteca.eliminarSocio(numeroSocio)
-    
+    # Validar el número de socio antes de eliminar al socio
+    if validar_numero_socio(numeroSocio):
+        biblioteca: Biblioteca = Biblioteca()
+        biblioteca.eliminarSocio(numeroSocio)
+        messagebox.showinfo("Eliminar Socio", "El socio se ha eliminado con éxito.")
+        
+        ventana_eliminar_socio.destroy()
+
+
 def consultar_socio():
     ventana_consultar_socio = tk.Toplevel()
     ventana_consultar_socio.title("Consultar socio")
     ventana_consultar_socio.geometry("400x250")
+    ventana_consultar_socio.grab_set()  # Hace que la ventana principal sea no interactiva
 
     # Estilo para la etiqueta del título
     estilo_titulo = ttk.Style()
@@ -192,16 +237,19 @@ def consultar_socio():
 # Función que se ejecuta al hacer clic en el botón "Consultar"
 def btn_consultar_socio(ventana_consultar_socio, entry_numeroSocio: Entry):
     numeroSocio = entry_numeroSocio.get()
-    biblioteca: Biblioteca = Biblioteca()
-    socio = biblioteca.consultarSocio(numeroSocio)
-    
-    # Crear etiquetas para mostrar la información del socio
-    label_info_nombre = ttk.Label(ventana_consultar_socio, text=f"Nombre: " + socio.nombre, style="Estilo.TLabel")
-    label_info_nombre.grid(column=0, row=4, columnspan=2, pady=5)
-    
-    boton_consultar = ttk.Button(ventana_consultar_socio, text="Consultar", command=btn_consultar_socio, style="Estilo.TButton")
-    boton_consultar.grid(column=0, row=3, columnspan=2, pady=10)
+    # Validar el número de socio antes de consultar al socio
+    if validar_numero_socio(numeroSocio):
+        biblioteca: Biblioteca = Biblioteca()
+        socio = biblioteca.consultarSocio(numeroSocio)
 
+        # Verificar si el socio existe antes de mostrar la información
+        if socio:
+            # Crear etiquetas para mostrar la información del socio
+            label_info_nombre = ttk.Label(ventana_consultar_socio, text=f"Nombre: " + socio.nombre, style="Estilo.TLabel")
+            label_info_nombre.grid(column=0, row=4, columnspan=2, pady=5)
+        else:
+            messagebox.showinfo("Consultar socio", "El socio no existe.")
+            
     ventana_consultar_socio.mainloop()
 
 
@@ -209,6 +257,8 @@ def registrar_libro():
     ventana_registro_libro = tk.Toplevel()
     ventana_registro_libro.title("Registrar libro")
     ventana_registro_libro.geometry("400x250")
+    ventana_registro_libro.grab_set()  # Hace que la ventana principal sea no interactiva
+
 
     # Estilo para la etiqueta del título
     estilo_titulo = ttk.Style()
@@ -265,6 +315,7 @@ def eliminar_libro():
     ventana_eliminar_libro = tk.Toplevel()
     ventana_eliminar_libro.title("Eliminar libro")
     ventana_eliminar_libro.geometry("400x250")
+    ventana_eliminar_libro.grab_set()  # Hace que la ventana principal sea no interactiva
 
     # Estilo para la etiqueta del título
     estilo_titulo = ttk.Style()
@@ -305,6 +356,7 @@ def btn_eliminar_libro(entry_codigo: Entry):
 
 # Función para crear la interfaz
 def inicio():
+        
     ventana = Tk()
     ventana.title("Biblioteca UTN-FRC")
     ventana.geometry("800x500")
@@ -317,7 +369,6 @@ def inicio():
     label_imagen = Label(ventana, image=imagen_logo_utn, bg="lightblue")
     # Posicionar en la esquina superior derecha
     label_imagen.pack(pady=10)
-
 
     barra_menu = Menu(ventana)
 
