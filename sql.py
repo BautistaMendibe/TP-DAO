@@ -38,7 +38,7 @@ def buscar_libros_por_titulo(titulo):
     db_manager = ManagerDataBase()
     resultados = db_manager.consultar(query)
     libros = [Libro(codigo=row[0], titulo=row[1], precioReposicion=row[2], estado=row[3]) for row in resultados]
-    return libros
+    return libros[0]
 
 # Funciones para la administración de SOCIOS
 
@@ -86,10 +86,9 @@ def listar_socios():
 def registrar_prestamo(socio_id, libro_id, fecha_prestamo, dias_devolucion):
     # Conectar a la base de datos
     db_manager = ManagerDataBase()
-    
     # Crear y ejecutar la consulta SQL para registrar un préstamo
-    query = f"INSERT INTO prestamos (socio_numeroSocio, libro_codigo, fechaPrestamo, diasDevolucion, devuelto) " \
-            f"VALUES ({socio_id}, {libro_id}, '{fecha_prestamo}', {dias_devolucion}, 0)"
+    query = f"INSERT INTO prestamos (socio_numeroSocio, libro_codigo, fechaPrestamo, diasDevolucion, devuelto, borrado, diasRetraso) " \
+            f"VALUES ({socio_id}, {libro_id}, '{fecha_prestamo}', {dias_devolucion}, 0, 0, 0)"
     db_manager.actualizar(query)
 
 def registrar_devolucion(prestamo_id, fecha_devolucion, dias_retraso):
@@ -177,11 +176,16 @@ def listar_prestamos_por_socio(numeroSocio):
             f"INNER JOIN libros l ON p.libro_codigo = l.codigo " \
             f"WHERE p.socio_numeroSocio = {numeroSocio}"
     resultados = db_manager.consultar(query)
-    
     prestamos = []
     socio: Socio = consultar_socio(numeroSocio=numeroSocio)
     for i in resultados:
         libro: Libro = Libro(titulo=i[5], precioReposicion=i[6], codigo=i[4], estado=i[7])
         prestamo: Prestamo = Prestamo(diasDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
         prestamos.append(prestamo)
-    return prestamos
+    return resultados
+
+
+def actualizar_estado_libro(libro: Libro, estado: str):
+    db_manager = ManagerDataBase()
+    query = f"UPDATE libros SET estado = '{estado}' WHERE codigo = {libro.codigo}"
+    db_manager.actualizar(query)
