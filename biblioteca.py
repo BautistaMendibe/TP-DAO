@@ -15,11 +15,9 @@ class Biblioteca:
         self._libros.append(libro)
         insertar_libro(libro)
 
-    def buscarLibro(self, titulo):
-        for i in self._libros:
-            if i.titulo() == titulo:
-                return i
-        return 0
+    def consultarLibro(self, titulo):
+        libro = buscar_libros_por_titulo(titulo)
+        return libro
     
     def eliminarLibro(self, codigo: int):
         eliminar_libro(codigo)
@@ -37,49 +35,20 @@ class Biblioteca:
         eliminar_socio(numeroSocio)
     
     def librosCadEstado(self):
-        d = 0
-        p = 0
-        e = 0
-        for i in self._libros:
-            if i.estado() == "Disponible":
-                d += 1
-            elif i.estado() == "Prestado":
-                p += 1
-            elif i.estado() == "Extraviado":
-                e += 1
-        return f"Disponible:{d} \nPrestado:{p} \nExtraviado:{e}"
+        return listar_cantidad_libros_estado()
     
     def precioLibrosExtraviados(self):
-        precio = 0
-        for libro in self._libros:
-            if libro.estado() == "Extraviado":
-                precio += libro.precioReposicion()
-        return f"Precio total para reposición de libros extraviados: ${precio}"
+        return sumatoria_precio_reposicion_librExtraviados()
                 
     
     def solicitantesDeLibro(self, titulo):
-        l = []
-        for i in self._prestamos:
-            if i.solicitantesLibro() != None:
-                l.append(i.solicitantesLibro())
-        return l
-        #Supongo que se refieren a los socios que se llevaron un mismo libro
+        return solicitantes_por_titulo_libro(titulo)
         
     def listarPrestamosDemorados(self):
-        l = []
-        for i in self._prestamos:
-            if i.diasRetraso() > 0:
-                return l.append(i)
+        return listar_prestamos_demorados()
             
     def prestamosDeSocio(self, numSocio):
-        listaPrestamos = []
-        for i in self._prestamos:
-            if i.esSocio(numSocio):
-                listaPrestamos.append(i)
-        if listaPrestamos.length > 0:
-            return listaPrestamos
-        else:
-            print("No tiene prestamos")
+        return listar_prestamos_por_socio(numeroSocio=numSocio)
         
     def registrarPrestamo(self, diasDevolucion: int, libro: str, socio: int):
 

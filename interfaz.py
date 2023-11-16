@@ -6,6 +6,7 @@ from tkinter import messagebox
 from socio import Socio
 from biblioteca import Biblioteca
 from libro import Libro
+from tkinter import Tk, Menu, Button, Frame
 
 def mostrar_mensaje(accion):
     print(f"Realizando acción: {accion}")
@@ -295,11 +296,12 @@ def btn_eliminar_libro(entry_codigo: Entry):
     biblioteca.eliminarLibro(codigo_libro)
     messagebox.showinfo("Exito", "Libro eliminado con éxito")
 
-
+# Función para crear la interfaz
 def inicio():
     ventana = Tk()
     ventana.title("Biblioteca UTN-FRC")
     ventana.geometry("800x500")
+    ventana.configure(bg="lightblue")
 
     barra_menu = Menu(ventana)
 
@@ -307,13 +309,12 @@ def inicio():
     barra_menu.add_cascade(label="Administración de socios", menu=menu_socios)
     menu_libros = Menu(barra_menu)
     barra_menu.add_cascade(label="Administración de libros", menu=menu_libros)
-    menu_prestamos_devolucion = Menu(barra_menu)
-    barra_menu.add_cascade(label="Registro de préstamos y devoluciones", menu=menu_prestamos_devolucion)
 
     # Opciones del menú de socios
     menu_socios.add_command(label="Registrar socio", command=registrar_socio)
     menu_socios.add_command(label="Eliminar socio", command=eliminar_socio)
     menu_socios.add_command(label="Consultar socio", command=consultar_socio)
+
     # Opciones del menú de libros
     menu_libros.add_command(label="Registrar libro", command=registrar_libro)
     menu_libros.add_command(label="Eliminar libro", command=eliminar_libro)
@@ -323,6 +324,53 @@ def inicio():
     menu_prestamos_devolucion.add_command(label="Registrar devolución de libro", command=eliminar_libro)
 
     ventana.config(menu=barra_menu)
+
+    # Crear dos marcos (frames) para organizar los botones
+    frame_socios = Frame(ventana, bg="lightblue")  # Fondo de color lightblue
+    frame_socios.pack(side="top", pady=50)
+
+    frame_libros = Frame(ventana, bg="lightblue")  # Fondo de color lightgreen
+    frame_libros.pack(side="top", pady=50)
+
+    # Botones para administración de socios
+    btn_admin_socios = Button(frame_socios, text="Administración de Socios", command=lambda: mostrar_botones_socios(frame_socios), bg="blue", fg="white", width=20)  # Fondo azul, texto blanco
+    btn_admin_socios.pack(side="top", pady=10)
+
+    # Botones para administración de libros
+    btn_admin_libros = Button(frame_libros, text="Administración de Libros", command=lambda: mostrar_botones_libros(frame_libros), bg="green", fg="white", width=20)  # Fondo verde, texto blanco
+    btn_admin_libros.pack(side="top", pady=10)
+
     ventana.mainloop()
-    
+
+# Función para mostrar botones específicos para administración de socios
+def mostrar_botones_socios(frame):
+    # Limpiar el frame antes de mostrar nuevos botones
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+    btn_registrar_socio = Button(frame, text="Registrar socio", command=registrar_socio, bg="lightblue", fg="black", width=20)  # Fondo lightblue, texto negro
+    btn_registrar_socio.pack(side="top", pady=5)
+
+    btn_eliminar_socio = Button(frame, text="Eliminar socio", command=eliminar_socio, bg="lightblue", fg="black", width=20)  # Fondo lightblue, texto negro
+    btn_eliminar_socio.pack(side="top", pady=5)
+
+    btn_consultar_socio = Button(frame, text="Consultar socio", command=consultar_socio, bg="lightblue", fg="black", width=20)  # Fondo lightblue, texto negro
+    btn_consultar_socio.pack(side="top", pady=5)
+
+# Función para mostrar botones específicos para administración de libros
+def mostrar_botones_libros(frame):
+    # Limpiar el frame antes de mostrar nuevos botones
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+    btn_registrar_libro = Button(frame, text="Registrar libro", command=registrar_libro, bg="lightgreen", fg="black", width=20)  # Fondo lightgreen, texto negro
+    btn_registrar_libro.pack(side="top", pady=5)
+
+    btn_eliminar_libro = Button(frame, text="Eliminar libro", command=eliminar_libro, bg="lightgreen", fg="black", width=20)  # Fondo lightgreen, texto negro
+    btn_eliminar_libro.pack(side="top", pady=5)
+
+    btn_consultar_libro = Button(frame, text="Consultar libro", bg="lightgreen", fg="black", width=20)  # Fondo lightgreen, texto negro
+    btn_consultar_libro.pack(side="top", pady=5)
+
+# Llamada a la función de inicio
 inicio()
