@@ -81,6 +81,9 @@ class Biblioteca:
         else:
             print("No tiene prestamos")
         
-    def registrarPrestamo(self, diasDevolucion, libro: Libro, socio: Socio):
+    def registrarPrestamo(self, diasDevolucion: int, libro: str, socio: int):
+
+        
+
         prestamo: Prestamo = Prestamo(diasDevolucion=diasDevolucion, libro=libro, socio=socio)
         self._prestamos.append(prestamo)

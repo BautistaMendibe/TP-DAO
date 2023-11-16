@@ -10,6 +10,62 @@ from libro import Libro
 def mostrar_mensaje(accion):
     print(f"Realizando acción: {accion}")
 
+
+def registrar_prestamo():
+    ventana_registro_prestamo = tk.Toplevel()
+    ventana_registro_prestamo.title("Registrar préstamo")
+    ventana_registro_prestamo.geometry("400x250")
+
+    # Estilo para la etiqueta del título
+    estilo_titulo = ttk.Style()
+    estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
+
+    label_titulo = ttk.Label(ventana_registro_prestamo, text="Registrar préstamo", style="Titulo.TLabel")
+    label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
+
+    # Estilo para las etiquetas y la entrada
+    estilo_widget = ttk.Style()
+    estilo_widget.configure("Estilo.TLabel", padding=5)
+    estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
+
+    label_numero_socio = ttk.Label(ventana_registro_prestamo, text="Número de Socio:", style="Estilo.TLabel")
+    label_numero_socio.grid(column=0, row=2)
+
+    entry_numero_socio = ttk.Entry(ventana_registro_prestamo, style="Estilo.TEntry")
+    entry_numero_socio.grid(column=1, row=2, sticky="ew")  
+
+    label_titulo_libro = ttk.Label(ventana_registro_prestamo, text="Título del Libro:", style="Estilo.TLabel")
+    label_titulo_libro.grid(column=0, row=3)
+
+    entry_titulo_libro = ttk.Entry(ventana_registro_prestamo, style="Estilo.TEntry")
+    entry_titulo_libro.grid(column=1, row=3, sticky="ew")
+
+    label_dias = ttk.Label(ventana_registro_prestamo, text="Días para devolución:", style="Estilo.TLabel")
+    label_dias.grid(column=0, row=3)
+
+    entry_dias = ttk.Entry(ventana_registro_prestamo, style="Estilo.TEntry")
+    entry_dias.grid(column=1, row=3, sticky="ew")
+
+    # Configuración de la columna para expandirse
+    ventana_registro_prestamo.columnconfigure(1, weight=1)
+
+    # Estilo para el botón
+    estilo_boton = ttk.Style()
+    estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
+
+    boton_registrar = ttk.Button(ventana_registro_prestamo, text="Registrar", command=lambda: btn_registrar_prestamo(entry_numero_socio, entry_titulo_libro, entry_dias), style="Estilo.TButton")
+    boton_registrar.grid(column=0, row=4, columnspan=2, pady=10)
+
+    ventana_registro_prestamo.mainloop()
+
+def btn_registrar_prestamo(entry_numero_socio: Entry, entry_titulo_libro: Entry, entry_dias: Entry):
+    numero_socio = entry_numero_socio.get()
+    titulo_libro = entry_titulo_libro.get()
+    dias_devolucion = entry_dias.get()
+
+    biblioteca: Biblioteca = Biblioteca()
+    biblioteca.registrarPrestamo(diasDevolucion=dias_devolucion, )
+
 def registrar_socio():
     ventana_registro_socio = tk.Toplevel()
     ventana_registro_socio.title("Registrar socio")
@@ -262,6 +318,9 @@ def inicio():
     menu_libros.add_command(label="Registrar libro", command=registrar_libro)
     menu_libros.add_command(label="Eliminar libro", command=eliminar_libro)
     menu_libros.add_command(label="Consultar libro", command=lambda: mostrar_mensaje("Consultar libro"))
+    # Opciones del menú de libros
+    menu_prestamos_devolucion.add_command(label="Registrar prestamo de libro", command=registrar_libro)
+    menu_prestamos_devolucion.add_command(label="Registrar devolución de libro", command=eliminar_libro)
 
     ventana.config(menu=barra_menu)
     ventana.mainloop()
