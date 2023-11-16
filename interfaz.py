@@ -11,6 +11,11 @@ from tkinter import Tk, Menu, Button, Frame
 def mostrar_mensaje(accion):
     print(f"Realizando acción: {accion}")
 
+def cargar_imagen(ruta):
+    imagen = PhotoImage(file=ruta)
+    return imagen
+
+
 def registrar_socio():
     ventana_registro_socio = tk.Toplevel()
     ventana_registro_socio.title("Registrar socio")
@@ -246,6 +251,15 @@ def inicio():
     ventana.title("Biblioteca UTN-FRC")
     ventana.geometry("800x500")
     ventana.configure(bg="lightblue")
+    
+    # Cargar la imagen usando la ruta relativa
+    imagen_logo_utn = cargar_imagen("Imagenes/logoutn.png")
+    
+    # Crear un widget Label para mostrar la imagen
+    label_imagen = Label(ventana, image=imagen_logo_utn, bg="lightblue")
+    # Posicionar en la esquina superior derecha
+    label_imagen.pack(pady=10)
+
 
     barra_menu = Menu(ventana)
 
