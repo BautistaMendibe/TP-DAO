@@ -354,64 +354,6 @@ def btn_eliminar_libro(entry_codigo: Entry):
     biblioteca.eliminarLibro(codigo_libro)
     messagebox.showinfo("Exito", "Libro eliminado con éxito")
 
-# Función para crear la interfaz
-def inicio():
-        
-    ventana = Tk()
-    ventana.title("Biblioteca UTN-FRC")
-    ventana.geometry("800x500")
-    ventana.configure(bg="lightblue")
-    
-    # Cargar la imagen usando la ruta relativa
-    imagen_logo_utn = cargar_imagen("Imagenes/logoutn.png")
-    
-    # Crear un widget Label para mostrar la imagen
-    label_imagen = Label(ventana, image=imagen_logo_utn, bg="lightblue")
-    # Posicionar en la esquina superior derecha
-    label_imagen.pack(pady=10)
-
-    barra_menu = Menu(ventana)
-
-    menu_socios = Menu(barra_menu)
-    barra_menu.add_cascade(label="Administración de socios", menu=menu_socios)
-    menu_libros = Menu(barra_menu)
-    barra_menu.add_cascade(label="Administración de libros", menu=menu_libros)
-    menu_prestamos_devolucion = Menu(barra_menu)
-    barra_menu.add_cascade(label="Registro de préstamos y devoluciones", menu=menu_prestamos_devolucion)
-
-    # Opciones del menú de socios
-    menu_socios.add_command(label="Registrar socio", command=registrar_socio)
-    menu_socios.add_command(label="Eliminar socio", command=eliminar_socio)
-    menu_socios.add_command(label="Consultar socio", command=consultar_socio)
-
-    # Opciones del menú de libros
-    menu_libros.add_command(label="Registrar libro", command=registrar_libro)
-    menu_libros.add_command(label="Eliminar libro", command=eliminar_libro)
-    menu_libros.add_command(label="Consultar libro", command=lambda: mostrar_mensaje("Consultar libro"))
-
-
-    # Opciones del menú de libros
-    menu_prestamos_devolucion.add_command(label="Registrar prestamo de libro", command=registrar_prestamo)
-    menu_prestamos_devolucion.add_command(label="Registrar devolución de libro", command=eliminar_libro)
-
-    ventana.config(menu=barra_menu)
-
-    # Crear dos marcos (frames) para organizar los botones
-    frame_socios = Frame(ventana, bg="lightblue")  # Fondo de color lightblue
-    frame_socios.pack(side="top", pady=50)
-
-    frame_libros = Frame(ventana, bg="lightblue")  # Fondo de color lightgreen
-    frame_libros.pack(side="top", pady=50)
-
-    # Botones para administración de socios
-    btn_admin_socios = Button(frame_socios, text="Administración de Socios", command=lambda: mostrar_botones_socios(frame_socios), bg="blue", fg="white", width=20)  # Fondo azul, texto blanco
-    btn_admin_socios.pack(side="top", pady=10)
-
-    # Botones para administración de libros
-    btn_admin_libros = Button(frame_libros, text="Administración de Libros", command=lambda: mostrar_botones_libros(frame_libros), bg="green", fg="white", width=20)  # Fondo verde, texto blanco
-    btn_admin_libros.pack(side="top", pady=10)
-
-    ventana.mainloop()
 
 # Función para crear la interfaz
 def inicio():
@@ -424,22 +366,24 @@ def inicio():
     menu_frame = Frame(ventana, bg="#1f3a6e", width=int(ventana.winfo_screenwidth() * 0.3), height=ventana.winfo_screenheight())
     menu_frame.pack(side="left", fill="y")
 
+    # Cargar las imágenes de los íconos
     icono_socios = cargar_imagen("Imagenes/icono_socios.png")
     icono_libros = cargar_imagen("Imagenes/icono_libros.png")
     icono_prestamos = cargar_imagen("Imagenes/icono_prestamos.png")
 
+    # Crear el encabezado con una imagen
     imagen_encabezado = cargar_imagen("Imagenes/logoutn4.png")
     label_encabezado = Label(menu_frame, image=imagen_encabezado, bg="#1f3a6e")
     label_encabezado.pack(pady=10)
 
-    # Crear etiquetas con íconos en el menú
-    label_socios = Label(menu_frame, image=icono_socios, text="Administración de socios", compound="left", bg="#1f3a6e", fg="white", padx=10)
+    # Crear etiquetas con íconos en el menú sin margen horizontal
+    label_socios = Label(menu_frame, image=icono_socios, text="Administración de socios", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
     label_socios.pack(pady=10)
 
-    label_libros = Label(menu_frame, image=icono_libros, text="Administración de libros", compound="left", bg="#1f3a6e", fg="white", padx=10)
+    label_libros = Label(menu_frame, image=icono_libros, text="Administración de libros", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
     label_libros.pack(pady=10)
 
-    label_prestamos = Label(menu_frame, image=icono_prestamos, text="Registro de préstamos \ny devoluciones", compound="left", bg="#1f3a6e", fg="white", padx=10)
+    label_prestamos = Label(menu_frame, image=icono_prestamos, text="Registro de préstamos \ny devoluciones", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
     label_prestamos.pack(pady=10)
 
     # Configurar eventos al pasar el cursor sobre las etiquetas
@@ -452,8 +396,9 @@ def inicio():
     label_prestamos.bind("<Enter>", lambda event: label_prestamos.config(bg="#003366"))
     label_prestamos.bind("<Leave>", lambda event: label_prestamos.config(bg="#1f3a6e"))
 
+    # Texto con información del grupo debajo de las opciones del menú
     info_grupo = """
-    Grupo 15 - DAO:
+    Grupo 15:
     Bautista Mendibe - 89249
     Débora Sandobal - 85543
     Ramiro Hosman - 87013
@@ -462,6 +407,10 @@ def inicio():
 
     label_info_grupo = Label(menu_frame, text=info_grupo, bg="#1f3a6e", fg="white", justify="left")
     label_info_grupo.pack(pady=10)
+
+    # Título en la pantalla principal
+    titulo_principal = Label(ventana, text="Sistema de gestión de Bibliotecas", bg="#1f3a6e", fg="white", font=("Helvetica", 16, "bold"))
+    titulo_principal.pack(fill="x", pady=0)
 
     ventana.mainloop()
 
