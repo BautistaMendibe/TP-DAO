@@ -413,35 +413,64 @@ def inicio():
 
     ventana.mainloop()
 
-# Función para mostrar botones específicos para administración de socios
-def mostrar_botones_socios(frame):
-    # Limpiar el frame antes de mostrar nuevos botones
-    for widget in frame.winfo_children():
-        widget.destroy()
+# Función para crear la interfaz
+def inicio():
+    ventana = Tk()
+    ventana.title("Biblioteca UTN-FRC")
+    ventana.geometry("800x500")
+    ventana.configure(bg="lightblue")
 
-    btn_registrar_socio = Button(frame, text="Registrar socio", command=registrar_socio, bg="lightblue", fg="black", width=20)  # Fondo lightblue, texto negro
-    btn_registrar_socio.pack(side="top", pady=5)
+    # Crear el menú horizontal en la parte izquierda
+    menu_frame = Frame(ventana, bg="#1f3a6e", width=int(ventana.winfo_screenwidth() * 0.3), height=ventana.winfo_screenheight())
+    menu_frame.pack(side="left", fill="y")
 
-    btn_eliminar_socio = Button(frame, text="Eliminar socio", command=eliminar_socio, bg="lightblue", fg="black", width=20)  # Fondo lightblue, texto negro
-    btn_eliminar_socio.pack(side="top", pady=5)
+    # Cargar las imágenes de los íconos
+    icono_socios = cargar_imagen("Imagenes/icono_socios.png")
+    icono_libros = cargar_imagen("Imagenes/icono_libros.png")
+    icono_prestamos = cargar_imagen("Imagenes/icono_prestamos.png")
 
-    btn_consultar_socio = Button(frame, text="Consultar socio", command=consultar_socio, bg="lightblue", fg="black", width=20)  # Fondo lightblue, texto negro
-    btn_consultar_socio.pack(side="top", pady=5)
+    # Crear el encabezado con una imagen
+    imagen_encabezado = cargar_imagen("Imagenes/logoutn4.png")
+    label_encabezado = Label(menu_frame, image=imagen_encabezado, bg="#1f3a6e")
+    label_encabezado.pack(pady=10)
 
-# Función para mostrar botones específicos para administración de libros
-def mostrar_botones_libros(frame):
-    # Limpiar el frame antes de mostrar nuevos botones
-    for widget in frame.winfo_children():
-        widget.destroy()
+    # Crear etiquetas con íconos en el menú
+    label_socios = Label(menu_frame, image=icono_socios, text="Administración de socios", compound="left", bg="#1f3a6e", fg="white", padx=10)
+    label_socios.pack(pady=10)
 
-    btn_registrar_libro = Button(frame, text="Registrar libro", command=registrar_libro, bg="lightgreen", fg="black", width=20)  # Fondo lightgreen, texto negro
-    btn_registrar_libro.pack(side="top", pady=5)
+    label_libros = Label(menu_frame, image=icono_libros, text="Administración de libros", compound="left", bg="#1f3a6e", fg="white", padx=10)
+    label_libros.pack(pady=10)
 
-    btn_eliminar_libro = Button(frame, text="Eliminar libro", command=eliminar_libro, bg="lightgreen", fg="black", width=20)  # Fondo lightgreen, texto negro
-    btn_eliminar_libro.pack(side="top", pady=5)
+    label_prestamos = Label(menu_frame, image=icono_prestamos, text="Registro de préstamos \ny devoluciones", compound="left", bg="#1f3a6e", fg="white", padx=10)
+    label_prestamos.pack(pady=10)
 
-    btn_consultar_libro = Button(frame, text="Consultar libro", bg="lightgreen", fg="black", width=20)  # Fondo lightgreen, texto negro
-    btn_consultar_libro.pack(side="top", pady=5)
+    # Configurar eventos al pasar el cursor sobre las etiquetas
+    label_socios.bind("<Enter>", lambda event: label_socios.config(bg="#003366"))
+    label_socios.bind("<Leave>", lambda event: label_socios.config(bg="#1f3a6e"))
+
+    label_libros.bind("<Enter>", lambda event: label_libros.config(bg="#003366"))
+    label_libros.bind("<Leave>", lambda event: label_libros.config(bg="#1f3a6e"))
+
+    label_prestamos.bind("<Enter>", lambda event: label_prestamos.config(bg="#003366"))
+    label_prestamos.bind("<Leave>", lambda event: label_prestamos.config(bg="#1f3a6e"))
+
+    # Texto con información del grupo debajo de las opciones del menú
+    info_grupo = """
+    Grupo 15 - DAO:
+    Bautista Mendibe - 89249
+    Débora Sandobal - 85543
+    Ramiro Hosman - 87013
+    Valentino Di Fulvio - 87424
+    DAO - Desarrollo de Aplicaciones con Objetos"""
+
+    label_info_grupo = Label(menu_frame, text=info_grupo, bg="#1f3a6e", fg="white", justify="left")
+    label_info_grupo.pack(pady=10)
+
+    ventana.mainloop()
+
+# Función para cargar imágenes
+def cargar_imagen(ruta):
+    return PhotoImage(file=ruta)
 
 # Llamada a la función de inicio
 inicio()
