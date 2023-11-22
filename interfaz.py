@@ -171,16 +171,13 @@ def eliminar_socio():
 
     ventana_eliminar_socio.mainloop()
 
-def btn_eliminar_socio(ventana_eliminar_socio, entry_numeroSocio: Entry):
+def btn_eliminar_socio(entry_numeroSocio: Entry):
     numeroSocio = entry_numeroSocio.get()
     # Validar el número de socio antes de eliminar al socio
     if validar_numero_socio(numeroSocio):
         biblioteca: Biblioteca = Biblioteca()
         biblioteca.eliminarSocio(numeroSocio)
         messagebox.showinfo("Eliminar Socio", "El socio se ha eliminado con éxito.")
-        
-        ventana_eliminar_socio.destroy()
-
 
 def consultar_socio():
     ventana_consultar_socio = tk.Toplevel()
@@ -353,7 +350,7 @@ def inicio():
     # Cargar las imágenes de los íconos
     icono_socios = cargar_imagen("Imagenes/icono_socios.png")
     icono_libros = cargar_imagen("Imagenes/icono_libros.png")
-    icono_prestamos = cargar_imagen("Imagenes/icono_prestamos.png")
+    icono_prestamos = cargar_imagen("Imagenes/prestamo.png")
 
     # Crear el encabezado con una imagen
     imagen_encabezado = cargar_imagen("Imagenes/logoutn4.png")
@@ -427,7 +424,6 @@ def btn_registrar_socio(entry_nombre):
         biblioteca.aggSocio(nombre)
         # Mostrar pop-up de éxito
         messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
-        
 
 
 # Función para mostrar el contenido en el frame
@@ -450,16 +446,16 @@ def mostrar_contenido(opcion, frame):
         estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="black", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
 
         # Botón Registrar Socio
-        boton_pestana = ttk.Button(frame_submenu, text="Registrar Socio", command=lambda: mostrar_contenido_pestana("Registrar Socio", frame), style="Estilo.TButton")
-        boton_pestana.pack(fill="x", side="left", padx = 10)
+        boton_registrar_socio = ttk.Button(frame_submenu, text="Registrar Socio", command=lambda: mostrar_contenido_pestana("Registrar Socio", frame), style="Estilo.TButton")
+        boton_registrar_socio.pack(fill="x", side="left", padx = 10)
 
         # Botón Modificar Socio (puedes añadir la funcionalidad correspondiente)
-        boton_pestana = ttk.Button(frame_submenu, text="Consultar Socio", command=lambda: mostrar_contenido_pestana("Modificar Socio", frame), style="Estilo.TButton")
-        boton_pestana.pack(fill="x", side="left", padx = 10)
+        boton_consultar_socio = ttk.Button(frame_submenu, text="Consultar Socio", command=lambda: mostrar_contenido_pestana("Modificar Socio", frame), style="Estilo.TButton")
+        boton_consultar_socio.pack(fill="x", side="left", padx = 10)
 
         # Botón Eliminar Socio (puedes añadir la funcionalidad correspondiente)
-        boton_pestana = ttk.Button(frame_submenu, text="Eliminar Socio", command=lambda: mostrar_contenido_pestana("Eliminar Socio", frame), style="Estilo.TButton")
-        boton_pestana.pack(fill="x", side="left", padx = 10)
+        boton_eliminar_socio = ttk.Button(frame_submenu, text="Eliminar Socio", command=lambda: mostrar_contenido_pestana("Eliminar Socio", frame), style="Estilo.TButton")
+        boton_eliminar_socio.pack(fill="x", side="left", padx = 10)
 
     elif opcion == "Administración de libros":
         # Estilo para los botones del submenú
@@ -484,12 +480,12 @@ def mostrar_contenido(opcion, frame):
         estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="black", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
 
         # Botón Registrar Prestamo
-        boton_registrar_libro = ttk.Button(frame_submenu, text="Registrar Prestamo", command=lambda: mostrar_contenido_pestana("Registrar Prestamo", frame), style="Estilo.TButton")
-        boton_registrar_libro.pack(side="left", padx = 10)
+        boton_registrar_prestamo = ttk.Button(frame_submenu, text="Registrar Prestamo", command=lambda: mostrar_contenido_pestana("Registrar Prestamo", frame), style="Estilo.TButton")
+        boton_registrar_prestamo.pack(side="left", padx = 10)
 
         # Botón registrar Devolucion
-        boton_modificar_libro = ttk.Button(frame_submenu, text="Registrar Devolucion", command=lambda: mostrar_contenido_pestana("Registrar Devolucion", frame), style="Estilo.TButton")
-        boton_modificar_libro.pack(fill="x", side="left", padx = 10)
+        boton_registar_devolucion = ttk.Button(frame_submenu, text="Registrar Devolucion", command=lambda: mostrar_contenido_pestana("Registrar Devolucion", frame), style="Estilo.TButton")
+        boton_registar_devolucion.pack(fill="x", side="left", padx = 10)
         
 def mostrar_contenido_pestana(opcion, frame):
     if opcion == "Registrar Socio":
@@ -530,8 +526,8 @@ def mostrar_contenido_pestana(opcion, frame):
         estilo_boton = ttk.Style()
         estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
 
-        boton_registrar = ttk.Button(frame, text="Eliminar", command=lambda: btn_registrar_socio(entry_nombre), style="Estilo.TButton")
-        boton_registrar.pack(fill="x", pady=10)
+        boton_eliminar = ttk.Button(frame, text="Eliminar", command=lambda: btn_eliminar_socio(entry_nombre), style="Estilo.TButton")
+        boton_eliminar.pack(fill="x", pady=10)
     
     elif opcion == "Registrar Libro":
         estilo_widget = ttk.Style()
