@@ -419,6 +419,9 @@ def inicio():
     contenido_frame = Frame(ventana, bg="lightblue")
     contenido_frame.pack(fill="both", expand=True)
 
+    # Mostrar por defecto el contenido de "Administración de socios"
+    mostrar_contenido("Administración de socios", contenido_frame)
+
     ventana.mainloop()
 
 # Función para cargar imágenes
