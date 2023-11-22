@@ -379,12 +379,15 @@ def inicio():
     # Crear etiquetas con íconos en el menú sin margen horizontal
     label_socios = Label(menu_frame, image=icono_socios, text="Administración de socios", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
     label_socios.pack(pady=10)
+    label_socios.bind("<Button-1>", lambda event: mostrar_contenido("Administración de socios", contenido_frame))
 
     label_libros = Label(menu_frame, image=icono_libros, text="Administración de libros", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
     label_libros.pack(pady=10)
+    label_libros.bind("<Button-1>", lambda event: mostrar_contenido("Administración de libros", contenido_frame))
 
     label_prestamos = Label(menu_frame, image=icono_prestamos, text="Registro de préstamos \ny devoluciones", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
     label_prestamos.pack(pady=10)
+    label_prestamos.bind("<Button-1>", lambda event: mostrar_contenido("Registro de préstamos y devoluciones", contenido_frame))
 
     # Configurar eventos al pasar el cursor sobre las etiquetas
     label_socios.bind("<Enter>", lambda event: label_socios.config(bg="#003366"))
@@ -412,11 +415,25 @@ def inicio():
     titulo_principal = Label(ventana, text="Sistema de gestión de Bibliotecas", bg="#1f3a6e", fg="white", font=("Helvetica", 16, "bold"))
     titulo_principal.pack(fill="x", pady=0)
 
+    # Contenido debajo del título
+    contenido_frame = Frame(ventana, bg="lightblue")
+    contenido_frame.pack(fill="both", expand=True)
+
     ventana.mainloop()
 
 # Función para cargar imágenes
 def cargar_imagen(ruta):
     return PhotoImage(file=ruta)
+
+# Función para mostrar el contenido correspondiente a la opción seleccionada
+def mostrar_contenido(opcion, frame):
+    # Limpiar el contenido actual
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+    # Crear el contenido para la opción seleccionada
+    contenido_label = Label(frame, text=f"{opcion}", bg="#1f3a6e", fg="white", font=("Helvetica", 12, "bold"))
+    contenido_label.pack(fill="x", pady=0)
 
 # Llamada a la función de inicio
 inicio()
