@@ -424,12 +424,10 @@ def inicio():
     menu_frame = Frame(ventana, bg="#1f3a6e", width=int(ventana.winfo_screenwidth() * 0.3), height=ventana.winfo_screenheight())
     menu_frame.pack(side="left", fill="y")
 
-    # Cargar las imágenes de los íconos
     icono_socios = cargar_imagen("Imagenes/icono_socios.png")
     icono_libros = cargar_imagen("Imagenes/icono_libros.png")
     icono_prestamos = cargar_imagen("Imagenes/icono_prestamos.png")
 
-    # Crear el encabezado con una imagen
     imagen_encabezado = cargar_imagen("Imagenes/logoutn4.png")
     label_encabezado = Label(menu_frame, image=imagen_encabezado, bg="#1f3a6e")
     label_encabezado.pack(pady=10)
@@ -454,7 +452,6 @@ def inicio():
     label_prestamos.bind("<Enter>", lambda event: label_prestamos.config(bg="#003366"))
     label_prestamos.bind("<Leave>", lambda event: label_prestamos.config(bg="#1f3a6e"))
 
-    # Texto con información del grupo debajo de las opciones del menú
     info_grupo = """
     Grupo 15 - DAO:
     Bautista Mendibe - 89249
