@@ -438,5 +438,38 @@ def mostrar_contenido(opcion, frame):
     contenido_label = Label(frame, text=f"{opcion}", bg="#1f3a6e", fg="white", font=("Helvetica", 12, "bold"))
     contenido_label.pack(fill="x", pady=0)
 
+    if opcion == "Administración de socios":
+        # Agregar el formulario para "Administración de socios"
+        # Estilo para las etiquetas y la entrada
+        estilo_widget = ttk.Style()
+        estilo_widget.configure("Estilo.TLabel", padding=5)
+        estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
+
+        label_nombre = ttk.Label(frame, text="Nombre:", style="Estilo.TLabel")
+        label_nombre.pack()
+
+        entry_nombre = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_nombre.pack(fill="x", pady=5)
+
+        # Estilo para el botón
+        estilo_boton = ttk.Style()
+        estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
+
+        boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: btn_registrar_socio(frame, entry_nombre), style="Estilo.TButton")
+        boton_registrar.pack(fill="x", pady=10)
+
+def btn_registrar_socio(ventana_registro_socio, entry_nombre: Entry):
+    nombre = entry_nombre.get()
+    biblioteca: Biblioteca = Biblioteca()
+    biblioteca.aggSocio(nombre)
+    
+    # Validar el nombre antes de registrar al socio
+    if validar_nombre(nombre):
+        biblioteca: Biblioteca = Biblioteca()
+        biblioteca.aggSocio(nombre)
+        # Mostrar pop-up de éxito
+        messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
+        
+
 # Llamada a la función de inicio
 inicio()
