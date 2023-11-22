@@ -134,23 +134,7 @@ def registrar_socio():
     boton_registrar.grid(column=0, row=3, columnspan=2, pady=10)
 
     ventana_registro_socio.mainloop()
-
-def btn_registrar_socio(ventana_registro_socio, entry_nombre: Entry):
-    nombre = entry_nombre.get()
-    biblioteca: Biblioteca = Biblioteca()
-    biblioteca.aggSocio(nombre)
-    
-    # Validar el nombre antes de registrar al socio
-    if validar_nombre(nombre):
-        biblioteca: Biblioteca = Biblioteca()
-        biblioteca.aggSocio(nombre)
-        # Mostrar pop-up de éxito
-        messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
-        
-        ventana_registro_socio.destroy()
-
-
-    
+ 
 def eliminar_socio():
     ventana_eliminar_socio = tk.Toplevel()
     ventana_eliminar_socio.title("Eliminar socio")
@@ -428,19 +412,94 @@ def inicio():
 def cargar_imagen(ruta):
     return PhotoImage(file=ruta)
 
-# Función para mostrar el contenido correspondiente a la opción seleccionada
+def es_numero(valor):
+    try:
+        float(valor)
+        return True
+    except ValueError:
+        return False
+
+def btn_registrar_socio(entry_nombre):
+    nombre = entry_nombre.get()
+    # Validar el nombre antes de registrar al socio
+    if validar_nombre(nombre):
+        biblioteca: Biblioteca = Biblioteca()
+        biblioteca.aggSocio(nombre)
+        # Mostrar pop-up de éxito
+        messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
+        
+
+
+# Función para mostrar el contenido en el frame
 def mostrar_contenido(opcion, frame):
     # Limpiar el contenido actual
     for widget in frame.winfo_children():
         widget.destroy()
 
     # Crear el contenido para la opción seleccionada
-    contenido_label = Label(frame, text=f"{opcion}", bg="#1f3a6e", fg="white", font=("Helvetica", 12, "bold"))
+    contenido_label = tk.Label(frame, text=f"{opcion}", bg="#1f3a6e", fg="white", font=("Helvetica", 12, "bold"))
     contenido_label.pack(fill="x", pady=0)
 
+    # Crear un frame para el submenú
+    frame_submenu = tk.Frame(frame)
+    frame_submenu.pack()
+
     if opcion == "Administración de socios":
-        # Agregar el formulario para "Administración de socios"
-        # Estilo para las etiquetas y la entrada
+        # Estilo para los botones del submenú
+        estilo_boton_submenu = ttk.Style()
+        estilo_boton_submenu.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
+
+        # Botón Registrar Socio
+        boton_pestana = ttk.Button(frame_submenu, text="Registrar Socio", command=lambda: mostrar_contenido_pestana("Registrar Socio", frame), style="Estilo.TButton")
+        boton_pestana.pack(side="left", padx=10)
+
+        # Botón Modificar Socio (puedes añadir la funcionalidad correspondiente)
+        boton_pestana = ttk.Button(frame_submenu, text="Modificar Socio", command=lambda: mostrar_contenido_pestana("Modificar Socio", frame), style="Estilo.TButton")
+        boton_pestana.pack(side="left", padx=10)
+
+        # Botón Eliminar Socio (puedes añadir la funcionalidad correspondiente)
+        boton_pestana = ttk.Button(frame_submenu, text="Eliminar Socio", command=lambda: mostrar_contenido_pestana("Eliminar Socio", frame), style="Estilo.TButton")
+        boton_pestana.pack(side="left", padx=10)
+
+    elif opcion == "Administración de libros":
+        # Estilo para los botones del submenú
+        estilo_boton_submenu = ttk.Style()
+        estilo_boton_submenu.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
+
+        # Botón Registrar Libro
+        boton_registrar_libro = ttk.Button(frame_submenu, text="Registrar Libro", command=lambda: mostrar_contenido_pestana("Registrar Libro", frame), style="Estilo.TButton")
+        boton_registrar_libro.pack(side="left", padx=10)
+
+        # Botón Modificar Libro (puedes añadir la funcionalidad correspondiente)
+        boton_modificar_libro = ttk.Button(frame_submenu, text="Modificar Libro", command=lambda: mostrar_contenido_pestana("Modificar Libro", frame), style="Estilo.TButton")
+        boton_modificar_libro.pack(side="left", padx=10)
+
+        # Botón Eliminar Libro (puedes añadir la funcionalidad correspondiente)
+        boton_eliminar_libro = ttk.Button(frame_submenu, text="Eliminar Libro", command=lambda: mostrar_contenido_pestana("Eliminar Libro", frame), style="Estilo.TButton")
+        boton_eliminar_libro.pack(side="left", padx=10)
+
+    #elif opcion == "Registro de préstamos y devoluciones":
+        
+def mostrar_contenido_pestana(opcion, frame):
+    if opcion == "Registrar Socio":
+            # Estilo para las etiquetas y la entrada
+            estilo_widget = ttk.Style()
+            estilo_widget.configure("Estilo.TLabel", padding=5)
+            estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
+
+            label_nombre = ttk.Label(frame, text="Nombre:", style="Estilo.TLabel")
+            label_nombre.pack()
+
+            entry_nombre = ttk.Entry(frame, style="Estilo.TEntry")
+            entry_nombre.pack(fill="x", pady=5)
+
+            # Estilo para el botón
+            estilo_boton = ttk.Style()
+            estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
+
+            boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: btn_registrar_socio(entry_nombre), style="Estilo.TButton")
+            boton_registrar.pack(fill="x", pady=10)
+    elif opcion == "Registrar Libro":
         estilo_widget = ttk.Style()
         estilo_widget.configure("Estilo.TLabel", padding=5)
         estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
@@ -450,26 +509,19 @@ def mostrar_contenido(opcion, frame):
 
         entry_nombre = ttk.Entry(frame, style="Estilo.TEntry")
         entry_nombre.pack(fill="x", pady=5)
+        
+        label_precio = ttk.Label(frame, text="Costo de Reposicion:", style="Estilo.TLabel")
+        label_precio.pack()
+        
+        entry_precio_reposicion = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_precio_reposicion.pack(fill="x", pady=5)
 
         # Estilo para el botón
         estilo_boton = ttk.Style()
         estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
 
-        boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: btn_registrar_socio(frame, entry_nombre), style="Estilo.TButton")
+        boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: btn_registrar_libro(entry_nombre, entry_precio_reposicion=entry_precio_reposicion), style="Estilo.TButton")
         boton_registrar.pack(fill="x", pady=10)
-
-def btn_registrar_socio(ventana_registro_socio, entry_nombre: Entry):
-    nombre = entry_nombre.get()
-    biblioteca: Biblioteca = Biblioteca()
-    biblioteca.aggSocio(nombre)
-    
-    # Validar el nombre antes de registrar al socio
-    if validar_nombre(nombre):
-        biblioteca: Biblioteca = Biblioteca()
-        biblioteca.aggSocio(nombre)
-        # Mostrar pop-up de éxito
-        messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
-        
 
 # Llamada a la función de inicio
 inicio()

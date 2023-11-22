@@ -41,7 +41,6 @@ class Biblioteca:
     def precioLibrosExtraviados(self):
         return sumatoria_precio_reposicion_librExtraviados()
                 
-    
     def solicitantesDeLibro(self, titulo):
         return solicitantes_por_titulo_libro(titulo)
         
