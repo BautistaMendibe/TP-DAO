@@ -499,6 +499,12 @@ def mostrar_contenido_pestana(opcion, frame):
 
             boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: btn_registrar_socio(entry_nombre), style="Estilo.TButton")
             boton_registrar.pack(fill="x", pady=10)
+    elif opcion == "Modificar Socio":
+        pass
+    
+    elif opcion == "Eliminar Socio":
+        pass
+    
     elif opcion == "Registrar Libro":
         estilo_widget = ttk.Style()
         estilo_widget.configure("Estilo.TLabel", padding=5)
@@ -522,6 +528,13 @@ def mostrar_contenido_pestana(opcion, frame):
 
         boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: btn_registrar_libro(entry_nombre, entry_precio_reposicion=entry_precio_reposicion), style="Estilo.TButton")
         boton_registrar.pack(fill="x", pady=10)
+        
+    elif opcion == "Modificar Libro":
+        pass
+    
+    elif opcion == "Eliminar Libro":
+        pass
+    
 
 # Llamada a la función de inicio
 inicio()
