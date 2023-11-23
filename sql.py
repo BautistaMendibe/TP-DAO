@@ -45,7 +45,11 @@ def buscar_libros_por_titulo(titulo):
     db_manager = ManagerDataBase()
     resultados = db_manager.consultar(query)
     libros = [Libro(codigo=row[0], titulo=row[1], precioReposicion=row[2], estado=row[3]) for row in resultados]
-    return libros
+    
+    if libros:
+        return libros
+    else:
+        return None
 
 def buscar_libro_por_codigo(codigo_libro):
     query = f"SELECT * FROM libros WHERE codigo = {codigo_libro}"
@@ -147,8 +151,7 @@ def sumatoria_precio_reposicion_librExtraviados():
     db_manager = ManagerDataBase()
     query = "SELECT SUM(precioReposicion) AS sumatoria FROM libros WHERE estado = 'Extraviado'"
     resultados = db_manager.consultar(query)
-    x = resultados[0]
-    return x
+    return resultados[0][0] if resultados and resultados[0] and resultados[0][0] is not None else None
 
 def listar_cantidad_libros_estado():
     # Conectar a la base de datos

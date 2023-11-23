@@ -20,6 +20,10 @@ class Biblioteca:
         libro = buscar_libro_por_codigo(codigo)
         return libro
     
+    def consultarLibroxTitulo(self, titulo):
+        libro = buscar_libros_por_titulo(titulo)
+        return libro
+    
     def eliminarLibro(self, codigo: int):
         libro = eliminar_libro(codigo)
         return libro
@@ -36,6 +40,7 @@ class Biblioteca:
     def eliminarSocio(self, numeroSocio: int):
         socio = eliminar_socio(numeroSocio)
         return socio
+    
     def librosCadEstado(self):
         return listar_cantidad_libros_estado()
     

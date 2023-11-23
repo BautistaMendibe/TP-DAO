@@ -274,6 +274,97 @@ def inicio():
 
     ventana.mainloop()
 
+def btn_libros_x_estado(frame):
+    
+    for widget in frame.winfo_children():
+        widget.destroy()
+    
+    biblioteca: Biblioteca = Biblioteca()
+    resultados = biblioteca.librosCadEstado()
+    
+    # Crear un árbol para mostrar la tabla
+    tree = ttk.Treeview(frame, columns=("Estado", "Cantidad"), show="headings")
+
+    # Configurar las columnas
+    tree.heading("Estado", text="Estado")
+    tree.heading("Cantidad", text="Cantidad")
+
+    # Insertar los datos en el árbol
+    for resultado in resultados:
+        tree.insert("", "end", values=resultado)
+
+    # Estilo para la tabla
+    style = ttk.Style()
+    style.configure("Treeview", font=('Arial', 12), rowheight=25)
+
+    # Configurar tamaño de la tabla
+    tree.pack(expand=True, fill=tk.BOTH)
+
+def btn_precio_libros_extr(frame):
+    
+    for widget in frame.winfo_children():
+        widget.destroy()
+        
+    biblioteca: Biblioteca = Biblioteca()
+    resultados = biblioteca.precioLibrosExtraviados()
+    
+    columnas = ["Sumatoria Precio Reposición"]
+
+   # Crear un árbol para mostrar la tabla
+    tree = ttk.Treeview(frame, columns=columnas, show="headings")
+
+    # Configurar las columnas
+    for col in columnas:
+        tree.heading(col, text=col)
+    
+    if resultados:
+        # Insertar los datos en el árbol
+        tree.insert("", "end", values=resultados)
+    else:
+        # Mostrar mensaje si no hay resultados
+        tree.insert("", "end", values=["No hay libros extraviados"])
+
+    # Estilo para la tabla
+    style = ttk.Style()
+    style.configure("Treeview", font=('Arial', 12), rowheight=25)
+
+    # Configurar tamaño de la tabla
+    tree.pack(expand=True, fill=tk.BOTH)
+
+def btn_socios_piden_libro(entry, frame):
+    titulo = entry.get()
+    
+    biblioteca: Biblioteca = Biblioteca()
+    if biblioteca.consultarLibroxTitulo(titulo) != None:
+        for widget in frame.winfo_children():
+            widget.destroy()
+        
+        solicitantes = biblioteca.solicitantesDeLibro(titulo)
+        
+        # Crear un árbol para mostrar la tabla
+        tree = ttk.Treeview(frame, columns=("Número de Socio", "Nombre"), show="headings")
+
+        # Configurar las columnas
+        tree.heading("Número de Socio", text="Número de Socio")
+        tree.heading("Nombre", text="Nombre")
+    
+        if solicitantes:
+            # Insertar los datos en el árbol
+            for solicitante in solicitantes:
+                tree.insert("", "end", values=(solicitante.numeroSocio, solicitante.nombre))
+        else:
+            # Mostrar mensaje si no hay solicitantes
+            tree.insert("", "end", values=["No hay solicitantes para el libro"])
+
+        # Estilo para la tabla
+        style = ttk.Style()
+        style.configure("Treeview", font=('Arial', 12), rowheight=25)
+
+        # Configurar tamaño de la tabla
+        tree.pack(expand=True, fill=tk.BOTH)
+    else:
+        messagebox.showerror("Error", "Por favor, ingrese el titulo de un libro que este registrado")
+    
 # Función para mostrar el contenido en el frame
 def mostrar_contenido(opcion, frame):
     # Limpiar el contenido actual
@@ -348,13 +439,17 @@ def mostrar_contenido(opcion, frame):
         estilo_boton_submenu = ttk.Style()
         estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="#1f3a6e", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
 
-        # Botón Registrar Prestamo
-        boton_registrar_prestamo = ttk.Button(frame_submenu, text="Reportes", command=lambda: mostrar_contenido_pestana("REPORTES", frame_submenu2), style="Estilo.TButton")
-        boton_registrar_prestamo.pack(side="left", padx = 10, pady=10)
+        # Botón mostrar libros por estado
+        boton_libros_por_estado = ttk.Button(frame_submenu, text="Libros por Estado", command=lambda: btn_libros_x_estado(frame_submenu2), style="Estilo.TButton")
+        boton_libros_por_estado.pack(side="left", padx = 10, pady=10)
 
-        # Botón registrar Devolucion
-        boton_registar_devolucion = ttk.Button(frame_submenu, text="Reportes", command=lambda: mostrar_contenido_pestana("Registrar Devolucion", frame_submenu2), style="Estilo.TButton")
-        boton_registar_devolucion.pack(fill="x", side="left", padx = 10)
+        # Botón muestra sumatoria de costo de reposicion
+        boton_libros_reposicion = ttk.Button(frame_submenu, text="Precios de Extraviados", command=lambda: btn_precio_libros_extr(frame_submenu2), style="Estilo.TButton")
+        boton_libros_reposicion.pack(fill="x", side="bottom", padx = 10)
+        
+        # Boton muestra los nombres que solicictaron un libro
+        boton_socio_libro = ttk.Button(frame_submenu, text="Socios que pidieron libro", command=lambda: mostrar_contenido_pestana("Socios que pidieron libro", frame_submenu2), style="Estilo.TButton")
+        boton_socio_libro.pack(fill="x", side="bottom", padx = 10)
         
 def mostrar_contenido_pestana(opcion, frame):
     for widget in frame.winfo_children():
@@ -463,6 +558,16 @@ def mostrar_contenido_pestana(opcion, frame):
         
     elif opcion == "Registrar Devolucion":
         pass
+    
+    elif opcion == "Socios que pidieron libro":
+        label_nombre_libro = ttk.Label(frame, text="Titulo de Libro:", style="Estilo.TLabel")
+        label_nombre_libro.pack()
+
+        entry_nombre_libro = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_nombre_libro.pack(fill="x", pady=5)
+
+        boton_consultar = ttk.Button(frame, text="Buscar", command=lambda: btn_socios_piden_libro(entry_nombre_libro, frame), style="Estilo.TButton")
+        boton_consultar.pack(fill="x", pady=10)
     
 
 # Llamada a la función de inicio
