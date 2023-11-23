@@ -104,10 +104,14 @@ def consultar_socio(numeroSocio):
     query = f"SELECT * FROM socios WHERE numeroSocio = {numeroSocio}"
     db_manager = ManagerDataBase()
     resultados = db_manager.consultar(query)
-    if not resultados or (len(resultados) > 0 and resultados[0][2] == 1):
-        return None  
+
+    # Verificar si no hay resultados o si la condición se cumple
+    if not resultados or resultados[0][2] == 1:
+        return None
+
+    # Crear objeto Socio si se encuentran resultados
     socio_encontrado = resultados[0]
-    socio: Socio = Socio(numeroSocio=socio_encontrado[0], nombre=socio_encontrado[1])
+    socio = Socio(numeroSocio=socio_encontrado[0], nombre=socio_encontrado[1])
     return socio
 
 def listar_socios():
@@ -202,6 +206,10 @@ def listar_prestamos_demorados():
         prestamo: Prestamo = Prestamo(diasDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
         prestamosDem.append(prestamo)
         
+    # Verificar si la lista está vacía y devolver None en ese caso
+    if not prestamosDem:
+        return None
+        
     return prestamosDem
 
 def listar_prestamos_por_socio(numeroSocio):
@@ -212,13 +220,18 @@ def listar_prestamos_por_socio(numeroSocio):
             f"INNER JOIN libros l ON p.libro_codigo = l.codigo " \
             f"WHERE p.socio_numeroSocio = {numeroSocio}"
     resultados = db_manager.consultar(query)
+    
+    # Verificar si no hay resultados
+    if resultados is None or not resultados:
+        return None
+
     prestamos = []
-    socio: Socio = consultar_socio(numeroSocio=numeroSocio)
+    socio = consultar_socio(numeroSocio=numeroSocio)
     for i in resultados:
-        libro: Libro = Libro(titulo=i[5], precioReposicion=i[6], codigo=i[4], estado=i[7])
-        prestamo: Prestamo = Prestamo(diasDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
+        libro = Libro(titulo=i[5], precioReposicion=i[6], codigo=i[4], estado=i[7])
+        prestamo = Prestamo(diasDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
         prestamos.append(prestamo)
-    return resultados
+    return prestamos
 
 
 def actualizar_estado_libro(libro: Libro, estado: str):
