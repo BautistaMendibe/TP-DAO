@@ -259,7 +259,7 @@ def inicio():
     # Cargar las imágenes de los íconos
     icono_socios = cargar_imagen("Imagenes/icono_socios.png")
     icono_libros = cargar_imagen("Imagenes/icono_libros.png")
-    icono_prestamos = cargar_imagen("Imagenes/prestamo.png")
+    icono_prestamos = cargar_imagen("Imagenes/pedir-prestamo.png")
     icono_reportes = cargar_imagen("Imagenes/icono_reportes.png")
 
 
