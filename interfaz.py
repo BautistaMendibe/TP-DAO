@@ -347,15 +347,15 @@ def mostrar_contenido(opcion, frame):
 
         # Botón Registrar Socio
         boton_registrar_socio = ttk.Button(frame_submenu, text="Registrar Socio", command=lambda: mostrar_contenido_pestana("Registrar Socio", frame_submenu2), style="Estilo.TButton")
-        boton_registrar_socio.pack(fill="y", side="left", padx = 10)
+        boton_registrar_socio.pack(fill="y", side="left", padx = 10, pady=10)
 
         # Botón Modificar Socio (puedes añadir la funcionalidad correspondiente)
         boton_consultar_socio = ttk.Button(frame_submenu, text="Consultar Socio", command=lambda: mostrar_contenido_pestana("Consultar Socio", frame_submenu2), style="Estilo.TButton")
-        boton_consultar_socio.pack(fill="y", side="left", padx = 10)
+        boton_consultar_socio.pack(fill="y", side="left", padx = 10, pady=10)
 
         # Botón Eliminar Socio (puedes añadir la funcionalidad correspondiente)
         boton_eliminar_socio = ttk.Button(frame_submenu, text="Eliminar Socio", command=lambda: mostrar_contenido_pestana("Eliminar Socio", frame_submenu2), style="Estilo.TButton")
-        boton_eliminar_socio.pack(fill="y", side="left", padx = 10)
+        boton_eliminar_socio.pack(fill="y", side="left", padx = 10, pady=10)
 
         # Mostrar por defecto el contenido de "Registrar socios"
         mostrar_contenido_pestana("Registrar Socio", frame_submenu2)
@@ -367,7 +367,7 @@ def mostrar_contenido(opcion, frame):
 
         # Botón Registrar Libro
         boton_registrar_libro = ttk.Button(frame_submenu, text="Registrar Libro", command=lambda: mostrar_contenido_pestana("Registrar Libro", frame_submenu2), style="Estilo.TButton")
-        boton_registrar_libro.pack(fill="x", side="left", padx = 10)
+        boton_registrar_libro.pack(fill="x", side="left", padx = 10, pady=10)
 
         # Botón Modificar Libro (puedes añadir la funcionalidad correspondiente)
         boton_modificar_libro = ttk.Button(frame_submenu, text="Consultar Libro", command=lambda: mostrar_contenido_pestana("Consultar Libro", frame_submenu2), style="Estilo.TButton")
@@ -384,7 +384,7 @@ def mostrar_contenido(opcion, frame):
 
         # Botón Registrar Prestamo
         boton_registrar_prestamo = ttk.Button(frame_submenu, text="Registrar Prestamo", command=lambda: mostrar_contenido_pestana("Registrar Prestamo", frame_submenu2), style="Estilo.TButton")
-        boton_registrar_prestamo.pack(side="left", padx = 10)
+        boton_registrar_prestamo.pack(side="left", padx = 10, pady=10)
 
         # Botón registrar Devolucion
         boton_registar_devolucion = ttk.Button(frame_submenu, text="Registrar Devolucion", command=lambda: mostrar_contenido_pestana("Registrar Devolucion", frame_submenu2), style="Estilo.TButton")
@@ -397,7 +397,7 @@ def mostrar_contenido(opcion, frame):
 
         # Botón Registrar Prestamo
         boton_registrar_prestamo = ttk.Button(frame_submenu, text="Reportes", command=lambda: mostrar_contenido_pestana("REPORTES", frame_submenu2), style="Estilo.TButton")
-        boton_registrar_prestamo.pack(side="left", padx = 10)
+        boton_registrar_prestamo.pack(side="left", padx = 10, pady=10)
 
         # Botón registrar Devolucion
         boton_registar_devolucion = ttk.Button(frame_submenu, text="Reportes", command=lambda: mostrar_contenido_pestana("Registrar Devolucion", frame_submenu2), style="Estilo.TButton")
