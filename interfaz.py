@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from prestamo import Prestamo
 from socio import Socio
 from biblioteca import Biblioteca
 from libro import Libro
@@ -222,6 +223,19 @@ def btn_registrar_prestamo(entry_numero_socio: Entry, entry_codigo_libro: Entry,
             entry_codigo_libro.delete(0, END)
             entry_dias.delete(0, END)
 
+def btn_buscar_prestamos_socio(entry_numero_socio: Entry, frame: Frame):
+    numero_socio = entry_numero_socio.get()
+    prestamos_encontrados: [Prestamo] = []
+
+    if validar_numero_socio(numero_socio):
+        biblioteca: Biblioteca = Biblioteca()
+        prestamos_encontrados.clear() 
+        prestamos_encontrados.extend(biblioteca.prestamosDeSocio(numero_socio))
+    
+    if len(prestamos_encontrados) > 0:
+        print(prestamos_encontrados)
+    
+        
 # Función para crear la interfaz
 def inicio():
     ventana = Tk()
@@ -585,7 +599,20 @@ def mostrar_contenido_pestana(opcion, frame):
         boton_registrar.pack()
         
     elif opcion == "Registrar Devolucion":
-        pass
+
+        frame.pack(padx=10, pady=10)  # Usa 
+
+        label_numero_socio = ttk.Label(frame, text="Número de Socio:", style="Estilo.TLabel")
+        label_numero_socio.pack(side="left", padx=5, pady=5)
+
+        entry_numero_socio = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_numero_socio.pack(side="left", padx=5, pady=5)
+
+        boton_registrar = ttk.Button(frame, text="Buscar préstamos", command=lambda: btn_buscar_prestamos_socio(entry_numero_socio, frame), style="Estilo.TButton")
+        boton_registrar.pack(side="left", padx=5, pady=5)
+
+        print(boton_registrar)
+
     
     elif opcion == "Socios que pidieron libro":
         label_nombre_libro = ttk.Label(frame, text="Titulo de Libro:", style="Estilo.TLabel")

@@ -15,12 +15,7 @@ class Biblioteca:
     def aggLibro(self, titulo, precioReposicion):
         libro: Libro = Libro(titulo=titulo, precioReposicion=precioReposicion)
         self._libros.append(libro)
-        # Verificar si ya existe un libro con el mismo título
-        if existe_libro_con_titulo(titulo):
-            return False
-        else:
-            insertar_libro(libro)
-            return True
+        insertar_libro(libro)
 
     def consultarLibro(self, codigo):
         libro = buscar_libro_por_codigo(codigo)
