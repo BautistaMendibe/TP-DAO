@@ -17,11 +17,11 @@ class Biblioteca:
         insertar_libro(libro)
 
     def consultarLibro(self, titulo):
-        libro = buscar_libros_por_titulo(titulo)
+        libro = buscar_libros_por_id(titulo)
         return libro
     
     def eliminarLibro(self, codigo: int):
-        eliminar_libro(codigo)
+        return eliminar_libro(codigo)
     
     def consultarSocio(self, numSocio: int):
         socio = consultar_socio(numSocio)

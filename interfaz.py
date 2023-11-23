@@ -216,6 +216,22 @@ def consultar_socio():
     ventana_consultar_socio.mainloop()
 
 # Función que se ejecuta al hacer clic en el botón "Consultar"
+def btn_consultar_libro(entry_nombreLibro: Entry, frame):
+    nombreLibro = entry_nombreLibro.get()
+    # Validar el número de socio antes de consultar al socio
+    if validar_numero_socio(nombreLibro):
+        biblioteca: Biblioteca = Biblioteca()
+        libro = biblioteca.consultarLibro(nombreLibro)
+
+        # Verificar si el socio existe antes de mostrar la información
+        if libro:
+            # Crear etiquetas para mostrar la información del socio
+            label_info_nombre = ttk.Label(frame, text=f"Nombre: " + libro.titulo, style="Estilo.TLabel")
+            label_info_nombre.pack(pady=40)
+        else:
+            messagebox.showinfo("Consultar libro", "El libro no existe.")
+
+# Función que se ejecuta al hacer clic en el botón "Consultar"
 def btn_consultar_socio(entry_numeroSocio: Entry, frame):
     numeroSocio = entry_numeroSocio.get()
     # Validar el número de socio antes de consultar al socio
@@ -330,8 +346,8 @@ def eliminar_libro():
 def btn_eliminar_libro(entry_codigo: Entry):
     codigo_libro = entry_codigo.get()
     biblioteca: Biblioteca = Biblioteca()
-    biblioteca.eliminarLibro(codigo_libro)
-    messagebox.showinfo("Exito", "Libro eliminado con éxito")
+    eliminado = biblioteca.eliminarLibro(codigo_libro)
+    messagebox.showinfo("Exito", f"Libro {eliminado} eliminado con éxito")
 
 
 # Función para crear la interfaz
@@ -551,10 +567,24 @@ def mostrar_contenido_pestana(opcion, frame):
         boton_registrar.pack(fill="x", pady=10)
         
     elif opcion == "Consultar Libro":
-        pass
+        label_nombre = ttk.Label(frame, text="Codigo de Libro:", style="Estilo.TLabel")
+        label_nombre.pack()
+
+        entry_nombreLibro = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_nombreLibro.pack(fill="x", pady=5)
+
+        boton_consultar = ttk.Button(frame, text="Consultar", command=lambda: btn_consultar_libro(entry_nombreLibro, frame), style="Estilo.TButton")
+        boton_consultar.pack(fill="x", pady=10)
     
     elif opcion == "Eliminar Libro":
-        pass
+        label_nombre = ttk.Label(frame, text="Codigo de Libro:", style="Estilo.TLabel")
+        label_nombre.pack()
+
+        entry_nombre = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_nombre.pack(fill="x", pady=5)
+
+        boton_eliminar = ttk.Button(frame, text="Eliminar", command=lambda: btn_eliminar_libro(entry_nombre), style="Estilo.TButton")
+        boton_eliminar.pack(fill="x", pady=10)
     
     elif opcion == "Registrar Prestamo":
         pass

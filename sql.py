@@ -30,15 +30,26 @@ def actualizar_libro(libro):
 
 def eliminar_libro(codigo):
     db_manager = ManagerDataBase()
+    querynombre = f"SELECT * FROM libros WHERE codigo = {codigo}"
     query = f"UPDATE libros SET borrado = 1 WHERE codigo = {codigo}"
+    nombre = db_manager.consultar(querynombre)
     db_manager.actualizar(query)
+    return nombre[0][1]
 
 def buscar_libros_por_titulo(titulo):
     query = f"SELECT * FROM libros WHERE titulo = '{titulo}'"
     db_manager = ManagerDataBase()
     resultados = db_manager.consultar(query)
     libros = [Libro(codigo=row[0], titulo=row[1], precioReposicion=row[2], estado=row[3]) for row in resultados]
-    return libros[0]
+    return libros
+
+def buscar_libros_por_id(id_libro):
+    query = f"SELECT * FROM libros WHERE codigo = '{id_libro}'"
+    db_manager = ManagerDataBase()
+    resultados = db_manager.consultar(query)
+    libro_encontrado = resultados[0]
+    libro: Libro = Libro(codigo=libro_encontrado[0] , titulo=libro_encontrado[1], precioReposicion=libro_encontrado[2], estado=libro_encontrado[3])
+    return libro
 
 # Funciones para la administración de SOCIOS
 
