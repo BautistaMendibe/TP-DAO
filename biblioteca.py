@@ -17,7 +17,7 @@ class Biblioteca:
         insertar_libro(libro)
 
     def consultarLibro(self, codigo):
-        libro = buscar_libros_por_codigo(codigo)
+        libro = buscar_libro_por_codigo(codigo)
         return libro
     
     def eliminarLibro(self, codigo: int):
@@ -51,16 +51,16 @@ class Biblioteca:
     def prestamosDeSocio(self, numSocio):
         return listar_prestamos_por_socio(numeroSocio=numSocio)
         
-    def registrarPrestamo(self, diasDevolucion: int, libro: str, numSocio: int):
+    def registrarPrestamo(self, numSocio: int, codigoLibro: int, diasDevolucion: int):
 
         socio: Socio = consultar_socio(numSocio)
-        libro: Libro = buscar_libros_por_titulo(libro)
+        libro: Libro = buscar_libro_por_codigo(codigoLibro)
 
         # Si el libro y el socio existen se registra el prestamo, si no no
-        if (libro.titulo != None and socio.nombre != None):
+        if (libro.codigo != None and socio.nombre != None):
             fecha_actual = datetime.now()
 
-            prestamo: Prestamo = Prestamo(diasDevolucion=diasDevolucion, libro=libro, socio=socio)
+            prestamo: Prestamo = Prestamo(diasDevolucion, libro, socio)
             registrar_prestamo(numSocio, libro.codigo, fecha_actual, diasDevolucion)
             actualizar_estado_libro(libro, "Prestado")
         

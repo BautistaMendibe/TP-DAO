@@ -187,63 +187,14 @@ def btn_eliminar_libro(entry_codigo_libro: Entry):
         else:
             messagebox.showinfo("Eliminar socio", "El libro no existe.")
 
-        
 
-def registrar_prestamo():
-    ventana_registro_prestamo = tk.Toplevel()
-    ventana_registro_prestamo.title("Registrar préstamo")
-    ventana_registro_prestamo.geometry("400x250")
-    ventana_registro_prestamo.grab_set()  # Hace que la ventana principal sea no interactiva
-
-    # Estilo para la etiqueta del título
-    estilo_titulo = ttk.Style()
-    estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
-
-    label_titulo = ttk.Label(ventana_registro_prestamo, text="Registrar préstamo", style="Titulo.TLabel")
-    label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
-
-    # Estilo para las etiquetas y la entrada
-    estilo_widget = ttk.Style()
-    estilo_widget.configure("Estilo.TLabel", padding=5)
-    estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
-
-    label_numero_socio = ttk.Label(ventana_registro_prestamo, text="Número de Socio:", style="Estilo.TLabel")
-    label_numero_socio.grid(column=0, row=1)
-
-    entry_numero_socio = ttk.Entry(ventana_registro_prestamo, style="Estilo.TEntry")
-    entry_numero_socio.grid(column=1, row=1, sticky="ew")
-
-    label_titulo_libro = ttk.Label(ventana_registro_prestamo, text="Título del Libro:", style="Estilo.TLabel")
-    label_titulo_libro.grid(column=0, row=2)
-
-    entry_titulo_libro = ttk.Entry(ventana_registro_prestamo, style="Estilo.TEntry")
-    entry_titulo_libro.grid(column=1, row=2, sticky="ew")
-
-    label_dias = ttk.Label(ventana_registro_prestamo, text="Días para devolución:", style="Estilo.TLabel")
-    label_dias.grid(column=0, row=3)
-
-    entry_dias = ttk.Entry(ventana_registro_prestamo, style="Estilo.TEntry")
-    entry_dias.grid(column=1, row=3, sticky="ew")
-
-    # Configuración de la columna para expandirse
-    ventana_registro_prestamo.columnconfigure(1, weight=1)
-
-    # Estilo para el botón
-    estilo_boton = ttk.Style()
-    estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
-
-    boton_registrar = ttk.Button(ventana_registro_prestamo, text="Registrar", command=lambda: btn_registrar_prestamo(entry_numero_socio, entry_titulo_libro, entry_dias), style="Estilo.TButton")
-    boton_registrar.grid(column=0, row=4, columnspan=2, pady=10)
-
-    ventana_registro_prestamo.mainloop()
-
-def btn_registrar_prestamo(entry_numero_socio: Entry, entry_titulo_libro: Entry, entry_dias: Entry):
+def btn_registrar_prestamo(entry_numero_socio: Entry, entry_codigo_libro: Entry, entry_dias: Entry):
     numero_socio = entry_numero_socio.get()
-    titulo_libro = entry_titulo_libro.get()
+    codigo_libro = entry_codigo_libro.get()
     dias_devolucion = entry_dias.get()
 
     biblioteca: Biblioteca = Biblioteca()
-    biblioteca.registrarPrestamo(diasDevolucion=dias_devolucion, numSocio=numero_socio, libro=titulo_libro)
+    biblioteca.registrarPrestamo(numero_socio, codigo_libro, dias_devolucion)
 
 # Función para crear la interfaz
 def inicio():
@@ -488,8 +439,28 @@ def mostrar_contenido_pestana(opcion, frame):
         boton_eliminar.pack(fill="x", pady=10)
     
     elif opcion == "Registrar Prestamo":
-        pass
-    
+
+        label_numero_socio = ttk.Label(frame, text="Número de Socio:", style="Estilo.TLabel")
+        label_numero_socio.pack()
+
+        entry_numero_socio = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_numero_socio.pack()
+
+        label_codigo_libro = ttk.Label(frame, text="Código del Libro:", style="Estilo.TLabel")
+        label_codigo_libro.pack()
+
+        entry_codigo_libro = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_codigo_libro.pack()
+
+        label_dias = ttk.Label(frame, text="Días para devolución:", style="Estilo.TLabel")
+        label_dias.pack()
+
+        entry_dias = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_dias.pack()
+
+        boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: btn_registrar_prestamo(entry_numero_socio, entry_codigo_libro, entry_dias), style="Estilo.TButton")
+        boton_registrar.pack()
+        
     elif opcion == "Registrar Devolucion":
         pass
     

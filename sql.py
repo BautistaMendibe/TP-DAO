@@ -47,8 +47,8 @@ def buscar_libros_por_titulo(titulo):
     libros = [Libro(codigo=row[0], titulo=row[1], precioReposicion=row[2], estado=row[3]) for row in resultados]
     return libros
 
-def buscar_libros_por_codigo(codigo_libro):
-    query = f"SELECT * FROM libros WHERE codigo = '{codigo_libro}'"
+def buscar_libro_por_codigo(codigo_libro):
+    query = f"SELECT * FROM libros WHERE codigo = {codigo_libro}"
     db_manager = ManagerDataBase()
     resultados = db_manager.consultar(query)
     if not resultados or (len(resultados) > 0 and resultados[0][4] == 1):
