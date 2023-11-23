@@ -343,7 +343,7 @@ def mostrar_contenido(opcion, frame):
     if opcion == "Administración de socios":
         # Estilo para los botones del submenú
         estilo_boton_submenu = ttk.Style()
-        estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="black", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
+        estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="#1f3a6e", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
 
         # Botón Registrar Socio
         boton_registrar_socio = ttk.Button(frame_submenu, text="Registrar Socio", command=lambda: mostrar_contenido_pestana("Registrar Socio", frame_submenu2), style="Estilo.TButton")
@@ -363,7 +363,7 @@ def mostrar_contenido(opcion, frame):
     elif opcion == "Administración de libros":
         # Estilo para los botones del submenú
         estilo_boton_submenu = ttk.Style()
-        estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="black", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
+        estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="#1f3a6e", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
 
         # Botón Registrar Libro
         boton_registrar_libro = ttk.Button(frame_submenu, text="Registrar Libro", command=lambda: mostrar_contenido_pestana("Registrar Libro", frame_submenu2), style="Estilo.TButton")
@@ -382,7 +382,7 @@ def mostrar_contenido(opcion, frame):
     elif opcion == "Registro de préstamos y devoluciones":
         # Estilo para los botones del submenú
         estilo_boton_submenu = ttk.Style()
-        estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="black", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
+        estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="#1f3a6e", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
 
         # Botón Registrar Prestamo
         boton_registrar_prestamo = ttk.Button(frame_submenu, text="Registrar Prestamo", command=lambda: mostrar_contenido_pestana("Registrar Prestamo", frame_submenu2), style="Estilo.TButton")
@@ -395,7 +395,7 @@ def mostrar_contenido(opcion, frame):
     elif opcion == "Reportes":
         # Estilo para los botones del submenú
         estilo_boton_submenu = ttk.Style()
-        estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="black", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
+        estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="#1f3a6e", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
 
         # Botón Registrar Prestamo
         boton_registrar_prestamo = ttk.Button(frame_submenu, text="Reportes", command=lambda: mostrar_contenido_pestana("REPORTES", frame_submenu2), style="Estilo.TButton")
