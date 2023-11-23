@@ -8,6 +8,16 @@ from biblioteca import Biblioteca
 from libro import Libro
 from tkinter import Tk, Menu, Button, Frame
 
+#Variables globales
+labels_socio = []
+labels_libro = []
+
+
+# Función para limpiar las etiquetas
+def limpiar_etiquetas(lista_etiquetas):
+    for etiqueta in lista_etiquetas:
+        etiqueta.destroy()
+        
 
 def validar_nombre(nombre):
     # Verificar si el nombre no está vacío
@@ -35,6 +45,32 @@ def validar_numero_socio(numero_socio):
 
     return True
 
+def validar_codigo_libro(codigo_libro):
+    # Verificar si el número de socio no está vacío
+    if not codigo_libro:
+        messagebox.showerror("Error", "Por favor, ingrese un código de libro.")
+        return False
+
+    # Verificar si el número de socio contiene solo dígitos
+    if not codigo_libro.isdigit():
+        messagebox.showerror("Error", "El código de libro debe ser un valor numérico.")
+        return False
+
+    return True
+
+def validar_precio_libro(precio_libro):
+    # Verificar si el número de socio no está vacío
+    if not precio_libro:
+        messagebox.showerror("Error", "Por favor, ingrese un precio de reposición para el libro")
+        return False
+
+    # Verificar si el número de socio contiene solo dígitos
+    if not precio_libro.isdigit():
+        messagebox.showerror("Error", "El precio de reposición del libro debe ser un valor numérico.")
+        return False
+
+    return True
+
 
 def mostrar_mensaje(accion):
     print(f"Realizando acción: {accion}")
@@ -42,6 +78,105 @@ def mostrar_mensaje(accion):
 def cargar_imagen(ruta):
     imagen = PhotoImage(file=ruta)
     return imagen
+
+# Función que se ejecuta al hacer clic en el botón "Registrar"
+def btn_registrar_socio(entry_nombre: Entry):
+    nombre = entry_nombre.get()
+    # Validar el nombre antes de registrar al socio
+    if validar_nombre(nombre):
+        biblioteca: Biblioteca = Biblioteca()
+        biblioteca.aggSocio(nombre)
+        # Mostrar pop-up de éxito
+        messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
+        entry_nombre.delete(0, END)
+        
+# Función que se ejecuta al hacer clic en el botón "Consultar"
+def btn_consultar_socio(entry_numeroSocio: Entry, frame):
+    # Limpiar las etiquetas existentes antes de mostrar nueva información
+    limpiar_etiquetas(labels_socio)
+    numeroSocio = entry_numeroSocio.get()
+    # Validar el número de socio antes de consultar al socio
+    if validar_numero_socio(numeroSocio):
+        biblioteca: Biblioteca = Biblioteca()
+        socio = biblioteca.consultarSocio(numeroSocio)
+
+        # Verificar si el socio existe antes de mostrar la información
+        if socio:
+            # Crear etiquetas para mostrar la información del socio
+            label_info_nombre = ttk.Label(frame, text=f"Nombre: " + socio.nombre, style="Estilo.TLabel")
+            label_info_nombre.pack(pady=5)
+            label_info_nombre.configure(font=("Helvetica", 14, "bold"), background="white")
+            
+             # Almacenar las etiquetas en la lista global
+            labels_socio.extend([label_info_nombre])
+
+        else:
+            messagebox.showinfo("Consultar socio", "El socio no existe.")
+
+# Función que se ejecuta al hacer clic en el botón "Eliminar"
+def btn_eliminar_socio(entry_numeroSocio: Entry):
+    numeroSocio = entry_numeroSocio.get()
+    # Validar el número de socio antes de eliminar al socio
+    if validar_numero_socio(numeroSocio):
+        biblioteca: Biblioteca = Biblioteca()
+        nombre = biblioteca.eliminarSocio(numeroSocio)
+        messagebox.showinfo("Eliminar Socio",  f"El socio {nombre} se ha eliminado con éxito.")
+        entry_numeroSocio.delete(0, END)
+
+def btn_registrar_libro(entry_nombre: Entry, entry_precio_reposicion: Entry):
+    nombre = entry_nombre.get()
+    precio_reposicion = entry_precio_reposicion.get()
+    
+    if nombre:
+        if validar_precio_libro(precio_reposicion):
+            biblioteca: Biblioteca = Biblioteca()
+            biblioteca.aggLibro(nombre, precio_reposicion)
+            
+            # Mostrar pop-up de éxito
+            messagebox.showinfo("Registrar libro", "El libro se ha registrado con éxito")
+            
+            entry_nombre.delete(0, END)
+            entry_precio_reposicion.delete(0, END)
+    else:
+        messagebox.showerror("Error", "Por favor, ingrese un nombre.")
+        
+def btn_consultar_libro(entry_codigo_libro: Entry, frame):
+    # Limpiar las etiquetas existentes antes de mostrar nueva información
+    limpiar_etiquetas(labels_libro)
+    codigoLibro = entry_codigo_libro.get()
+    # Validar el código del libro antes de consultar al libro
+    if validar_codigo_libro(codigoLibro):
+        biblioteca: Biblioteca = Biblioteca()
+        libro = biblioteca.consultarLibro(codigoLibro)
+
+        # Verificar si el libro existe antes de mostrar la información
+        if libro:
+            # Crear etiquetas para mostrar la información del libro
+            label_info_nombre = ttk.Label(frame, text=f"Nombre: " + libro.titulo, style="Estilo.TLabel")
+            label_info_nombre.pack(pady=5)
+            label_info_nombre.configure(font=("Helvetica", 14, "bold"), background="white")
+            
+            label_info_precio = ttk.Label(frame, text=f"Precio de Reposición: $" + str(libro.precioReposicion), style="Estilo.TLabel")
+            label_info_precio.pack(pady=5)
+            label_info_precio.configure(font=("Helvetica", 14, "bold"), background="white")
+            
+            label_info_estado = ttk.Label(frame, text=f"Estado: " + libro.estado, style="Estilo.TLabel")
+            label_info_estado.pack(pady=5)
+            label_info_estado.configure(font=("Helvetica", 14, "bold"), background="white")
+            
+            # Almacenar las etiquetas en la lista global
+            labels_libro.extend([label_info_nombre, label_info_precio, label_info_estado])
+        else:
+            messagebox.showinfo("Consultar libro", "El libro no existe.")
+
+# Función que se ejecuta al hacer clic en el botón "Eliminar"
+def btn_eliminar_libro(entry_codigo_libro: Entry):
+    codigo_libro = entry_codigo_libro.get()
+    if validar_codigo_libro(codigo_libro):
+        biblioteca: Biblioteca = Biblioteca()
+        eliminado = biblioteca.eliminarLibro(codigo_libro)
+        messagebox.showinfo("Eliminar Libro", f"Libro {eliminado} eliminado con éxito")
+        entry_codigo_libro.delete(0, END)
 
 def registrar_prestamo():
     ventana_registro_prestamo = tk.Toplevel()
@@ -99,257 +234,6 @@ def btn_registrar_prestamo(entry_numero_socio: Entry, entry_titulo_libro: Entry,
     biblioteca: Biblioteca = Biblioteca()
     biblioteca.registrarPrestamo(diasDevolucion=dias_devolucion, numSocio=numero_socio, libro=titulo_libro)
 
-def registrar_socio():
-    ventana_registro_socio = tk.Toplevel()
-    ventana_registro_socio.title("Registrar socio")
-    ventana_registro_socio.geometry("400x250")
-    ventana_registro_socio.grab_set()  # Hace que la ventana principal sea no interactiva
-
-    # Estilo para la etiqueta del título
-    estilo_titulo = ttk.Style()
-    estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
-
-    label_titulo = ttk.Label(ventana_registro_socio, text="Registrar socio", style="Titulo.TLabel")
-    label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
-
-    # Estilo para las etiquetas y la entrada
-    estilo_widget = ttk.Style()
-    estilo_widget.configure("Estilo.TLabel", padding=5)
-    estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
-
-    label_nombre = ttk.Label(ventana_registro_socio, text="Nombre:", style="Estilo.TLabel")
-    label_nombre.grid(column=0, row=2)
-
-    entry_nombre = ttk.Entry(ventana_registro_socio, style="Estilo.TEntry")
-    entry_nombre.grid(column=1, row=2, sticky="ew")  # 'ew' significa que se expandirá horizontalmente
-
-    # Configuración de la columna para expandirse
-    ventana_registro_socio.columnconfigure(1, weight=1)
-
-    # Estilo para el botón
-    estilo_boton = ttk.Style()
-    estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
-
-    boton_registrar = ttk.Button(ventana_registro_socio, text="Registrar", command=lambda: btn_registrar_socio(ventana_registro_socio, entry_nombre), style="Estilo.TButton")
-    boton_registrar.grid(column=0, row=3, columnspan=2, pady=10)
-
-    ventana_registro_socio.mainloop()
- 
-def eliminar_socio():
-    ventana_eliminar_socio = tk.Toplevel()
-    ventana_eliminar_socio.title("Eliminar socio")
-    ventana_eliminar_socio.geometry("400x250")
-    ventana_eliminar_socio.grab_set()  # Hace que la ventana principal sea no interactiva
-
-    # Estilo para la etiqueta del título
-    estilo_titulo = ttk.Style()
-    estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
-
-    label_titulo = ttk.Label(ventana_eliminar_socio, text="Eliminar socio", style="Titulo.TLabel")
-    label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
-
-    # Estilo para las etiquetas y la entrada
-    estilo_widget = ttk.Style()
-    estilo_widget.configure("Estilo.TLabel", padding=5)
-    estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
-
-    label_numeroSocio = ttk.Label(ventana_eliminar_socio, text="Número de Socio:", style="Estilo.TLabel")
-    label_numeroSocio.grid(column=0, row=2)
-
-    entry_numeroSocio = ttk.Entry(ventana_eliminar_socio, style="Estilo.TEntry")
-    entry_numeroSocio.grid(column=1, row=2, sticky="ew")  # 'ew' significa que se expandirá horizontalmente
-
-    # Configuración de la columna para expandirse
-    ventana_eliminar_socio.columnconfigure(1, weight=1)
-
-    # Estilo para el botón
-    estilo_boton = ttk.Style()
-    estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
-
-    boton_registrar = ttk.Button(ventana_eliminar_socio, text="Eliminar", command=lambda: btn_eliminar_socio(ventana_eliminar_socio, entry_numeroSocio), style="Estilo.TButton")
-    boton_registrar.grid(column=0, row=3, columnspan=2, pady=10)
-
-    ventana_eliminar_socio.mainloop()
-
-def btn_eliminar_socio(entry_numeroSocio: Entry):
-    numeroSocio = entry_numeroSocio.get()
-    # Validar el número de socio antes de eliminar al socio
-    if validar_numero_socio(numeroSocio):
-        biblioteca: Biblioteca = Biblioteca()
-        nombre = biblioteca.eliminarSocio(numeroSocio)
-        messagebox.showinfo("Eliminar Socio",  f"El socio {nombre} se ha eliminado con éxito.")
-
-def consultar_socio():
-    ventana_consultar_socio = tk.Toplevel()
-    ventana_consultar_socio.title("Consultar socio")
-    ventana_consultar_socio.geometry("400x250")
-    ventana_consultar_socio.grab_set()  # Hace que la ventana principal sea no interactiva
-
-    # Estilo para la etiqueta del título
-    estilo_titulo = ttk.Style()
-    estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
-
-    label_titulo = ttk.Label(ventana_consultar_socio, text="Consultar socio", style="Titulo.TLabel")
-    label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
-
-    # Estilo para las etiquetas y la entrada
-    estilo_widget = ttk.Style()
-    estilo_widget.configure("Estilo.TLabel", padding=5)
-    estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
-
-    label_numeroSocio = ttk.Label(ventana_consultar_socio, text="Número de Socio:", style="Estilo.TLabel")
-    label_numeroSocio.grid(column=0, row=2)
-
-    entry_numeroSocio = ttk.Entry(ventana_consultar_socio, style="Estilo.TEntry")
-    entry_numeroSocio.grid(column=1, row=2, sticky="ew")  # 'ew' significa que se expandirá horizontalmente
-
-    # Configuración de la columna para expandirse
-    ventana_consultar_socio.columnconfigure(1, weight=1)
-
-    # Estilo para el botón
-    estilo_boton = ttk.Style()
-    estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
-
-    boton_consultar = ttk.Button(ventana_consultar_socio, text="Consultar", command=lambda: btn_consultar_socio(ventana_consultar_socio, entry_numeroSocio), style="Estilo.TButton")
-    boton_consultar.grid(column=0, row=3, columnspan=2, pady=10)
-
-    ventana_consultar_socio.mainloop()
-
-# Función que se ejecuta al hacer clic en el botón "Consultar"
-def btn_consultar_libro(entry_nombreLibro: Entry, frame):
-    nombreLibro = entry_nombreLibro.get()
-    # Validar el número de socio antes de consultar al socio
-    if validar_numero_socio(nombreLibro):
-        biblioteca: Biblioteca = Biblioteca()
-        libro = biblioteca.consultarLibro(nombreLibro)
-
-        # Verificar si el socio existe antes de mostrar la información
-        if libro:
-            # Crear etiquetas para mostrar la información del socio
-            label_info_nombre = ttk.Label(frame, text=f"Nombre: " + libro.titulo, style="Estilo.TLabel")
-            label_info_nombre.pack(pady=40)
-        else:
-            messagebox.showinfo("Consultar libro", "El libro no existe.")
-
-# Función que se ejecuta al hacer clic en el botón "Consultar"
-def btn_consultar_socio(entry_numeroSocio: Entry, frame):
-    numeroSocio = entry_numeroSocio.get()
-    # Validar el número de socio antes de consultar al socio
-    if validar_numero_socio(numeroSocio):
-        biblioteca: Biblioteca = Biblioteca()
-        socio = biblioteca.consultarSocio(numeroSocio)
-
-        # Verificar si el socio existe antes de mostrar la información
-        if socio:
-            # Crear etiquetas para mostrar la información del socio
-            label_info_nombre = ttk.Label(frame, text=f"Nombre: " + socio.nombre, style="Estilo.TLabel")
-            label_info_nombre.pack(pady=40)
-        else:
-            messagebox.showinfo("Consultar socio", "El socio no existe.")
-
-
-def registrar_libro():
-    ventana_registro_libro = tk.Toplevel()
-    ventana_registro_libro.title("Registrar libro")
-    ventana_registro_libro.geometry("400x250")
-    ventana_registro_libro.grab_set()  # Hace que la ventana principal sea no interactiva
-
-
-    # Estilo para la etiqueta del título
-    estilo_titulo = ttk.Style()
-    estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
-
-    label_titulo = ttk.Label(ventana_registro_libro, text="Registrar libro", style="Titulo.TLabel")
-    label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
-
-    # Estilo para las etiquetas y la entrada
-    estilo_widget = ttk.Style()
-    estilo_widget.configure("Estilo.TLabel", padding=5)
-    estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
-
-    label_nombre = ttk.Label(ventana_registro_libro, text="Nombre:", style="Estilo.TLabel")
-    label_nombre.grid(column=0, row=2)
-
-    entry_nombre = ttk.Entry(ventana_registro_libro, style="Estilo.TEntry")
-    entry_nombre.grid(column=1, row=2, sticky="ew")  
-
-    label_precio_reposicion = ttk.Label(ventana_registro_libro, text="Precio de Reposición:", style="Estilo.TLabel")
-    label_precio_reposicion.grid(column=0, row=3)
-
-    entry_precio_reposicion = ttk.Entry(ventana_registro_libro, style="Estilo.TEntry")
-    entry_precio_reposicion.grid(column=1, row=3, sticky="ew")
-
-    # Configuración de la columna para expandirse
-    ventana_registro_libro.columnconfigure(1, weight=1)
-
-    # Estilo para el botón
-    estilo_boton = ttk.Style()
-    estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
-
-    boton_registrar = ttk.Button(ventana_registro_libro, text="Registrar", command=lambda: btn_registrar_libro(entry_nombre, entry_precio_reposicion), style="Estilo.TButton")
-    boton_registrar.grid(column=0, row=4, columnspan=2, pady=10)
-
-    ventana_registro_libro.mainloop()
-
-def btn_registrar_libro(entry_nombre: Entry, entry_precio_reposicion: Entry):
-    nombre = entry_nombre.get()
-    precio_reposicion = entry_precio_reposicion.get()
-
-    try:
-        precio_reposicion = float(precio_reposicion)
-    except ValueError:
-        # Manejar el caso en el que la entrada no sea un número válido
-        messagebox.showerror("Error", "Por favor, ingrese un precio de reposición válido.")
-        return
-
-    biblioteca: Biblioteca = Biblioteca()
-    biblioteca.aggLibro(titulo=nombre, precioReposicion=precio_reposicion)
-    
-
-def eliminar_libro():
-    ventana_eliminar_libro = tk.Toplevel()
-    ventana_eliminar_libro.title("Eliminar libro")
-    ventana_eliminar_libro.geometry("400x250")
-    ventana_eliminar_libro.grab_set()  # Hace que la ventana principal sea no interactiva
-
-    # Estilo para la etiqueta del título
-    estilo_titulo = ttk.Style()
-    estilo_titulo.configure("Titulo.TLabel", font=("Arial bold", 12))
-
-    label_titulo = ttk.Label(ventana_eliminar_libro, text="Eliminar libro", style="Titulo.TLabel")
-    label_titulo.grid(column=0, row=0, columnspan=2, pady=10)
-
-    # Estilo para las etiquetas y la entrada
-    estilo_widget = ttk.Style()
-    estilo_widget.configure("Estilo.TLabel", padding=5)
-    estilo_widget.configure("Estilo.TEntry", padding=(5, 5, 5, 5))
-
-    label_codigo = ttk.Label(ventana_eliminar_libro, text="Código:", style="Estilo.TLabel")
-    label_codigo.grid(column=0, row=2)
-
-    entry_codigo = ttk.Entry(ventana_eliminar_libro, style="Estilo.TEntry")
-    entry_codigo.grid(column=1, row=2, sticky="ew")  # 'ew' significa que se expandirá horizontalmente
-
-    # Configuración de la columna para expandirse
-    ventana_eliminar_libro.columnconfigure(1, weight=1)
-
-    # Estilo para el botón
-    estilo_boton = ttk.Style()
-    estilo_boton.configure("Estilo.TButton", padding=(10, 5, 10, 5), font=('Arial', 10, 'bold'))
-
-    boton_eliminar = ttk.Button(ventana_eliminar_libro, text="Eliminar", command=lambda: btn_eliminar_libro(entry_codigo), style="Estilo.TButton")
-    boton_eliminar.grid(column=0, row=3, columnspan=2, pady=10)
-
-    ventana_eliminar_libro.mainloop()
-
-# Función que se ejecuta al hacer clic en el botón "Eliminar"
-def btn_eliminar_libro(entry_codigo: Entry):
-    codigo_libro = entry_codigo.get()
-    biblioteca: Biblioteca = Biblioteca()
-    eliminado = biblioteca.eliminarLibro(codigo_libro)
-    messagebox.showinfo("Exito", f"Libro {eliminado} eliminado con éxito")
-
-
 # Función para crear la interfaz
 def inicio():
     ventana = Tk()
@@ -365,6 +249,8 @@ def inicio():
     icono_socios = cargar_imagen("Imagenes/icono_socios.png")
     icono_libros = cargar_imagen("Imagenes/icono_libros.png")
     icono_prestamos = cargar_imagen("Imagenes/prestamo.png")
+    icono_reportes = cargar_imagen("Imagenes/icono_reportes.png")
+
 
     # Crear el encabezado con una imagen
     imagen_encabezado = cargar_imagen("Imagenes/logoutn4.png")
@@ -383,6 +269,10 @@ def inicio():
     label_prestamos = Label(menu_frame, image=icono_prestamos, text="Registro de préstamos \ny devoluciones", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
     label_prestamos.pack(pady=10)
     label_prestamos.bind("<Button-1>", lambda event: mostrar_contenido("Registro de préstamos y devoluciones", contenido_frame))
+    
+    label_reportes = Label(menu_frame, image=icono_reportes, text="Reportes", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
+    label_reportes.pack(pady=10)
+    label_reportes.bind("<Button-1>", lambda event: mostrar_contenido("Reportes", contenido_frame))
 
     # Configurar eventos al pasar el cursor sobre las etiquetas
     label_socios.bind("<Enter>", lambda event: label_socios.config(bg="#003366"))
@@ -418,27 +308,6 @@ def inicio():
     mostrar_contenido("Administración de socios", contenido_frame)
 
     ventana.mainloop()
-
-# Función para cargar imágenes
-def cargar_imagen(ruta):
-    return PhotoImage(file=ruta)
-
-def es_numero(valor):
-    try:
-        float(valor)
-        return True
-    except ValueError:
-        return False
-
-def btn_registrar_socio(entry_nombre):
-    nombre = entry_nombre.get()
-    # Validar el nombre antes de registrar al socio
-    if validar_nombre(nombre):
-        biblioteca: Biblioteca = Biblioteca()
-        biblioteca.aggSocio(nombre)
-        # Mostrar pop-up de éxito
-        messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
-
 
 # Función para mostrar el contenido en el frame
 def mostrar_contenido(opcion, frame):
@@ -503,6 +372,19 @@ def mostrar_contenido(opcion, frame):
         # Botón registrar Devolucion
         boton_registar_devolucion = ttk.Button(frame_submenu, text="Registrar Devolucion", command=lambda: mostrar_contenido_pestana("Registrar Devolucion", frame_submenu2), style="Estilo.TButton")
         boton_registar_devolucion.pack(fill="x", side="left", padx = 10)
+    
+    elif opcion == "Reportes":
+        # Estilo para los botones del submenú
+        estilo_boton_submenu = ttk.Style()
+        estilo_boton_submenu.configure("Estilo.TButton", background="lightblue", foreground="black", padding=(10, 5, 10, 5), font=('Helvetica', 10, 'bold'))
+
+        # Botón Registrar Prestamo
+        boton_registrar_prestamo = ttk.Button(frame_submenu, text="Reportes", command=lambda: mostrar_contenido_pestana("REPORTES", frame_submenu2), style="Estilo.TButton")
+        boton_registrar_prestamo.pack(side="left", padx = 10)
+
+        # Botón registrar Devolucion
+        boton_registar_devolucion = ttk.Button(frame_submenu, text="Reportes", command=lambda: mostrar_contenido_pestana("Registrar Devolucion", frame_submenu2), style="Estilo.TButton")
+        boton_registar_devolucion.pack(fill="x", side="left", padx = 10)
         
 def mostrar_contenido_pestana(opcion, frame):
     for widget in frame.winfo_children():
@@ -519,8 +401,8 @@ def mostrar_contenido_pestana(opcion, frame):
         
     if opcion == "Registrar Socio":
         
-        label_nombre = ttk.Label(frame, text="Nombre:", style="Estilo.TLabel")
-        label_nombre.pack()
+        label_codigo_libro = ttk.Label(frame, text="Nombre:", style="Estilo.TLabel")
+        label_codigo_libro.pack()
 
         entry_nombre = ttk.Entry(frame, style="Estilo.TEntry")
         entry_nombre.pack(fill="x", pady=5)
@@ -529,8 +411,8 @@ def mostrar_contenido_pestana(opcion, frame):
         boton_registrar.pack(fill="x", pady=10)
     
     elif opcion == "Consultar Socio":
-        label_nombre = ttk.Label(frame, text="Número de Socio:", style="Estilo.TLabel")
-        label_nombre.pack()
+        label_codigo_libro = ttk.Label(frame, text="Número de Socio:", style="Estilo.TLabel")
+        label_codigo_libro.pack()
 
         entry_numeroSocio = ttk.Entry(frame, style="Estilo.TEntry")
         entry_numeroSocio.pack(fill="x", pady=5)
@@ -540,8 +422,8 @@ def mostrar_contenido_pestana(opcion, frame):
     
     elif opcion == "Eliminar Socio":
 
-        label_nombre = ttk.Label(frame, text="Número de Socio:", style="Estilo.TLabel")
-        label_nombre.pack()
+        label_codigo_libro = ttk.Label(frame, text="Número de Socio:", style="Estilo.TLabel")
+        label_codigo_libro.pack()
 
         entry_nombre = ttk.Entry(frame, style="Estilo.TEntry")
         entry_nombre.pack(fill="x", pady=5)
@@ -551,8 +433,8 @@ def mostrar_contenido_pestana(opcion, frame):
     
     elif opcion == "Registrar Libro":
 
-        label_nombre = ttk.Label(frame, text="Nombre:", style="Estilo.TLabel")
-        label_nombre.pack()
+        label_codigo_libro = ttk.Label(frame, text="Nombre:", style="Estilo.TLabel")
+        label_codigo_libro.pack()
 
         entry_nombre = ttk.Entry(frame, style="Estilo.TEntry")
         entry_nombre.pack(fill="x", pady=5)
@@ -563,22 +445,22 @@ def mostrar_contenido_pestana(opcion, frame):
         entry_precio_reposicion = ttk.Entry(frame, style="Estilo.TEntry")
         entry_precio_reposicion.pack(fill="x", pady=5)
 
-        boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: btn_registrar_libro(entry_nombre, entry_precio_reposicion=entry_precio_reposicion), style="Estilo.TButton")
+        boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: btn_registrar_libro(entry_nombre, entry_precio_reposicion), style="Estilo.TButton")
         boton_registrar.pack(fill="x", pady=10)
         
     elif opcion == "Consultar Libro":
-        label_nombre = ttk.Label(frame, text="Codigo de Libro:", style="Estilo.TLabel")
-        label_nombre.pack()
+        label_codigo_libro = ttk.Label(frame, text="Codigo de Libro:", style="Estilo.TLabel")
+        label_codigo_libro.pack()
 
-        entry_nombreLibro = ttk.Entry(frame, style="Estilo.TEntry")
-        entry_nombreLibro.pack(fill="x", pady=5)
+        entry_codigo_libro = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_codigo_libro.pack(fill="x", pady=5)
 
-        boton_consultar = ttk.Button(frame, text="Consultar", command=lambda: btn_consultar_libro(entry_nombreLibro, frame), style="Estilo.TButton")
+        boton_consultar = ttk.Button(frame, text="Consultar", command=lambda: btn_consultar_libro(entry_codigo_libro, frame), style="Estilo.TButton")
         boton_consultar.pack(fill="x", pady=10)
     
     elif opcion == "Eliminar Libro":
-        label_nombre = ttk.Label(frame, text="Codigo de Libro:", style="Estilo.TLabel")
-        label_nombre.pack()
+        label_codigo_libro = ttk.Label(frame, text="Codigo de Libro:", style="Estilo.TLabel")
+        label_codigo_libro.pack()
 
         entry_nombre = ttk.Entry(frame, style="Estilo.TEntry")
         entry_nombre.pack(fill="x", pady=5)

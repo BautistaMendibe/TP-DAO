@@ -16,8 +16,8 @@ class Biblioteca:
         self._libros.append(libro)
         insertar_libro(libro)
 
-    def consultarLibro(self, titulo):
-        libro = buscar_libros_por_id(titulo)
+    def consultarLibro(self, codigo):
+        libro = buscar_libros_por_codigo(codigo)
         return libro
     
     def eliminarLibro(self, codigo: int):
