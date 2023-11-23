@@ -205,11 +205,17 @@ def btn_registrar_prestamo(entry_numero_socio: Entry, entry_codigo_libro: Entry,
     codigo_libro = entry_codigo_libro.get()
     dias_devolucion = entry_dias.get()
     
+    
     if validar_numero_socio(numero_socio) and validar_codigo_libro(codigo_libro) and validar_dias_devolución(dias_devolucion):
         biblioteca: Biblioteca = Biblioteca()
         if biblioteca.registrarPrestamo(numero_socio, codigo_libro, dias_devolucion):
+            
+            socio: Socio = biblioteca.consultarSocio(numero_socio)
+            libro: Libro = biblioteca.consultarLibro(codigo_libro)
+            
             # Mostrar pop-up de éxito
-            messagebox.showinfo("Registrar Préstamo", "El préstamo se ha registrado con éxito")
+            messagebox.showinfo("Registrar Préstamo", f"El préstamo del libro {libro.titulo} al Socio {socio.nombre} se ha registrado con éxito")
+            
             entry_numero_socio.delete(0, END)
             entry_codigo_libro.delete(0, END)
             entry_dias.delete(0, END)

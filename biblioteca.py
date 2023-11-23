@@ -58,7 +58,7 @@ class Biblioteca:
         libro: Libro = buscar_libro_por_codigo(codigoLibro)
 
         # Si el libro y el socio existen se registra el prestamo, si no no
-        if (libro != None and socio!= None):
+        if (libro != None and socio!= None and libro.estado == "Disponible"):
             fecha_actual = datetime.now().replace(microsecond=0)
 
             prestamo: Prestamo = Prestamo(diasDevolucion, libro, socio)
@@ -67,9 +67,12 @@ class Biblioteca:
             return True
         else:
             if libro == None:
-                messagebox.showerror("Error", "No se pudo registrar el préstamo. El libro no existe")
-                
+                messagebox.showerror("Error", "No se pudo registrar el préstamo. El Libro no existe")
+                return False
+            
+            elif libro.estado != "Disponible":
+                messagebox.showerror("Error", f"No se pudo registrar el préstamo. El libro {libro.titulo} no está disponible")
                 return False
             else:
-                messagebox.showerror("Error", "No se pudo registrar el préstamo. El socio no existe")
+                messagebox.showerror("Error", "No se pudo registrar el préstamo. El Socio no existe")
                 return False
