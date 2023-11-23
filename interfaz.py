@@ -147,13 +147,15 @@ def btn_registrar_libro(entry_nombre: Entry, entry_precio_reposicion: Entry):
     if nombre:
         if validar_precio_libro(precio_reposicion):
             biblioteca: Biblioteca = Biblioteca()
-            biblioteca.aggLibro(nombre, precio_reposicion)
-            
-            # Mostrar pop-up de éxito
-            messagebox.showinfo("Registrar libro", "El libro se ha registrado con éxito")
-            
-            entry_nombre.delete(0, END)
-            entry_precio_reposicion.delete(0, END)
+            if biblioteca.aggLibro(nombre, precio_reposicion):
+                
+                # Mostrar pop-up de éxito
+                messagebox.showinfo("Registrar libro", "El libro se ha registrado con éxito")
+                
+                entry_nombre.delete(0, END)
+                entry_precio_reposicion.delete(0, END)
+            else:
+                messagebox.showerror("Error", "Ya existe un libro con el mismo título en la base de datos.")
     else:
         messagebox.showerror("Error", "Por favor, ingrese un nombre.")
         

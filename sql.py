@@ -18,6 +18,13 @@ def insertar_libro(libro):
     query = f"INSERT INTO libros (titulo, precioReposicion, estado, borrado) " \
             f"VALUES ('{titulo}', {precio_reposicion}, '{estado}', 0)"
     db_manager.actualizar(query)
+    
+def existe_libro_con_titulo(titulo):
+    # Verificar si ya existe un libro con el mismo título en la base de datos
+    db_manager = ManagerDataBase()
+    query = f"SELECT * FROM libros WHERE titulo = '{titulo}' AND borrado = 0"
+    resultado = db_manager.consultar(query)
+    return len(resultado) > 0
 
 def actualizar_libro(libro):
     db_manager = ManagerDataBase()
