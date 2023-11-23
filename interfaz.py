@@ -357,6 +357,9 @@ def mostrar_contenido(opcion, frame):
         boton_eliminar_socio = ttk.Button(frame_submenu, text="Eliminar Socio", command=lambda: mostrar_contenido_pestana("Eliminar Socio", frame_submenu2), style="Estilo.TButton")
         boton_eliminar_socio.pack(fill="y", side="left", padx = 10)
 
+        # Mostrar por defecto el contenido de "Registrar socios"
+        mostrar_contenido_pestana("Registrar Socio", frame_submenu2)
+
     elif opcion == "Administración de libros":
         # Estilo para los botones del submenú
         estilo_boton_submenu = ttk.Style()
