@@ -1,3 +1,4 @@
+from tkinter import messagebox
 from libro import Libro
 from socio import Socio
 from prestamo import Prestamo
@@ -57,10 +58,18 @@ class Biblioteca:
         libro: Libro = buscar_libro_por_codigo(codigoLibro)
 
         # Si el libro y el socio existen se registra el prestamo, si no no
-        if (libro.codigo != None and socio.nombre != None):
-            fecha_actual = datetime.now()
+        if (libro != None and socio!= None):
+            fecha_actual = datetime.now().replace(microsecond=0)
 
             prestamo: Prestamo = Prestamo(diasDevolucion, libro, socio)
             registrar_prestamo(numSocio, libro.codigo, fecha_actual, diasDevolucion)
             actualizar_estado_libro(libro, "Prestado")
-        
+            return True
+        else:
+            if libro == None:
+                messagebox.showerror("Error", "No se pudo registrar el préstamo. El libro no existe")
+                
+                return False
+            else:
+                messagebox.showerror("Error", "No se pudo registrar el préstamo. El socio no existe")
+                return False

@@ -7,7 +7,7 @@ class Prestamo:
         if idPrestamo is None:
             # Inicialización cuando no se proporciona el ID del préstamo
             self._idPrestamo = None
-            self._fechaPrestamo = datetime.now().date()
+            self._fechaPrestamo = datetime.now().replace(microsecond=0).date()
         else:
             # Inicialización cuando se proporciona el ID del préstamo
             self._idPrestamo = idPrestamo

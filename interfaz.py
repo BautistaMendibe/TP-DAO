@@ -59,14 +59,26 @@ def validar_codigo_libro(codigo_libro):
     return True
 
 def validar_precio_libro(precio_libro):
-    # Verificar si el número de socio no está vacío
+    # Verificar si el precio del libro no está vacío
     if not precio_libro:
         messagebox.showerror("Error", "Por favor, ingrese un precio de reposición para el libro")
         return False
-
-    # Verificar si el número de socio contiene solo dígitos
-    if not precio_libro.isdigit():
+    
+    try:
+        float(precio_libro)
+    except ValueError:
         messagebox.showerror("Error", "El precio de reposición del libro debe ser un valor numérico.")
+        return False
+
+    return True
+
+def validar_dias_devolución(dias_devolucion):
+    if not dias_devolucion:
+        messagebox.showerror("Error", "Por favor, ingrese la cantidad de días de devolución pactadas para el libro")
+        return False
+    
+    if not dias_devolucion.isdigit():
+        messagebox.showerror("Error", "La cantidad de días de devolución debe ser un valor numérico.")
         return False
 
     return True
@@ -185,16 +197,22 @@ def btn_eliminar_libro(entry_codigo_libro: Entry):
             messagebox.showinfo("Eliminar Libro",  f"El libro {libro.titulo} se ha eliminado con éxito.")
             entry_codigo_libro.delete(0, END)
         else:
-            messagebox.showinfo("Eliminar socio", "El libro no existe.")
+            messagebox.showinfo("Eliminar Libro", "El libro no existe.")
 
 
 def btn_registrar_prestamo(entry_numero_socio: Entry, entry_codigo_libro: Entry, entry_dias: Entry):
     numero_socio = entry_numero_socio.get()
     codigo_libro = entry_codigo_libro.get()
     dias_devolucion = entry_dias.get()
-
-    biblioteca: Biblioteca = Biblioteca()
-    biblioteca.registrarPrestamo(numero_socio, codigo_libro, dias_devolucion)
+    
+    if validar_numero_socio(numero_socio) and validar_codigo_libro(codigo_libro) and validar_dias_devolución(dias_devolucion):
+        biblioteca: Biblioteca = Biblioteca()
+        if biblioteca.registrarPrestamo(numero_socio, codigo_libro, dias_devolucion):
+            # Mostrar pop-up de éxito
+            messagebox.showinfo("Registrar Préstamo", "El préstamo se ha registrado con éxito")
+            entry_numero_socio.delete(0, END)
+            entry_codigo_libro.delete(0, END)
+            entry_dias.delete(0, END)
 
 # Función para crear la interfaz
 def inicio():
@@ -452,7 +470,7 @@ def mostrar_contenido_pestana(opcion, frame):
         entry_codigo_libro = ttk.Entry(frame, style="Estilo.TEntry")
         entry_codigo_libro.pack()
 
-        label_dias = ttk.Label(frame, text="Días para devolución:", style="Estilo.TLabel")
+        label_dias = ttk.Label(frame, text="Días pactados para devolución:", style="Estilo.TLabel")
         label_dias.pack()
 
         entry_dias = ttk.Entry(frame, style="Estilo.TEntry")
