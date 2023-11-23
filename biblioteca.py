@@ -21,7 +21,8 @@ class Biblioteca:
         return libro
     
     def eliminarLibro(self, codigo: int):
-        return eliminar_libro(codigo)
+        libro = eliminar_libro(codigo)
+        return libro
     
     def consultarSocio(self, numSocio: int):
         socio = consultar_socio(numSocio)
@@ -33,8 +34,8 @@ class Biblioteca:
         insertar_socio(socio)
     
     def eliminarSocio(self, numeroSocio: int):
-        return eliminar_socio(numeroSocio)
-    
+        socio = eliminar_socio(numeroSocio)
+        return socio
     def librosCadEstado(self):
         return listar_cantidad_libros_estado()
     

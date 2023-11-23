@@ -30,11 +30,15 @@ def actualizar_libro(libro):
 
 def eliminar_libro(codigo):
     db_manager = ManagerDataBase()
-    querynombre = f"SELECT * FROM libros WHERE codigo = {codigo}"
-    query = f"UPDATE libros SET borrado = 1 WHERE codigo = {codigo}"
-    nombre = db_manager.consultar(querynombre)
-    db_manager.actualizar(query)
-    return nombre[0][1]
+    query = f"SELECT * FROM libros WHERE codigo = {codigo}"
+    eliminacion = f"UPDATE libros SET borrado = 1 WHERE codigo = {codigo}"
+    resultados = db_manager.consultar(query)
+    if not resultados or (len(resultados) > 0 and resultados[0][4] == 1):
+        return None
+    libro_encontrado = resultados[0]
+    libro: Libro = Libro(titulo= libro_encontrado[1], precioReposicion=libro_encontrado[2], codigo=libro_encontrado[0], estado=libro_encontrado[3])
+    db_manager.actualizar(eliminacion)
+    return libro
 
 def buscar_libros_por_titulo(titulo):
     query = f"SELECT * FROM libros WHERE titulo = '{titulo}'"
@@ -75,11 +79,15 @@ def actualizar_socio(socio):
 
 def eliminar_socio(numeroSocio):
     db_manager = ManagerDataBase()
-    querynombre = f"SELECT * FROM socios WHERE numeroSocio = {numeroSocio}"
-    query = f"UPDATE socios SET borrado = 1 WHERE numeroSocio = {numeroSocio}"
-    nombre = db_manager.consultar(querynombre)
-    db_manager.actualizar(query)
-    return nombre[0][1]
+    query = f"SELECT * FROM socios WHERE numeroSocio = {numeroSocio}"
+    eliminacion = f"UPDATE socios SET borrado = 1 WHERE numeroSocio = {numeroSocio}"
+    resultados = db_manager.consultar(query)
+    if not resultados or (len(resultados) > 0 and resultados[0][2] == 1):
+        return None
+    socio_encontrado = resultados[0]
+    socio: Socio = Socio(numeroSocio=socio_encontrado[0], nombre=socio_encontrado[1])
+    db_manager.actualizar(eliminacion)
+    return socio
 
 def consultar_socio(numeroSocio):
     query = f"SELECT * FROM socios WHERE numeroSocio = {numeroSocio}"

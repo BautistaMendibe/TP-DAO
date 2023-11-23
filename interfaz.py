@@ -119,9 +119,14 @@ def btn_eliminar_socio(entry_numeroSocio: Entry):
     # Validar el número de socio antes de eliminar al socio
     if validar_numero_socio(numeroSocio):
         biblioteca: Biblioteca = Biblioteca()
-        nombre = biblioteca.eliminarSocio(numeroSocio)
-        messagebox.showinfo("Eliminar Socio",  f"El socio {nombre} se ha eliminado con éxito.")
-        entry_numeroSocio.delete(0, END)
+        socio = biblioteca.eliminarSocio(numeroSocio)
+        # Verificar si el socio existe antes de mostrar la información
+        if socio:
+            messagebox.showinfo("Eliminar Socio",  f"El socio {socio.nombre} se ha eliminado con éxito.")
+            entry_numeroSocio.delete(0, END)
+        else:
+            messagebox.showinfo("Eliminar socio", "El socio no existe.")
+
 
 def btn_registrar_libro(entry_nombre: Entry, entry_precio_reposicion: Entry):
     nombre = entry_nombre.get()
@@ -174,9 +179,15 @@ def btn_eliminar_libro(entry_codigo_libro: Entry):
     codigo_libro = entry_codigo_libro.get()
     if validar_codigo_libro(codigo_libro):
         biblioteca: Biblioteca = Biblioteca()
-        eliminado = biblioteca.eliminarLibro(codigo_libro)
-        messagebox.showinfo("Eliminar Libro", f"Libro {eliminado} eliminado con éxito")
-        entry_codigo_libro.delete(0, END)
+        libro = biblioteca.eliminarLibro(codigo_libro)
+        # Verificar si el socio existe antes de mostrar la información
+        if libro:
+            messagebox.showinfo("Eliminar Libro",  f"El libro {libro.titulo} se ha eliminado con éxito.")
+            entry_codigo_libro.delete(0, END)
+        else:
+            messagebox.showinfo("Eliminar socio", "El libro no existe.")
+
+        
 
 def registrar_prestamo():
     ventana_registro_prestamo = tk.Toplevel()
