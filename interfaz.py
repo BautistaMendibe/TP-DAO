@@ -457,6 +457,8 @@ def mostrar_contenido(opcion, frame):
         # Botón registrar Devolucion
         boton_registar_devolucion = ttk.Button(frame_submenu, text="Registrar Devolucion", command=lambda: mostrar_contenido_pestana("Registrar Devolucion", frame_submenu2), style="Estilo.TButton")
         boton_registar_devolucion.pack(fill="x", side="left", padx = 10)
+
+        mostrar_contenido_pestana("Registrar Prestamo", frame_submenu2)
     
     elif opcion == "Reportes":
         # Estilo para los botones del submenú
