@@ -397,40 +397,44 @@ def btn_prestamo_socio(entry, frame):
     biblioteca = Biblioteca()
     socio = biblioteca.consultarSocio(codigo)
 
+    # Limpiar el contenido actual del frame
+    for widget in frame.winfo_children():
+        widget.destroy()
+
     if socio is not None:
         prestamos = biblioteca.prestamosDeSocio(codigo)
 
         if prestamos:
-            root = tk.Tk()
-            root.title("Tabla de Préstamos")
-
-            tree = ttk.Treeview(root, columns=("ID Prestamo", "Fecha Prestamo", "Dias Devolucion", "Devuelto",
-                                              "Título Libro", "Precio Reposicion", "Codigo Libro", "Estado Libro"),
+            # Crear un árbol para mostrar la tabla
+            tree = ttk.Treeview(frame, columns=("ID Prestamo", "Fecha Prestamo", "Dias Devolucion", "Devuelto",
+                                                "Título Libro", "Precio Reposicion", "Codigo Libro", "Estado Libro"),
                                 show="headings")
 
-            tree.heading("ID Prestamo", text="ID Prestamo")
-            tree.heading("Fecha Prestamo", text="Fecha Prestamo")
-            tree.heading("Dias Devolucion", text="Dias Devolucion")
-            tree.heading("Devuelto", text="Devuelto")
-            tree.heading("Título Libro", text="Título Libro")
-            tree.heading("Precio Reposicion", text="Precio Reposicion")
-            tree.heading("Codigo Libro", text="Codigo Libro")
-            tree.heading("Estado Libro", text="Estado Libro")
+            # Configurar las columnas
+            columnas = ["ID Prestamo", "Fecha Prestamo", "Dias Devolucion", "Devuelto", "Título Libro", "Precio Reposicion",
+                        "Codigo Libro", "Estado Libro"]
+            for col in columnas:
+                tree.heading(col, text=col)
 
+            # Insertar los datos en el árbol
             for prestamo in prestamos:
-                tree.insert("", "end", values=(prestamo.idPrestamo, prestamo.fechaPrestamo, prestamo.diasDevolucion,
-                                               prestamo.devuelto, prestamo.libro.titulo, prestamo.libro.precioReposicion,
-                                               prestamo.libro.codigo, prestamo.libro.estado))
+                # Asegúrate de acceder correctamente a los atributos del objeto Prestamo
+                tree.insert("", "end", values=(prestamo._idPrestamo, prestamo._fechaPrestamo, prestamo._diasDevolucion,
+                                               prestamo._devuelto, prestamo._libro.titulo, prestamo._libro.precioReposicion,
+                                               prestamo._libro.codigo, prestamo._libro.estado))
 
+            # Estilo para la tabla
             style = ttk.Style()
             style.configure("Treeview", font=('Arial', 12), rowheight=25)
 
+            # Configurar tamaño de la tabla
             tree.pack(expand=True, fill=tk.BOTH)
-            root.mainloop()
         else:
-            messagebox.showinfo("Información", "No hay préstamos para este socio.")
+            mensaje_label = tk.Label(frame, text="No hay préstamos para este socio.", font=('Arial', 14))
+            mensaje_label.pack()
     else:
-        messagebox.showerror("Error", "Por favor, ingrese el código de un socio registrado.")
+        mensaje_label = tk.Label(frame, text="Por favor, ingrese el código de un socio registrado.", font=('Arial', 14))
+        mensaje_label.pack()
 
 def btn_prestamos_demorados(frame):
     biblioteca: Biblioteca = Biblioteca()
