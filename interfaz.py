@@ -260,7 +260,7 @@ def inicio():
     icono_socios = cargar_imagen("Imagenes/icono_socios.png")
     icono_libros = cargar_imagen("Imagenes/icono_libros.png")
     icono_prestamos = cargar_imagen("Imagenes/pedir-prestamo.png")
-    icono_reportes = cargar_imagen("Imagenes/icono_reportes.png")
+    icono_reportes = cargar_imagen("Imagenes/reportes.png")
 
 
     # Crear el encabezado con una imagen
@@ -269,20 +269,20 @@ def inicio():
     label_encabezado.pack(pady=10)
 
     # Crear etiquetas con íconos en el menú sin margen horizontal
-    label_socios = Label(menu_frame, image=icono_socios, text="Administración de socios", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
-    label_socios.pack(pady=10)
+    label_socios = Label(menu_frame, image=icono_socios, text="  Administración de socios", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
+    label_socios.pack(fill=X, expand=True, pady=10)
     label_socios.bind("<Button-1>", lambda event: mostrar_contenido("Administración de socios", contenido_frame))
 
-    label_libros = Label(menu_frame, image=icono_libros, text="Administración de libros", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
-    label_libros.pack(pady=10)
+    label_libros = Label(menu_frame, image=icono_libros, text="  Administración de libros", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
+    label_libros.pack(fill=X, expand=True, pady=10)
     label_libros.bind("<Button-1>", lambda event: mostrar_contenido("Administración de libros", contenido_frame))
 
-    label_prestamos = Label(menu_frame, image=icono_prestamos, text="Registro de préstamos \ny devoluciones", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
-    label_prestamos.pack(pady=10)
+    label_prestamos = Label(menu_frame, image=icono_prestamos, text="  Registro de préstamos \ny devoluciones", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
+    label_prestamos.pack(fill=X, expand=True, pady=10)
     label_prestamos.bind("<Button-1>", lambda event: mostrar_contenido("Registro de préstamos y devoluciones", contenido_frame))
     
-    label_reportes = Label(menu_frame, image=icono_reportes, text="Reportes", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
-    label_reportes.pack(pady=10)
+    label_reportes = Label(menu_frame, image=icono_reportes, text="  Reportes                          ", compound="left", bg="#1f3a6e", fg="white", padx=0, highlightthickness=0, bd=0)
+    label_reportes.pack(fill=X, expand=True, pady=10)
     label_reportes.bind("<Button-1>", lambda event: mostrar_contenido("Reportes", contenido_frame))
 
     # Configurar eventos al pasar el cursor sobre las etiquetas
@@ -294,6 +294,9 @@ def inicio():
 
     label_prestamos.bind("<Enter>", lambda event: label_prestamos.config(bg="#003366"))
     label_prestamos.bind("<Leave>", lambda event: label_prestamos.config(bg="#1f3a6e"))
+
+    label_reportes.bind("<Enter>", lambda event: label_reportes.config(bg="#003366"))
+    label_reportes.bind("<Leave>", lambda event: label_reportes.config(bg="#1f3a6e"))
 
     # Texto con información del grupo debajo de las opciones del menú
     info_grupo = """
