@@ -405,6 +405,94 @@ def btn_socios_piden_libro(entry, frame):
     else:
         messagebox.showerror("Error", "Por favor, ingrese el titulo de un libro que este registrado")
     
+def btn_prestamo_socio(entry, frame):
+    codigo = entry.get()
+    
+    biblioteca = Biblioteca()
+    socio = biblioteca.consultarSocio(codigo)
+
+    # Limpiar el contenido actual del frame
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+    if socio is not None:
+        prestamos = biblioteca.prestamosDeSocio(codigo)
+
+        if prestamos:
+            # Crear un árbol para mostrar la tabla
+            tree = ttk.Treeview(frame, columns=("ID Prestamo", "Fecha Prestamo", "Dias Devolucion", "Devuelto",
+                                                "Título Libro", "Precio Reposicion", "Codigo Libro", "Estado Libro"),
+                                show="headings")
+
+            # Configurar las columnas
+            columnas = ["ID Prestamo", "Fecha Prestamo", "Dias Devolucion", "Devuelto", "Título Libro", "Precio Reposicion",
+                        "Codigo Libro", "Estado Libro"]
+            for col in columnas:
+                tree.heading(col, text=col)
+
+            # Insertar los datos en el árbol
+            for prestamo in prestamos:
+                # Asegúrate de acceder correctamente a los atributos del objeto Prestamo
+                tree.insert("", "end", values=(prestamo._idPrestamo, prestamo._fechaPrestamo, prestamo._diasDevolucion,
+                                               prestamo._devuelto, prestamo._libro.titulo, prestamo._libro.precioReposicion,
+                                               prestamo._libro.codigo, prestamo._libro.estado))
+
+            # Estilo para la tabla
+            style = ttk.Style()
+            style.configure("Treeview", font=('Arial', 12), rowheight=25)
+
+            # Configurar tamaño de la tabla
+            tree.pack(expand=True, fill=tk.BOTH)
+        else:
+            mensaje_label = tk.Label(frame, text="No hay préstamos para este socio.", font=('Arial', 14))
+            mensaje_label.pack()
+    else:
+        mensaje_label = tk.Label(frame, text="Por favor, ingrese el código de un socio registrado.", font=('Arial', 14))
+        mensaje_label.pack()
+
+def btn_prestamos_demorados(frame):
+    biblioteca: Biblioteca = Biblioteca()
+    resultados = biblioteca.listarPrestamosDemorados()
+
+    # Limpiar el contenido actual del frame
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+    # Crear un árbol para mostrar la tabla
+    tree = ttk.Treeview(frame, columns=("ID Prestamo", "Fecha Prestamo", "Dias Devolucion",
+                                        "Devuelto", "Título Libro", "Precio Reposicion",
+                                        "Codigo Libro", "Estado Libro", "Número de Socio",
+                                        "Nombre Socio"), show="headings")
+
+    # Configurar las columnas
+    columnas = ["ID Prestamo", "Fecha Prestamo", "Dias Devolucion", "Devuelto", "Título Libro", "Precio Reposicion",
+                "Codigo Libro", "Estado Libro", "Número de Socio", "Nombre Socio"]
+    for col in columnas:
+        tree.heading(col, text=col)
+
+    # Insertar los datos en el árbol
+    if resultados:
+        for prestamo in resultados:
+            tree.insert("", "end", values=(prestamo.idPrestamo, prestamo.fechaPrestamo, prestamo.diasDevolucion,
+                                           prestamo.devuelto, prestamo.libro.titulo, prestamo.libro.precioReposicion,
+                                           prestamo.libro.codigo, prestamo.libro.estado, prestamo.socio.numeroSocio,
+                                           prestamo.socio.nombre))
+    else:
+        # Mostrar mensaje si no hay préstamos demorados
+        tree.insert("", "end", values=["No hay préstamos demorados"])
+
+    # Estilo para la tabla
+    style = ttk.Style()
+    style.configure("Treeview", font=('Arial', 12), rowheight=25)
+
+    # Configurar tamaño de la tabla
+    tree.pack(expand=True, fill=tk.BOTH)
+
+    # Mostrar mensaje si no hay préstamos demorados
+    if not resultados:
+        mensaje_label = tk.Label(frame, text="No hay préstamos demorados.", font=('Arial', 14))
+        mensaje_label.pack()
+
 # Función para mostrar el contenido en el frame
 def mostrar_contenido(opcion, frame):
     # Limpiar el contenido actual
@@ -492,6 +580,15 @@ def mostrar_contenido(opcion, frame):
         # Boton muestra los nombres que solicictaron un libro
         boton_socio_libro = ttk.Button(frame_submenu, text="Socios que pidieron libro", command=lambda: mostrar_contenido_pestana("Socios que pidieron libro", frame_submenu2), style="Estilo.TButton")
         boton_socio_libro.pack(fill="x", side="bottom", padx = 10)
+        
+        # Boton muestra los prestamos de un socio
+        boton_socio_prestamo = ttk.Button(frame_submenu, text="Prestamos de un Socio", command=lambda: mostrar_contenido_pestana("Prestamos de un Socio", frame_submenu2), style="Estilo.TButton")
+        boton_socio_prestamo.pack(fill="x", side="bottom", padx = 10)
+        
+        # Boton muestra prestamos demorados
+        boton_prestamos_Demorados = ttk.Button(frame_submenu, text="Prestamos Demorados", command=lambda: btn_prestamos_demorados(frame_submenu2), style="Estilo.TButton")
+        boton_prestamos_Demorados.pack(fill="x", side="bottom", padx = 10)
+        
         
 def mostrar_contenido_pestana(opcion, frame):
     for widget in frame.winfo_children():
@@ -622,6 +719,16 @@ def mostrar_contenido_pestana(opcion, frame):
         entry_nombre_libro.pack(fill="x", pady=5)
 
         boton_consultar = ttk.Button(frame, text="Buscar", command=lambda: btn_socios_piden_libro(entry_nombre_libro, frame), style="Estilo.TButton")
+        boton_consultar.pack(fill="x", pady=10)
+        
+    elif opcion == "Prestamos de un Socio":
+        label_id_socio = ttk.Label(frame, text="Número de Socio:", style="Estilo.TLabel")
+        label_id_socio.pack()
+
+        entry_id_socio = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_id_socio.pack(fill="x", pady=5)
+
+        boton_consultar = ttk.Button(frame, text="Buscar", command=lambda: btn_prestamo_socio(entry_id_socio, frame), style="Estilo.TButton")
         boton_consultar.pack(fill="x", pady=10)
     
 
