@@ -33,7 +33,7 @@ class Biblioteca:
         insertar_socio(socio)
     
     def eliminarSocio(self, numeroSocio: int):
-        eliminar_socio(numeroSocio)
+        return eliminar_socio(numeroSocio)
     
     def librosCadEstado(self):
         return listar_cantidad_libros_estado()

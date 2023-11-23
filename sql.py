@@ -62,8 +62,11 @@ def actualizar_socio(socio):
 
 def eliminar_socio(numeroSocio):
     db_manager = ManagerDataBase()
+    querynombre = f"SELECT * FROM socios WHERE numeroSocio = {numeroSocio}"
     query = f"UPDATE socios SET borrado = 1 WHERE numeroSocio = {numeroSocio}"
+    nombre = db_manager.consultar(querynombre)
     db_manager.actualizar(query)
+    return nombre[0][1]
 
 def consultar_socio(numeroSocio):
     query = f"SELECT * FROM socios WHERE numeroSocio = {numeroSocio}"
