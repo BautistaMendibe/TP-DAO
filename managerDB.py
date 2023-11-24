@@ -33,7 +33,7 @@ class ManagerDataBase:
         cursor.execute('''CREATE TABLE IF NOT EXISTS prestamos (
             idPrestamo INTEGER PRIMARY KEY AUTOINCREMENT, 
             fechaPrestamo DATE, 
-            diasDevolucion INTEGER, 
+            fechaDevolucion DATE, 
             diasRetraso INTEGER, 
             devuelto BOOLEAN, 
             socio_numeroSocio INTEGER, 

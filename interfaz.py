@@ -65,6 +65,10 @@ def validar_precio_libro(precio_libro):
         messagebox.showerror("Error", "Por favor, ingrese un precio de reposición para el libro")
         return False
     
+    if not precio_libro.isdigit():
+        messagebox.showerror("Error", "El precio de reposición del libro debe ser mayor a 0.")
+        return False
+    
     try:
         float(precio_libro)
     except ValueError:

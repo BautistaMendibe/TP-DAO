@@ -1,3 +1,4 @@
+from datetime import datetime
 from managerDB import ManagerDataBase
 from libro import Libro
 from socio import Socio
@@ -124,12 +125,12 @@ def listar_socios():
 
 # Funciones para la registración de PRESTAMOS y DEVOLUCIONES
 
-def registrar_prestamo(socio_id, libro_id, fecha_prestamo, dias_devolucion):
+def registrar_prestamo(socio_id, libro_id, fecha_prestamo, fecha_devolucion):
     # Conectar a la base de datos
     db_manager = ManagerDataBase()
     # Crear y ejecutar la consulta SQL para registrar un préstamo
-    query = f"INSERT INTO prestamos (socio_numeroSocio, libro_codigo, fechaPrestamo, diasDevolucion, devuelto, borrado, diasRetraso) " \
-            f"VALUES ({socio_id}, {libro_id}, '{fecha_prestamo}', {dias_devolucion}, 0, 0, 0)"
+    query = f"INSERT INTO prestamos (socio_numeroSocio, libro_codigo, fechaPrestamo, fechaDevolucion, devuelto, borrado, diasRetraso) " \
+            f"VALUES ({socio_id}, {libro_id}, '{fecha_prestamo}', '{fecha_devolucion}', 0, 0, 0)"
     db_manager.actualizar(query)
 
 def registrar_devolucion(prestamo_id, fecha_devolucion, dias_retraso):
@@ -203,18 +204,18 @@ def listar_prestamos_demorados():
     for i in resultados:
         libro: Libro = Libro(titulo=i[5], precioReposicion=i[6], codigo=i[4], estado=i[7])
         socio: Socio = Socio(nombre=i[9], numeroSocio=i[8])
-        prestamo: Prestamo = Prestamo(diasDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
+        prestamo: Prestamo = Prestamo(fechaDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
         prestamosDem.append(prestamo)
-        
+
     # Verificar si la lista está vacía y devolver None en ese caso
     if not prestamosDem:
         return None
-        
+
     return prestamosDem
 
 def listar_prestamos_por_socio(numeroSocio):
     db_manager = ManagerDataBase()
-    query = f"SELECT p.idPrestamo, p.fechaPrestamo, p.diasDevolucion, p.devuelto, " \
+    query = f"SELECT p.idPrestamo, p.fechaPrestamo, p.fechaDevolucion, p.devuelto, " \
             f"l.codigo AS codigo_libro, l.titulo AS titulo_libro, l.precioReposicion, l.estado " \
             f"FROM prestamos p " \
             f"INNER JOIN libros l ON p.libro_codigo = l.codigo " \
@@ -225,13 +226,18 @@ def listar_prestamos_por_socio(numeroSocio):
     if resultados is None or not resultados:
         return None
 
+    # Verificar si no hay resultados
+    if resultados is None or not resultados:
+        return None
+
     prestamos = []
     socio = consultar_socio(numeroSocio=numeroSocio)
     for i in resultados:
         libro = Libro(titulo=i[5], precioReposicion=i[6], codigo=i[4], estado=i[7])
-        prestamo = Prestamo(diasDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
+        prestamo = Prestamo(fechaDevolucion=datetime.strptime(i[2], '%Y-%m-%d %H:%M:%S'), libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=datetime.strptime(i[1], '%Y-%m-%d %H:%M:%S'))
         prestamos.append(prestamo)
     return prestamos
+
 
 
 def actualizar_estado_libro(libro: Libro, estado: str):
