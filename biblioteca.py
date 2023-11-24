@@ -41,7 +41,12 @@ class Biblioteca:
     def aggSocio(self, nombre: str):
         socio: Socio = Socio(nombre=nombre)
         self._socios.append(socio)
-        insertar_socio(socio)
+        # Verificar si ya existe un socio con el mismo nombre
+        if existe_socio_con_nombre(nombre):
+            return False
+        else:
+            insertar_socio(socio)
+            return True
     
     def eliminarSocio(self, numeroSocio: int):
         socio = eliminar_socio(numeroSocio)

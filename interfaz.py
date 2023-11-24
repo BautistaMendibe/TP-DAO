@@ -101,10 +101,13 @@ def btn_registrar_socio(entry_nombre: Entry):
     # Validar el nombre antes de registrar al socio
     if validar_nombre(nombre):
         biblioteca: Biblioteca = Biblioteca()
-        biblioteca.aggSocio(nombre)
-        # Mostrar pop-up de éxito
-        messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
-        entry_nombre.delete(0, END)
+        if biblioteca.aggSocio(nombre):
+            # Mostrar pop-up de éxito
+            messagebox.showinfo("Registrar socio", "El socio se ha registrado con éxito.")
+            entry_nombre.delete(0, END)
+        else:
+            messagebox.showerror("Error", "Ya existe un socio con el mismo nombre en la base de datos.")
+           
         
 # Función que se ejecuta al hacer clic en el botón "Consultar"
 def btn_consultar_socio(entry_numeroSocio: Entry, frame):
