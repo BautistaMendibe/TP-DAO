@@ -537,7 +537,6 @@ def mostrar_contenido(opcion, frame):
         boton_eliminar_libro = ttk.Button(frame_submenu, text="Eliminar Libro", command=lambda: mostrar_contenido_pestana("Eliminar Libro", frame_submenu2), style="Estilo.TButton")
         boton_eliminar_libro.pack(fill="x",side="left", padx=10)
 
-        mostrar_contenido_pestana("Registrar Libro", frame_submenu2)
 
     elif opcion == "Registro de préstamos y devoluciones":
         # Estilo para los botones del submenú
