@@ -56,6 +56,9 @@ class Biblioteca:
             
     def prestamosDeSocio(self, numSocio):
         return listar_prestamos_por_socio(numeroSocio=numSocio)
+    
+    def actualizar_estado_libro(libro, estado: str):
+        actualizar_estado_libro(libro, estado)
         
     def registrarPrestamo(self, numSocio: int, codigoLibro: int, diasDevolucion):
 
