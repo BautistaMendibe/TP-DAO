@@ -87,3 +87,16 @@ class Biblioteca:
             else:
                 messagebox.showerror("Error", "No se pudo registrar el préstamo. El Socio no existe")
                 return False
+            
+    def regitrar_extraviado(self):
+        prestamos = listar_prestamos_demorados()
+        # Verificar si la lista está vacía
+        if prestamos is not None:
+            for prestamo in prestamos:
+                if prestamo.diasRetraso >= 30:
+                    actualizar_estado_libro(prestamo.libro, "Extraviado")
+                prestamo.extraviado()
+            return True
+        else:
+            return False
+    

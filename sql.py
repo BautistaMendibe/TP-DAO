@@ -141,12 +141,12 @@ def registrar_devolucion(prestamo_id, fecha_devolucion, dias_retraso):
 
 # Funciones para la actualización de préstamos
 
-def actualizar_prestamo(idPrestamo, fechaPrestamo, diasDevolucion, socio_numeroSocio, libro_codigo, devuelto, diasRetraso):
+def actualizar_prestamo(idPrestamo, fechaPrestamo, fechaDevolucion, socio_numeroSocio, libro_codigo, devuelto, diasRetraso):
     # Conectar a la base de datos
     db_manager = ManagerDataBase()
     
     # Crear y ejecutar la consulta SQL para actualizar un préstamo
-    query = f"UPDATE prestamos SET fechaPrestamo = '{fechaPrestamo}', diasDevolucion = {diasDevolucion}, " \
+    query = f"UPDATE prestamos SET fechaPrestamo = '{fechaPrestamo}', fechaDevolucion = {fechaDevolucion}, " \
             f"socio_numeroSocio = {socio_numeroSocio}, libro_codigo = {libro_codigo}, devuelto = {devuelto}, " \
             f"diasRetraso = {diasRetraso} WHERE idPrestamo = {idPrestamo}"
     db_manager.actualizar(query)
@@ -192,12 +192,12 @@ def solicitantes_por_titulo_libro(titulo):
 
 def listar_prestamos_demorados():
     db_manager = ManagerDataBase()
-    query = "SELECT p.idPrestamo, p.fechaPrestamo, p.diasDevolucion, p.devuelto, " \
+    query = "SELECT p.idPrestamo, p.fechaPrestamo, p.fechaDevolucion, p.devuelto, " \
             "l.codigo AS codigo_libro, l.titulo AS titulo_libro, l.precioReposicion, l.estado, s.numeroSocio, s.nombre AS nombre_socio " \
             "FROM prestamos p " \
             "INNER JOIN libros l ON p.libro_codigo = l.codigo " \
             "INNER JOIN socios s ON p.socio_numeroSocio = s.numeroSocio " \
-            "WHERE p.devuelto = 0 AND DATE('now') > DATE(p.fechaPrestamo, '+' || p.diasDevolucion || ' days')"
+            "WHERE p.devuelto = 0 AND DATE('now') > DATE(p.fechaPrestamo, '+' || p.fechaDevolucion || ' days')"
     resultados = db_manager.consultar(query)
     
     prestamosDem = []

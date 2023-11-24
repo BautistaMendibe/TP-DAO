@@ -440,6 +440,22 @@ def btn_prestamo_socio(entry, frame):
         mensaje_label = tk.Label(frame, text="Por favor, ingrese el código de un socio registrado.", font=('Arial', 14))
         mensaje_label.pack()
 
+def btn_registrar_extravio(frame):
+    biblioteca: Biblioteca = Biblioteca()
+    resultado = biblioteca.regitrar_extraviado()
+    
+    # Crear una etiqueta para mostrar el resultado
+    label_resultado = tk.Label(frame, font=('Arial', 14))
+
+    # Actualizar la etiqueta con el resultado
+    if resultado:
+        label_resultado.config(text="Se actualizaron libros a estado Extraviado.")
+    else:
+        label_resultado.config(text="No hay préstamos demorados para registrar como extraviados.")
+
+    # Empaquetar la etiqueta en el frame
+    label_resultado.pack()
+
 def btn_prestamos_demorados(frame):
     biblioteca: Biblioteca = Biblioteca()
     resultados = biblioteca.listarPrestamosDemorados()
@@ -537,6 +553,9 @@ def mostrar_contenido(opcion, frame):
         boton_eliminar_libro = ttk.Button(frame_submenu, text="Eliminar Libro", command=lambda: mostrar_contenido_pestana("Eliminar Libro", frame_submenu2), style="Estilo.TButton")
         boton_eliminar_libro.pack(fill="x",side="left", padx=10)
 
+        # Botón Registrar Extravio
+        boton_registrar_extravio = ttk.Button(frame_submenu, text="Registrar Extravio", command=lambda: btn_registrar_extravio(frame_submenu2), style="Estilo.TButton")
+        boton_registrar_extravio.pack(fill="x",side="left", padx=10)
 
     elif opcion == "Registro de préstamos y devoluciones":
         # Estilo para los botones del submenú
