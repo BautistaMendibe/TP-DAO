@@ -70,7 +70,11 @@ def validar_precio_libro(precio_libro):
     if not precio_libro.isdigit():
         messagebox.showerror("Error", "El precio de reposición del libro debe ser un valor numérico.")
         return False
-
+    
+    if not precio_libro.isdigit():
+        messagebox.showerror("Error", "El precio de reposición del libro debe ser mayor a 0.")
+        return False
+    
     return True
 
 >>>>>>> Stashed changes
@@ -332,7 +336,12 @@ def btn_consultar_socio(ventana_consultar_socio, entry_numeroSocio: Entry):
 def inicio():
     ventana = Tk()
     ventana.title("Biblioteca UTN-FRC")
+<<<<<<< Updated upstream
     ventana.geometry("800x500")
+=======
+    ventana.geometry("800x600")
+    ventana.configure(bg="lightblue")
+>>>>>>> Stashed changes
 
     barra_menu = Menu(ventana)
 

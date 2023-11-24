@@ -84,13 +84,18 @@ def listar_socios():
 
 # Funciones para la registración de PRESTAMOS y DEVOLUCIONES
 
-def registrar_prestamo(socio_id, libro_id, fecha_prestamo, dias_devolucion):
+def registrar_prestamo(socio_id, libro_id, fecha_prestamo, fecha_devolucion):
     # Conectar a la base de datos
     db_manager = ManagerDataBase()
     
     # Crear y ejecutar la consulta SQL para registrar un préstamo
+<<<<<<< Updated upstream
     query = f"INSERT INTO prestamos (socio_numeroSocio, libro_codigo, fechaPrestamo, diasDevolucion, devuelto) " \
             f"VALUES ({socio_id}, {libro_id}, '{fecha_prestamo}', {dias_devolucion}, 0)"
+=======
+    query = f"INSERT INTO prestamos (socio_numeroSocio, libro_codigo, fechaPrestamo, fechaDevolucion, devuelto, borrado, diasRetraso) " \
+            f"VALUES ({socio_id}, {libro_id}, '{fecha_prestamo}', '{fecha_devolucion}', 0, 0, 0)"
+>>>>>>> Stashed changes
     db_manager.actualizar(query)
 
 def registrar_devolucion(prestamo_id, fecha_devolucion, dias_retraso):
@@ -153,7 +158,23 @@ def listar_prestamos_demorados():
             "INNER JOIN socios s ON p.socio_numeroSocio = s.numeroSocio " \
             "WHERE p.devuelto = 0 AND DATE('now') > DATE(p.fechaPrestamo, '+' || p.diasDevolucion || ' days')"
     resultados = db_manager.consultar(query)
+<<<<<<< Updated upstream
     return resultados
+=======
+    
+    prestamosDem = []
+    for i in resultados:
+        libro: Libro = Libro(titulo=i[5], precioReposicion=i[6], codigo=i[4], estado=i[7])
+        socio: Socio = Socio(nombre=i[9], numeroSocio=i[8])
+        prestamo: Prestamo = Prestamo(fechaDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
+        prestamosDem.append(prestamo)
+        
+    # Verificar si la lista está vacía y devolver None en ese caso
+    if not prestamosDem:
+        return None
+        
+    return prestamosDem
+>>>>>>> Stashed changes
 
 def listar_prestamos_por_socio(numeroSocio):
     db_manager = ManagerDataBase()
@@ -163,4 +184,25 @@ def listar_prestamos_por_socio(numeroSocio):
             f"INNER JOIN libros l ON p.libro_codigo = l.codigo " \
             f"WHERE p.socio_numeroSocio = {numeroSocio}"
     resultados = db_manager.consultar(query)
+<<<<<<< Updated upstream
     return resultados
+=======
+    
+    # Verificar si no hay resultados
+    if resultados is None or not resultados:
+        return None
+
+    prestamos = []
+    socio = consultar_socio(numeroSocio=numeroSocio)
+    for i in resultados:
+        libro = Libro(titulo=i[5], precioReposicion=i[6], codigo=i[4], estado=i[7])
+        prestamo = Prestamo(fechaDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
+        prestamos.append(prestamo)
+    return prestamos
+
+
+def actualizar_estado_libro(libro: Libro, estado: str):
+    db_manager = ManagerDataBase()
+    query = f"UPDATE libros SET estado = '{estado}' WHERE codigo = {libro.codigo}"
+    db_manager.actualizar(query)
+>>>>>>> Stashed changes

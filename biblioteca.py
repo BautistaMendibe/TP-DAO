@@ -1,8 +1,14 @@
 from libro import Libro
 from socio import Socio
+<<<<<<< Updated upstream
 from sql import insertar_socio
 from sql import eliminar_socio
 from sql import consultar_socio
+=======
+from prestamo import Prestamo
+from sql import *
+from datetime import datetime, timedelta
+>>>>>>> Stashed changes
 
 class Biblioteca:
 
@@ -74,5 +80,33 @@ class Biblioteca:
         print(socio)
         socio.listarPrestamos()
         
+<<<<<<< Updated upstream
     def registrarPrestamo(self, diasDevolucion, libro: Libro, socio: Socio):
         socio.agregarPrestamo()
+=======
+    def registrarPrestamo(self, numSocio: int, codigoLibro: int, diasDevolucion):
+
+        socio: Socio = consultar_socio(numSocio)
+        libro: Libro = buscar_libro_por_codigo(codigoLibro)
+        diasDevolucion = int(diasDevolucion)
+        
+        # Si el libro y el socio existen se registra el prestamo, si no no
+        if (libro != None and socio!= None and libro.estado == "Disponible"):
+            fecha_actual = datetime.now().replace(microsecond=0)
+            fecha_devolucion = fecha_actual + timedelta(days=diasDevolucion)
+            #prestamo: Prestamo = Prestamo(diasDevolucion, libro, socio)
+            registrar_prestamo(numSocio, libro.codigo, fecha_actual, fecha_devolucion)
+            actualizar_estado_libro(libro, "Prestado")
+            return True
+        else:
+            if libro == None:
+                messagebox.showerror("Error", "No se pudo registrar el préstamo. El Libro no existe")
+                return False
+            
+            elif libro.estado != "Disponible":
+                messagebox.showerror("Error", f"No se pudo registrar el préstamo. El libro {libro.titulo} no está disponible")
+                return False
+            else:
+                messagebox.showerror("Error", "No se pudo registrar el préstamo. El Socio no existe")
+                return False
+>>>>>>> Stashed changes
