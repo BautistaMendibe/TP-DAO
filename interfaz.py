@@ -266,9 +266,18 @@ def btn_buscar_prestamos_socio(entry_numero_socio: ttk.Entry, frame: ttk.Frame, 
         # Asociar la función on_libro_selected al evento <<ComboboxSelected>>
         combobox_libros.bind("<<ComboboxSelected>>", on_libro_selected) 
 
-def confirmar_devolucion_libro(prestamo: Prestamo):
-    biblioteca = Biblioteca()
-    biblioteca.actualizar_estado_libro(prestamo.libro, "Disponible")
+def confirmar_devolucion_libro(entry_numero_socio, entry_codigo_libro):
+    numero_socio = entry_numero_socio.get()
+    codigo_libro = entry_codigo_libro.get()
+    
+    if validar_numero_socio(numero_socio) and validar_codigo_libro(codigo_libro):
+        biblioteca: Biblioteca = Biblioteca()
+        if biblioteca.registrarDevolucion(numSocio=numero_socio, codigoLibro=codigo_libro):
+            # Mostrar un mensaje de confirmación
+            messagebox.showinfo("Éxito", "Devolución registrada exitosamente.")
+        else:
+            # Mostrar un mensaje de error si la devolución no se pudo registrar
+            messagebox.showerror("Error", "No se pudo registrar la devolución.")
     
         
 # Función para crear la interfaz
@@ -510,13 +519,13 @@ def btn_prestamos_demorados(frame):
         widget.destroy()
 
     # Crear un árbol para mostrar la tabla
-    tree = ttk.Treeview(frame, columns=("ID Prestamo", "Fecha Prestamo", "Fecha Devolucion",
+    tree = ttk.Treeview(frame, columns=("ID Prestamo", "Fecha Prestamo", "Fecha Devolucion", "Dias Retraso",
                                         "Devuelto", "Título Libro", "Precio Reposicion",
                                         "Codigo Libro", "Estado Libro", "Número de Socio",
                                         "Nombre Socio"), show="headings")
 
     # Configurar las columnas
-    columnas = ["ID Prestamo", "Fecha Prestamo", "Fecha Devolucion", "Devuelto", "Título Libro", "Precio Reposicion",
+    columnas = ["ID Prestamo", "Fecha Prestamo", "Fecha Devolucion", "Dias Retraso", "Devuelto", "Título Libro", "Precio Reposicion",
                 "Codigo Libro", "Estado Libro", "Número de Socio", "Nombre Socio"]
     for col in columnas:
         tree.heading(col, text=col)
@@ -524,7 +533,7 @@ def btn_prestamos_demorados(frame):
     # Insertar los datos en el árbol
     if resultados:
         for prestamo in resultados:
-            tree.insert("", "end", values=(prestamo.idPrestamo, prestamo.fechaPrestamo, prestamo.fechaDevolucion,
+            tree.insert("", "end", values=(prestamo.idPrestamo, prestamo.fechaPrestamo, prestamo.fechaDevolucion, prestamo.diasRetraso,
                                            prestamo.devuelto, prestamo.libro.titulo, prestamo.libro.precioReposicion,
                                            prestamo.libro.codigo, prestamo.libro.estado, prestamo.socio.numeroSocio,
                                            prestamo.socio.nombre))
@@ -578,9 +587,6 @@ def mostrar_contenido(opcion, frame):
         boton_eliminar_socio = ttk.Button(frame_submenu, text="Eliminar Socio", command=lambda: mostrar_contenido_pestana("Eliminar Socio", frame_submenu2), style="Estilo.TButton")
         boton_eliminar_socio.pack(fill="y", side="left", padx = 10, pady=10)
 
-        # Mostrar por defecto el contenido de "Registrar socios"
-        mostrar_contenido_pestana("Registrar Socio", frame_submenu2)
-
     elif opcion == "Administración de libros":
         # Estilo para los botones del submenú
         estilo_boton_submenu = ttk.Style()
@@ -614,8 +620,6 @@ def mostrar_contenido(opcion, frame):
         # Botón registrar Devolucion
         boton_registar_devolucion = ttk.Button(frame_submenu, text="Registrar Devolucion", command=lambda: mostrar_contenido_pestana("Registrar Devolucion", frame_submenu2), style="Estilo.TButton")
         boton_registar_devolucion.pack(fill="x", side="left", padx = 10)
-
-        mostrar_contenido_pestana("Registrar Prestamo", frame_submenu2)
     
     elif opcion == "Reportes":
         # Estilo para los botones del submenú
@@ -749,33 +753,21 @@ def mostrar_contenido_pestana(opcion, frame):
         boton_registrar.pack()
         
     elif opcion == "Registrar Devolucion":
-        prestamo_seleccionado: [Prestamo] = [None]
-
         label_numero_socio = ttk.Label(frame, text="Número de Socio:", style="Estilo.TLabel")
-        label_numero_socio.pack(padx=5, pady=5)
+        label_numero_socio.pack()
 
         entry_numero_socio = ttk.Entry(frame, style="Estilo.TEntry")
-        entry_numero_socio.pack(padx=5, pady=5)
+        entry_numero_socio.pack()
 
-        boton_registrar = ttk.Button(frame, text="Buscar préstamos", command=lambda: btn_buscar_prestamos_socio(entry_numero_socio, frame, combobox_libros, label_info_prestamo, label_info_libro, prestamo_seleccionado), style="Estilo.TButton")
-        boton_registrar.pack(padx=5, pady=5)
+        label_codigo_libro = ttk.Label(frame, text="Código del Libro:", style="Estilo.TLabel")
+        label_codigo_libro.pack()
 
-        
-        # Crear una lista desplegable (combobox) para los nombres de los libros
-        combobox_libros = ttk.Combobox(frame, state="readonly")
-        combobox_libros.set("Libros")
-        combobox_libros.pack()
-
-        # Crear etiquetas para mostrar la información del préstamo y del libro
-        label_info_prestamo = ttk.Label(frame, text="")
-        label_info_prestamo.pack()
-
-        label_info_libro = ttk.Label(frame, text="")
-        label_info_libro.pack()
+        entry_codigo_libro = ttk.Entry(frame, style="Estilo.TEntry")
+        entry_codigo_libro.pack()
 
 
-        boton_registrar = ttk.Button(frame, text="Aceptar", command=lambda: confirmar_devolucion_libro(prestamo_seleccionado[0]), style="Estilo.TButton")
-        boton_registrar.pack(padx=5, pady=5)
+        boton_registrar = ttk.Button(frame, text="Registrar", command=lambda: confirmar_devolucion_libro(entry_numero_socio, entry_codigo_libro), style="Estilo.TButton")
+        boton_registrar.pack()
 
 
     

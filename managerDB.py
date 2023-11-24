@@ -50,7 +50,7 @@ class ManagerDataBase:
 
         # Insertar libros de ejemplo
         libros_ejemplo = [
-            ('El Señor de los Anillos', 25.99, 'Disponible', 0),
+            ('El Señor de los Anillos', 25.99, 'Prestado', 0),
             ('Cien años de soledad', 19.99, 'Prestado', 0),
             ('1984', 15.99, 'Disponible', 0),
             ('Harry Potter', 20.00, 'Disponible', 0),
@@ -79,7 +79,7 @@ class ManagerDataBase:
             0,                       # diasRetraso
             False,                   # devuelto
             1,                       # socio_numeroSocio
-            1,                       # libro_codigo
+            2,                       # libro_codigo
             0                        # borrado
         )
 
@@ -88,9 +88,9 @@ class ManagerDataBase:
             '2023-02-01 09:15:00',
             '2023-02-15 17:20:00',
             32,
-            True,
-            2,
-            2,
+            False,
+            1,
+            3,
             0
         )
 
@@ -100,8 +100,8 @@ class ManagerDataBase:
             '2023-03-25 12:30:00',
             0,
             False,
-            3,
-            3,
+            1,
+            1,
             0
         )
 

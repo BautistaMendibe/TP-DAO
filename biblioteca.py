@@ -65,14 +65,32 @@ class Biblioteca:
     def actualizar_estado_libro(libro, estado: str):
         actualizar_estado_libro(libro, estado)
         
+    def registrarDevolucion(self, numSocio: int, codigoLibro: int):
+        socio: Socio = consultar_socio(numSocio)
+        libro: Libro = buscar_libro_por_codigo(codigoLibro)
+        
+        if (buscar_prestamo(numeroSocio=numSocio, codigoLibro=codigoLibro) and libro.estado != "Disponible"):
+            respuesta = buscar_prestamo(numeroSocio=numSocio, codigoLibro=codigoLibro)
+            prestamo: Prestamo = Prestamo(idPrestamo=respuesta[0], fechaPrestamo=datetime.strptime(respuesta[1], '%Y-%m-%d %H:%M:%S'), fechaDevolucion=datetime.strptime(respuesta[2], '%Y-%m-%d %H:%M:%S'), libro=libro, socio=socio)
+            actualizar_estado_libro(prestamo.libro, "Disponible")
+            registrar_devolucion(prestamo.idPrestamo, prestamo.fechaDevolucion, prestamo.diasRetraso)
+            return True
+        else:
+            return False
+        
     def registrarPrestamo(self, numSocio: int, codigoLibro: int, diasDevolucion):
 
         socio: Socio = consultar_socio(numSocio)
         libro: Libro = buscar_libro_por_codigo(codigoLibro)
         diasDevolucion = int(diasDevolucion)
 
+        prestamos = listar_prestamos_por_socio(numeroSocio=numSocio)
+        count = 0
+        for prestamo in prestamos:
+            if prestamo.devuelto == False:
+                count += 1
         # Si el libro y el socio existen se registra el prestamo, si no no
-        if (libro != None and socio!= None and libro.estado == "Disponible"):
+        if (libro != None and socio!= None and libro.estado == "Disponible" and count < 3):
             fecha_actual = datetime.now().replace(microsecond=0)
             fecha_devolucion = fecha_actual + timedelta(days=diasDevolucion)
             #prestamo: Prestamo = Prestamo(diasDevolucion, libro, socio)
@@ -87,6 +105,9 @@ class Biblioteca:
             elif libro.estado != "Disponible":
                 messagebox.showerror("Error", f"No se pudo registrar el préstamo. El libro {libro.titulo} no está disponible")
                 return False
+            elif count == 3:
+                messagebox.showerror("Error", f"No se pudo registrar el préstamo. El socio {socio.nombre} Ya tiene 3 prestamos no devueltos")
+                return False
             else:
                 messagebox.showerror("Error", "No se pudo registrar el préstamo. El Socio no existe")
                 return False
@@ -98,7 +119,6 @@ class Biblioteca:
             for prestamo in prestamos:
                 if prestamo.diasRetraso >= 30:
                     actualizar_estado_libro(prestamo.libro, "Extraviado")
-                prestamo.extraviado()
             return True
         else:
             return False

@@ -131,6 +131,20 @@ def listar_socios():
 
 
 # Funciones para la registración de PRESTAMOS y DEVOLUCIONES
+def buscar_prestamo( numeroSocio, codigoLibro):
+    db_manager = ManagerDataBase()
+    query = f"SELECT * FROM prestamos " \
+                f"WHERE socio_numeroSocio = {numeroSocio} AND libro_codigo = {codigoLibro}"
+    resultados = db_manager.consultar(query)
+
+    # Verificar si hay resultados
+    if resultados:
+        # Devolver la información del préstamo
+        return resultados[0]
+    else:
+        # No se encontró el préstamo
+            return None
+
 
 def registrar_prestamo(socio_id, libro_id, fecha_prestamo, fecha_devolucion):
     # Conectar a la base de datos
@@ -203,16 +217,17 @@ def listar_prestamos_demorados():
             "l.codigo AS codigo_libro, l.titulo AS titulo_libro, l.precioReposicion, l.estado, s.numeroSocio, s.nombre AS nombre_socio " \
             "FROM prestamos p " \
             "INNER JOIN libros l ON p.libro_codigo = l.codigo " \
-            "INNER JOIN socios s ON p.socio_numeroSocio = s.numeroSocio " \
-            "WHERE p.devuelto = 0 AND DATE('now') > DATE(p.fechaPrestamo, '+' || p.fechaDevolucion || ' days')"
+            "INNER JOIN socios s ON p.socio_numeroSocio = s.numeroSocio"
+
     resultados = db_manager.consultar(query)
-    
+    print(resultados)
     prestamosDem = []
     for i in resultados:
         libro: Libro = Libro(titulo=i[5], precioReposicion=i[6], codigo=i[4], estado=i[7])
         socio: Socio = Socio(nombre=i[9], numeroSocio=i[8])
-        prestamo: Prestamo = Prestamo(fechaDevolucion=i[2], libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=i[1])
-        prestamosDem.append(prestamo)
+        prestamo: Prestamo = Prestamo(fechaDevolucion=datetime.strptime(i[2], '%Y-%m-%d %H:%M:%S'), libro=libro, socio=socio, idPrestamo=i[0], fechaPrestamo=datetime.strptime(i[1], '%Y-%m-%d %H:%M:%S'))
+        if prestamo.diasRetraso > 0:
+            prestamosDem.append(prestamo)
 
     # Verificar si la lista está vacía y devolver None en ese caso
     if not prestamosDem:

@@ -3,7 +3,7 @@ from socio import Socio
 from datetime import datetime, timedelta
 
 class Prestamo:
-    def __init__(self, fechaDevolucion: datetime, libro: Libro, socio: Socio, idPrestamo=None, fechaPrestamo=None, devuelto: bool=False):
+    def __init__(self, fechaDevolucion, libro: Libro, socio: Socio, idPrestamo=None, fechaPrestamo=None):
         if idPrestamo is None:
             # Inicialización cuando no se proporciona el ID del préstamo
             self._idPrestamo = None
@@ -16,12 +16,12 @@ class Prestamo:
         # Resto de la inicialización común
         self._fechaDevolucion = fechaDevolucion
         self._diasRetraso = self.diasRetraso
-        self._socio = socio
-        self._devuelto = devuelto
+        self._devuelto = False
         self._libro = libro
+        self._socio = socio
     
     def __str__(self) -> str:
-        return f"Id de prestamo: {self._idPrestamo} Fecha de prestamo: {self._fechaPrestamo} Fecha Devolución {self._fechaDevolucion} Dias de Retraso {self._diasRetraso} /nLibro {self._libro}"
+        return f"Id de prestamo: {self._idPrestamo} Fecha de prestamo: {self._fechaPrestamo} Dias Devolucion {self._fechaDevolucion} Dias de Retraso {self._diasRetraso} /nLibro {self._libro}"
     
     @property
     def idPrestamo(self):
@@ -42,8 +42,8 @@ class Prestamo:
             return 0
         else:
             # El retraso se calcula como la fecha de hoy menos la fecha del prestamo más los días que nos dieron para devolverlo.
-            retraso = datetime.now().date() - (self.fechaDevolucion.date())
-            return int(retraso.days)
+            retraso = datetime.now().date() - self.fechaDevolucion.date()
+            return retraso.days
     
     @property
     def devuelto(self):
@@ -65,9 +65,7 @@ class Prestamo:
     
     def registrarDevoluvion(self):
         if self._devuelto == False:
-            if self._libro.estado == "Prestado":
-                self._libro.estadoDisponible
-                self._devuelto = True
+            self._devuelto = True
                 
     def esSocio(self, numeroSocio):
         if numeroSocio == self._socio.numeroSocio:
@@ -76,3 +74,4 @@ class Prestamo:
     def solicitantesLibros(self, titulo):
         if self._libro.titulo == titulo:
             return self._socio
+            
