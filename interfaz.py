@@ -223,7 +223,7 @@ def btn_registrar_prestamo(entry_numero_socio: Entry, entry_codigo_libro: Entry,
             entry_codigo_libro.delete(0, END)
             entry_dias.delete(0, END)
 
-def btn_buscar_prestamos_socio(entry_numero_socio: ttk.Entry, frame: ttk.Frame, combobox_libros: ttk.Combobox):
+def btn_buscar_prestamos_socio(entry_numero_socio: ttk.Entry, frame: ttk.Frame, combobox_libros: ttk.Combobox, label_info_prestamo: ttk.Label, label_info_libro: ttk.Label):
     numero_socio = entry_numero_socio.get()
     prestamos_encontrados = []
 
@@ -232,29 +232,32 @@ def btn_buscar_prestamos_socio(entry_numero_socio: ttk.Entry, frame: ttk.Frame, 
         prestamos_encontrados.clear()
         prestamos_encontrados.extend(biblioteca.prestamosDeSocio(numero_socio))
 
+    # Crear una variable de seguimiento (StringVar) para el Combobox
+    selected_libro = tk.StringVar()
+    combobox_libros['textvariable'] = selected_libro
+
+    # Configurar la lista desplegable con los nombres de los libros
+    combobox_libros['values'] = []  # Vaciar la lista inicialmente
     if prestamos_encontrados:
         nombres_libros = [prestamo.libro.titulo for prestamo in prestamos_encontrados]
-
-        # Configurar la lista desplegable con los nombres de los libros
         combobox_libros['values'] = nombres_libros
         combobox_libros.current(0)  # Seleccionar el primer elemento por defecto
         combobox_libros.pack(side="left", padx=5, pady=5)
-
-        # Crear una variable de seguimiento (StringVar) para el Combobox
-        selected_libro = tk.StringVar()
-        combobox_libros['textvariable'] = selected_libro
 
         def on_libro_selected(event):
             # Obtener el índice seleccionado y guardar el préstamo correspondiente en la variable
             selected_index = combobox_libros.current()
             if selected_index != -1:
                 prestamo_seleccionado = prestamos_encontrados[selected_index]
-                print(f"Prestamo seleccionado: {prestamo_seleccionado}")
+                # Actualizar las etiquetas con la información del préstamo seleccionado
+                info_prestamo = f"Id de prestamo: {prestamo_seleccionado.idPrestamo} Fecha de prestamo: {prestamo_seleccionado.fechaPrestamo}"
+                label_info_prestamo.config(text=info_prestamo)
+
+                info_libro = f"Datos del Libro:\nCódigo: {prestamo_seleccionado.libro.codigo}\nTítulo: {prestamo_seleccionado.libro.titulo}\nPrecio de Reposición: ${prestamo_seleccionado.libro.precioReposicion}\nEstado: {prestamo_seleccionado.libro.estado}"
+                label_info_libro.config(text=info_libro)
 
         # Asociar la función on_libro_selected al evento <<ComboboxSelected>>
-        combobox_libros.bind("<<ComboboxSelected>>", on_libro_selected)
-
-    
+        combobox_libros.bind("<<ComboboxSelected>>", on_libro_selected) 
         
 # Función para crear la interfaz
 def inicio():
@@ -716,16 +719,13 @@ def mostrar_contenido_pestana(opcion, frame):
         boton_registrar.pack()
         
     elif opcion == "Registrar Devolucion":
-
-        frame.pack(padx=10, pady=10)  # Usa 
-
         label_numero_socio = ttk.Label(frame, text="Número de Socio:", style="Estilo.TLabel")
         label_numero_socio.pack(side="left", padx=5, pady=5)
 
         entry_numero_socio = ttk.Entry(frame, style="Estilo.TEntry")
         entry_numero_socio.pack(side="left", padx=5, pady=5)
 
-        boton_registrar = ttk.Button(frame, text="Buscar préstamos", command=lambda: btn_buscar_prestamos_socio(entry_numero_socio, frame, combobox_libros), style="Estilo.TButton")
+        boton_registrar = ttk.Button(frame, text="Buscar préstamos", command=lambda: btn_buscar_prestamos_socio(entry_numero_socio, frame, combobox_libros, label_info_prestamo, label_info_libro), style="Estilo.TButton")
         boton_registrar.pack(side="left", padx=5, pady=5)
 
         
@@ -734,7 +734,12 @@ def mostrar_contenido_pestana(opcion, frame):
         combobox_libros.set("Libros")
         combobox_libros.pack(side="left", padx=5, pady=5)
 
-        print(boton_registrar)
+        # Crear etiquetas para mostrar la información del préstamo y del libro
+        label_info_prestamo = ttk.Label(frame, text="")
+        label_info_prestamo.pack(side="bottom", padx=5, pady=5)
+
+        label_info_libro = ttk.Label(frame, text="")
+        label_info_libro.pack(side="bottom", padx=5, pady=5)
 
     
     elif opcion == "Socios que pidieron libro":
