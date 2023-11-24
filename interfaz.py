@@ -226,7 +226,7 @@ def btn_registrar_prestamo(entry_numero_socio: Entry, entry_codigo_libro: Entry,
 def inicio():
     ventana = Tk()
     ventana.title("Biblioteca UTN-FRC")
-    ventana.geometry("800x500")
+    ventana.geometry("850x600")
     ventana.configure(bg="lightblue")
 
     # Crear el menú horizontal en la parte izquierda
@@ -555,23 +555,23 @@ def mostrar_contenido(opcion, frame):
 
         # Botón mostrar libros por estado
         boton_libros_por_estado = ttk.Button(frame_submenu, text="Libros por Estado", command=lambda: btn_libros_x_estado(frame_submenu2), style="Estilo.TButton")
-        boton_libros_por_estado.pack(side="left", padx = 10, pady=10)
+        boton_libros_por_estado.pack(side="bottom", pady=5)
 
         # Botón muestra sumatoria de costo de reposicion
         boton_libros_reposicion = ttk.Button(frame_submenu, text="Precios de Extraviados", command=lambda: btn_precio_libros_extr(frame_submenu2), style="Estilo.TButton")
-        boton_libros_reposicion.pack(fill="x", side="bottom", padx = 10)
+        boton_libros_reposicion.pack(fill="x", side="bottom", pady = 5)
         
         # Boton muestra los nombres que solicictaron un libro
         boton_socio_libro = ttk.Button(frame_submenu, text="Socios que pidieron libro", command=lambda: mostrar_contenido_pestana("Socios que pidieron libro", frame_submenu2), style="Estilo.TButton")
-        boton_socio_libro.pack(fill="x", side="bottom", padx = 10)
+        boton_socio_libro.pack(fill="x", side="bottom", pady = 5)
         
         # Boton muestra los prestamos de un socio
         boton_socio_prestamo = ttk.Button(frame_submenu, text="Prestamos de un Socio", command=lambda: mostrar_contenido_pestana("Prestamos de un Socio", frame_submenu2), style="Estilo.TButton")
-        boton_socio_prestamo.pack(fill="x", side="bottom", padx = 10)
+        boton_socio_prestamo.pack(fill="x", side="bottom", pady = 5)
         
         # Boton muestra prestamos demorados
         boton_prestamos_Demorados = ttk.Button(frame_submenu, text="Prestamos Demorados", command=lambda: btn_prestamos_demorados(frame_submenu2), style="Estilo.TButton")
-        boton_prestamos_Demorados.pack(fill="x", side="bottom", padx = 10)
+        boton_prestamos_Demorados.pack(fill="x", side="bottom", pady = 5)
         
         
 def mostrar_contenido_pestana(opcion, frame):
