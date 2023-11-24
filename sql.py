@@ -27,6 +27,13 @@ def existe_libro_con_titulo(titulo):
     resultado = db_manager.consultar(query)
     return len(resultado) > 0
 
+def existe_socio_con_nombre(nombre):
+    # Verificar si ya existe un libro con el mismo título en la base de datos
+    db_manager = ManagerDataBase()
+    query = f"SELECT * FROM socios WHERE nombre = '{nombre}' AND borrado = 0"
+    resultado = db_manager.consultar(query)
+    return len(resultado) > 0
+
 def actualizar_libro(libro):
     db_manager = ManagerDataBase()
     codigo = int(libro.codigo)
@@ -244,3 +251,4 @@ def actualizar_estado_libro(libro: Libro, estado: str):
     db_manager = ManagerDataBase()
     query = f"UPDATE libros SET estado = '{estado}' WHERE codigo = {libro.codigo}"
     db_manager.actualizar(query)
+    
