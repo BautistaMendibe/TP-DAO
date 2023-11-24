@@ -706,6 +706,3 @@ def mostrar_contenido_pestana(opcion, frame):
         boton_consultar = ttk.Button(frame, text="Buscar", command=lambda: btn_prestamo_socio(entry_id_socio, frame), style="Estilo.TButton")
         boton_consultar.pack(fill="x", pady=10)
     
-
-# Llamada a la función de inicio
-inicio()
