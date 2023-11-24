@@ -223,17 +223,37 @@ def btn_registrar_prestamo(entry_numero_socio: Entry, entry_codigo_libro: Entry,
             entry_codigo_libro.delete(0, END)
             entry_dias.delete(0, END)
 
-def btn_buscar_prestamos_socio(entry_numero_socio: Entry, frame: Frame):
+def btn_buscar_prestamos_socio(entry_numero_socio: ttk.Entry, frame: ttk.Frame, combobox_libros: ttk.Combobox):
     numero_socio = entry_numero_socio.get()
-    prestamos_encontrados: [Prestamo] = []
+    prestamos_encontrados = []
 
     if validar_numero_socio(numero_socio):
-        biblioteca: Biblioteca = Biblioteca()
-        prestamos_encontrados.clear() 
+        biblioteca = Biblioteca()
+        prestamos_encontrados.clear()
         prestamos_encontrados.extend(biblioteca.prestamosDeSocio(numero_socio))
-    
-    if len(prestamos_encontrados) > 0:
-        print(prestamos_encontrados)
+
+    if prestamos_encontrados:
+        nombres_libros = [prestamo.libro.titulo for prestamo in prestamos_encontrados]
+
+        # Configurar la lista desplegable con los nombres de los libros
+        combobox_libros['values'] = nombres_libros
+        combobox_libros.current(0)  # Seleccionar el primer elemento por defecto
+        combobox_libros.pack(side="left", padx=5, pady=5)
+
+        # Crear una variable de seguimiento (StringVar) para el Combobox
+        selected_libro = tk.StringVar()
+        combobox_libros['textvariable'] = selected_libro
+
+        def on_libro_selected(event):
+            # Obtener el índice seleccionado y guardar el préstamo correspondiente en la variable
+            selected_index = combobox_libros.current()
+            if selected_index != -1:
+                prestamo_seleccionado = prestamos_encontrados[selected_index]
+                print(f"Prestamo seleccionado: {prestamo_seleccionado}")
+
+        # Asociar la función on_libro_selected al evento <<ComboboxSelected>>
+        combobox_libros.bind("<<ComboboxSelected>>", on_libro_selected)
+
     
         
 # Función para crear la interfaz
@@ -705,8 +725,14 @@ def mostrar_contenido_pestana(opcion, frame):
         entry_numero_socio = ttk.Entry(frame, style="Estilo.TEntry")
         entry_numero_socio.pack(side="left", padx=5, pady=5)
 
-        boton_registrar = ttk.Button(frame, text="Buscar préstamos", command=lambda: btn_buscar_prestamos_socio(entry_numero_socio, frame), style="Estilo.TButton")
+        boton_registrar = ttk.Button(frame, text="Buscar préstamos", command=lambda: btn_buscar_prestamos_socio(entry_numero_socio, frame, combobox_libros), style="Estilo.TButton")
         boton_registrar.pack(side="left", padx=5, pady=5)
+
+        
+        # Crear una lista desplegable (combobox) para los nombres de los libros
+        combobox_libros = ttk.Combobox(frame, state="readonly")
+        combobox_libros.set("Libros")
+        combobox_libros.pack(side="left", padx=5, pady=5)
 
         print(boton_registrar)
 

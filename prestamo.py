@@ -53,6 +53,10 @@ class Prestamo:
     def socio(self):
         return self.socio
     
+    @property
+    def libro(self):
+        return self._libro
+
     def nombreCoincideLibro(self, titulo):
         if self._libro.titulo() == titulo:
             return True
