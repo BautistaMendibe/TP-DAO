@@ -27,6 +27,13 @@ def existe_libro_con_titulo(titulo):
     resultado = db_manager.consultar(query)
     return len(resultado) > 0
 
+def existe_socio_con_nombre(nombre):
+    # Verificar si ya existe un libro con el mismo título en la base de datos
+    db_manager = ManagerDataBase()
+    query = f"SELECT * FROM socios WHERE nombre = '{nombre}' AND borrado = 0"
+    resultado = db_manager.consultar(query)
+    return len(resultado) > 0
+
 def actualizar_libro(libro):
     db_manager = ManagerDataBase()
     codigo = int(libro.codigo)
@@ -141,12 +148,12 @@ def registrar_devolucion(prestamo_id, fecha_devolucion, dias_retraso):
 
 # Funciones para la actualización de préstamos
 
-def actualizar_prestamo(idPrestamo, fechaPrestamo, diasDevolucion, socio_numeroSocio, libro_codigo, devuelto, diasRetraso):
+def actualizar_prestamo(idPrestamo, fechaPrestamo, fechaDevolucion, socio_numeroSocio, libro_codigo, devuelto, diasRetraso):
     # Conectar a la base de datos
     db_manager = ManagerDataBase()
     
     # Crear y ejecutar la consulta SQL para actualizar un préstamo
-    query = f"UPDATE prestamos SET fechaPrestamo = '{fechaPrestamo}', diasDevolucion = {diasDevolucion}, " \
+    query = f"UPDATE prestamos SET fechaPrestamo = '{fechaPrestamo}', fechaDevolucion = {fechaDevolucion}, " \
             f"socio_numeroSocio = {socio_numeroSocio}, libro_codigo = {libro_codigo}, devuelto = {devuelto}, " \
             f"diasRetraso = {diasRetraso} WHERE idPrestamo = {idPrestamo}"
     db_manager.actualizar(query)
@@ -192,12 +199,12 @@ def solicitantes_por_titulo_libro(titulo):
 
 def listar_prestamos_demorados():
     db_manager = ManagerDataBase()
-    query = "SELECT p.idPrestamo, p.fechaPrestamo, p.diasDevolucion, p.devuelto, " \
+    query = "SELECT p.idPrestamo, p.fechaPrestamo, p.fechaDevolucion, p.devuelto, " \
             "l.codigo AS codigo_libro, l.titulo AS titulo_libro, l.precioReposicion, l.estado, s.numeroSocio, s.nombre AS nombre_socio " \
             "FROM prestamos p " \
             "INNER JOIN libros l ON p.libro_codigo = l.codigo " \
             "INNER JOIN socios s ON p.socio_numeroSocio = s.numeroSocio " \
-            "WHERE p.devuelto = 0 AND DATE('now') > DATE(p.fechaPrestamo, '+' || p.diasDevolucion || ' days')"
+            "WHERE p.devuelto = 0 AND DATE('now') > DATE(p.fechaPrestamo, '+' || p.fechaDevolucion || ' days')"
     resultados = db_manager.consultar(query)
     
     prestamosDem = []
@@ -244,3 +251,4 @@ def actualizar_estado_libro(libro: Libro, estado: str):
     db_manager = ManagerDataBase()
     query = f"UPDATE libros SET estado = '{estado}' WHERE codigo = {libro.codigo}"
     db_manager.actualizar(query)
+    

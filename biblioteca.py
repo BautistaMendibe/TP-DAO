@@ -36,7 +36,12 @@ class Biblioteca:
     def aggSocio(self, nombre: str):
         socio: Socio = Socio(nombre=nombre)
         self._socios.append(socio)
-        insertar_socio(socio)
+        # Verificar si ya existe un socio con el mismo nombre
+        if existe_socio_con_nombre(nombre):
+            return False
+        else:
+            insertar_socio(socio)
+            return True
     
     def eliminarSocio(self, numeroSocio: int):
         socio = eliminar_socio(numeroSocio)
@@ -85,3 +90,16 @@ class Biblioteca:
             else:
                 messagebox.showerror("Error", "No se pudo registrar el préstamo. El Socio no existe")
                 return False
+            
+    def regitrar_extraviado(self):
+        prestamos = listar_prestamos_demorados()
+        # Verificar si la lista está vacía
+        if prestamos is not None:
+            for prestamo in prestamos:
+                if prestamo.diasRetraso >= 30:
+                    actualizar_estado_libro(prestamo.libro, "Extraviado")
+                prestamo.extraviado()
+            return True
+        else:
+            return False
+    
