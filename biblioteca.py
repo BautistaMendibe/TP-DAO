@@ -3,7 +3,7 @@ from libro import Libro
 from socio import Socio
 from prestamo import Prestamo
 from sql import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class Biblioteca:
 
@@ -62,24 +62,25 @@ class Biblioteca:
     def prestamosDeSocio(self, numSocio):
         return listar_prestamos_por_socio(numeroSocio=numSocio)
         
-    def registrarPrestamo(self, numSocio: int, codigoLibro: int, diasDevolucion: int):
+    def registrarPrestamo(self, numSocio: int, codigoLibro: int, diasDevolucion):
 
         socio: Socio = consultar_socio(numSocio)
         libro: Libro = buscar_libro_por_codigo(codigoLibro)
+        diasDevolucion = int(diasDevolucion)
 
         # Si el libro y el socio existen se registra el prestamo, si no no
         if (libro != None and socio!= None and libro.estado == "Disponible"):
             fecha_actual = datetime.now().replace(microsecond=0)
-
-            prestamo: Prestamo = Prestamo(diasDevolucion, libro, socio)
-            registrar_prestamo(numSocio, libro.codigo, fecha_actual, diasDevolucion)
+            fecha_devolucion = fecha_actual + timedelta(days=diasDevolucion)
+            #prestamo: Prestamo = Prestamo(diasDevolucion, libro, socio)
+            registrar_prestamo(numSocio, libro.codigo, fecha_actual, fecha_devolucion)
             actualizar_estado_libro(libro, "Prestado")
             return True
         else:
             if libro == None:
                 messagebox.showerror("Error", "No se pudo registrar el préstamo. El Libro no existe")
                 return False
-            
+
             elif libro.estado != "Disponible":
                 messagebox.showerror("Error", f"No se pudo registrar el préstamo. El libro {libro.titulo} no está disponible")
                 return False
