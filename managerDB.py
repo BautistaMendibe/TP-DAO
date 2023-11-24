@@ -1,3 +1,5 @@
+import datetime
+import random
 import sqlite3
 
 # Clase para conectar la Base de datos. Se utiliza el patrón Singleton
@@ -41,7 +43,82 @@ class ManagerDataBase:
             borrado INTEGER,
             FOREIGN KEY (socio_numeroSocio) REFERENCES socios (numeroSocio),
             FOREIGN KEY (libro_codigo) REFERENCES libros (codigo))''')
+        
+    def insertar_registros_ejemplo(self):
+        # Método para insertar registros de ejemplo en las tablas
+        cursor = self.conn.cursor()
 
+        # Insertar libros de ejemplo
+        libros_ejemplo = [
+            ('El Señor de los Anillos', 25.99, 'Disponible', 0),
+            ('Cien años de soledad', 19.99, 'Prestado', 0),
+            ('1984', 15.99, 'Disponible', 0),
+            ('Harry Potter', 20.00, 'Disponible', 0),
+            ('Don Quijote', 40.00, 'Disponible', 0),
+            
+        ]
+        cursor.executemany('INSERT INTO libros (titulo, precioReposicion, estado, borrado) VALUES (?, ?, ?, ?)', libros_ejemplo)
+
+        # Insertar socios de ejemplo
+        socios_ejemplo = [
+            ('Ramiro Hosman', 0),
+            ('Bautista Mendibe', 0),
+            ('Valentino Di Fulvio', 0),
+            ('Debora Sandoval', 0),
+            ('Juan Pérez', 0),
+            ('María Gómez', 0),
+            ('Carlos Rodríguez', 0),
+            # Agrega más socios de ejemplo según sea necesario
+        ]
+        cursor.executemany('INSERT INTO socios (nombre, borrado) VALUES (?, ?)', socios_ejemplo)
+        
+        # Ejemplo 1
+        prestamo_1 = (
+            '2023-01-15',  # fechaPrestamo
+            '2023-02-01',  # fechaDevolucion
+            0,              # diasRetraso
+            False,          # devuelto
+            1,              # socio_numeroSocio
+            1,              # libro_codigo
+            0               # borrado
+        )
+
+        # Ejemplo 2
+        prestamo_2 = (
+            '2023-02-01',
+            '2023-02-15',
+            32,
+            True,
+            2,
+            2,
+            0
+        )
+
+        # Ejemplo 3
+        prestamo_3 = (
+            '2023-03-10',
+            '2023-03-25',
+            0,
+            False,
+            3,
+            3,
+            0
+        )
+
+        # Ejemplo 4
+        prestamo_4 = (
+            '2023-04-05',
+            '2023-04-20',
+            14,
+            True,
+            4,
+            5,
+            0
+        )
+
+        prestamos_ejemplo = [prestamo_1, prestamo_2, prestamo_3, prestamo_4]
+
+        cursor.executemany('INSERT INTO prestamos (fechaPrestamo, fechaDevolucion, diasRetraso, devuelto, socio_numeroSocio, libro_codigo, borrado) VALUES (?, ?, ?, ?, ?, ?, ?)', prestamos_ejemplo)
         # Confirmar cambios en la base de datos
         self.conn.commit()
         cursor.close()

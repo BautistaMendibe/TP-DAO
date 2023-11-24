@@ -8,4 +8,6 @@ if __name__ == "__main__":
     # Crear las tablas en la base de datos si no existen
     db_manager.crear_tablas()
     
+    db_manager.insertar_registros_ejemplo()
+
     inicio()
