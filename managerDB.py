@@ -74,19 +74,19 @@ class ManagerDataBase:
         
         # Ejemplo 1
         prestamo_1 = (
-            '2023-01-15',  # fechaPrestamo
-            '2023-02-01',  # fechaDevolucion
-            0,              # diasRetraso
-            False,          # devuelto
-            1,              # socio_numeroSocio
-            1,              # libro_codigo
-            0               # borrado
+            '2023-01-15 10:30:00',  # fechaPrestamo
+            '2023-02-01 14:45:00',  # fechaDevolucion
+            0,                       # diasRetraso
+            False,                   # devuelto
+            1,                       # socio_numeroSocio
+            1,                       # libro_codigo
+            0                        # borrado
         )
 
         # Ejemplo 2
         prestamo_2 = (
-            '2023-02-01',
-            '2023-02-15',
+            '2023-02-01 09:15:00',
+            '2023-02-15 17:20:00',
             32,
             True,
             2,
@@ -96,8 +96,8 @@ class ManagerDataBase:
 
         # Ejemplo 3
         prestamo_3 = (
-            '2023-03-10',
-            '2023-03-25',
+            '2023-03-10 14:00:00',
+            '2023-03-25 12:30:00',
             0,
             False,
             3,
@@ -107,8 +107,8 @@ class ManagerDataBase:
 
         # Ejemplo 4
         prestamo_4 = (
-            '2023-04-05',
-            '2023-04-20',
+            '2023-04-05 08:45:00',
+            '2023-04-20 16:10:00',
             14,
             True,
             4,
