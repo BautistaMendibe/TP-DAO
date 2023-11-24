@@ -3,7 +3,7 @@ from socio import Socio
 from datetime import datetime, timedelta
 
 class Prestamo:
-    def __init__(self, fechaDevolucion: datetime, libro: Libro, socio: Socio, idPrestamo=None, fechaPrestamo=None):
+    def __init__(self, fechaDevolucion: datetime, libro: Libro, socio: Socio, idPrestamo=None, fechaPrestamo=None, devuelto: bool=False):
         if idPrestamo is None:
             # Inicialización cuando no se proporciona el ID del préstamo
             self._idPrestamo = None
@@ -15,8 +15,10 @@ class Prestamo:
 
         # Resto de la inicialización común
         self._fechaDevolucion = fechaDevolucion
-        self._diasRetraso = self.diasRetraso()
+        self._diasRetraso = self.diasRetraso
         self._socio = socio
+        self._devuelto = devuelto
+        self._libro = libro
     
     def __str__(self) -> str:
         return f"Id de prestamo: {self._idPrestamo} Fecha de prestamo: {self._fechaPrestamo} Fecha Devolución {self._fechaDevolucion} Dias de Retraso {self._diasRetraso} /nLibro {self._libro}"
@@ -54,7 +56,8 @@ class Prestamo:
     @property
     def libro(self):
         return self._libro
-
+    
+    
     def nombreCoincideLibro(self, titulo):
         if self._libro.titulo() == titulo:
             return True

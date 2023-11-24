@@ -447,12 +447,12 @@ def btn_prestamo_socio(entry, frame):
 
         if prestamos:
             # Crear un árbol para mostrar la tabla
-            tree = ttk.Treeview(frame, columns=("ID Prestamo", "Fecha Prestamo", "Dias Devolucion", "Devuelto",
+            tree = ttk.Treeview(frame, columns=("ID Prestamo", "Fecha Prestamo", "Fecha Devolucion", "Devuelto",
                                                 "Título Libro", "Precio Reposicion", "Codigo Libro", "Estado Libro"),
                                 show="headings")
 
             # Configurar las columnas
-            columnas = ["ID Prestamo", "Fecha Prestamo", "Dias Devolucion", "Devuelto", "Título Libro", "Precio Reposicion",
+            columnas = ["ID Prestamo", "Fecha Prestamo", "Fecha Devolucion", "Devuelto", "Título Libro", "Precio Reposicion",
                         "Codigo Libro", "Estado Libro"]
             for col in columnas:
                 tree.heading(col, text=col)
@@ -460,9 +460,9 @@ def btn_prestamo_socio(entry, frame):
             # Insertar los datos en el árbol
             for prestamo in prestamos:
                 # Asegúrate de acceder correctamente a los atributos del objeto Prestamo
-                tree.insert("", "end", values=(prestamo._idPrestamo, prestamo._fechaPrestamo, prestamo._diasDevolucion,
-                                               prestamo._devuelto, prestamo._libro.titulo, prestamo._libro.precioReposicion,
-                                               prestamo._libro.codigo, prestamo._libro.estado))
+                tree.insert("", "end", values=(prestamo.idPrestamo, prestamo.fechaPrestamo, prestamo.fechaDevolucion,
+                                               prestamo.devuelto, prestamo.libro.titulo, prestamo.libro.precioReposicion,
+                                               prestamo.libro.codigo, prestamo.libro.estado))
 
             # Estilo para la tabla
             style = ttk.Style()
@@ -486,13 +486,13 @@ def btn_prestamos_demorados(frame):
         widget.destroy()
 
     # Crear un árbol para mostrar la tabla
-    tree = ttk.Treeview(frame, columns=("ID Prestamo", "Fecha Prestamo", "Dias Devolucion",
+    tree = ttk.Treeview(frame, columns=("ID Prestamo", "Fecha Prestamo", "Fecha Devolucion",
                                         "Devuelto", "Título Libro", "Precio Reposicion",
                                         "Codigo Libro", "Estado Libro", "Número de Socio",
                                         "Nombre Socio"), show="headings")
 
     # Configurar las columnas
-    columnas = ["ID Prestamo", "Fecha Prestamo", "Dias Devolucion", "Devuelto", "Título Libro", "Precio Reposicion",
+    columnas = ["ID Prestamo", "Fecha Prestamo", "Fecha Devolucion", "Devuelto", "Título Libro", "Precio Reposicion",
                 "Codigo Libro", "Estado Libro", "Número de Socio", "Nombre Socio"]
     for col in columnas:
         tree.heading(col, text=col)
@@ -500,7 +500,7 @@ def btn_prestamos_demorados(frame):
     # Insertar los datos en el árbol
     if resultados:
         for prestamo in resultados:
-            tree.insert("", "end", values=(prestamo.idPrestamo, prestamo.fechaPrestamo, prestamo.diasDevolucion,
+            tree.insert("", "end", values=(prestamo.idPrestamo, prestamo.fechaPrestamo, prestamo.fechaDevolucion,
                                            prestamo.devuelto, prestamo.libro.titulo, prestamo.libro.precioReposicion,
                                            prestamo.libro.codigo, prestamo.libro.estado, prestamo.socio.numeroSocio,
                                            prestamo.socio.nombre))
